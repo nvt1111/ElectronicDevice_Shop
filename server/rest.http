@@ -1,0 +1,151 @@
+POST http://localhost:3000/api/v1/categories
+Content-Type: application/json
+
+{
+    "name": "Galaxy",
+    "icon": "gla",
+    "color": "#9999"
+}
+###
+DELETE http://localhost:3000/api/v1/categories/1sdcvxcvxcvx
+###
+GET http://localhost:3000/api/v1/categories/64b21cc9eb2eac1f3b25c881
+###
+PUT http://localhost:3000/api/v1/categories/64b21cc9eb2eac1f3b25c881
+Content-Type: application/json
+
+{
+    "name": "kkkkkkk",
+    "icon": "jaja",
+    "color": "#000"
+}
+
+
+#####
+POST http://localhost:3000/api/v1/products
+Content-Type: application/json
+
+{
+    "name": "12",
+    "description": "12",
+    "richDescription": "12",
+    "image": "F:/laptop.jpg",
+    "brand": "iphone",
+    "price": 25,
+    "category": "64b251b662fd98962c2d1313",
+    "countInStock": 25,
+    "rating": 4,
+    "numReviews": 10,
+    "isFeatured": false
+}
+
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGIyYzg4ODhjODdiZGQxMGUzNWZkNjIiLCJpYXQiOjE2ODk0NDM1NDYsImV4cCI6MTY4OTUyOTk0Nn0.9zBKbx2d4eLISXBvPNi05642e2GLz9HLLW9jbLLZ7zk
+###
+GET http://localhost:3000/api/v1/products
+# Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGIyZDVhYWQ4MWZiZDdhNTA3ZTFkNjAiLCJpYXQiOjE2ODk0Nzc5NTYsImV4cCI6MTY4OTQ3ODU1Nn0.lQniVoiZUrMals8N3L1hVeh-6c44PT1KfLXXcOSJ9A0
+###
+GET http://localhost:3000/api/v1/products/64b2542468e7d757d470d7b4
+# Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGIyZDVhYWQ4MWZiZDdhNTA3ZTFkNjAiLCJpYXQiOjE2ODk0Nzc5NTYsImV4cCI6MTY4OTQ3ODU1Nn0.lQniVoiZUrMals8N3L1hVeh-6c44PT1KfLXXcOSJ9A0
+###
+PUT http://localhost:3000/api/v1/products/64b2542468e7d757d470d7b4
+Content-Type: application/json
+
+{
+    "name": "thai",
+    "description": "thai",
+    "richDescription": "thai",
+    "image": "p/iamge1.jpg",
+    "brand": "nokia",
+    "price": 1,
+    "category": "64b24bb0476b0787dcec00c6",
+    "countInStock": 1,
+    "rating": 1,
+    "numReviews": 1,
+    "isFeatured": false
+}
+###
+DELETE http://localhost:3000/api/v1/products/64b252db68e7d757d470d7b1
+###
+GET http://localhost:3000/api/v1/products/get/count
+###
+GET http://localhost:3000/api/v1/products/get/featured
+###
+GET http://localhost:3000/api/v1/products/get/featured/1
+###
+GET http://localhost:3000/api/v1/products?categories=64b251b662fd98962c2d1313,64b21cc9eb2eac1f3b25c881
+
+
+#####
+POST http://localhost:3000/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "hy",
+    "email": "hy@gmail.com",
+    "password": "1111",
+    "phone": "123456",
+    "isAdmin": true,
+    "apartment": " apartment 100",
+    "zip": "1000",
+    "city": "nghhh",
+    "country": "VN"
+}
+###
+GET http://localhost:3000/api/v1/users
+# Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGIyZDVhYWQ4MWZiZDdhNTA3ZTFkNjAiLCJpYXQiOjE2ODk0Nzc5NTYsImV4cCI6MTY4OTQ3ODU1Nn0.lQniVoiZUrMals8N3L1hVeh-6c44PT1KfLXXcOSJ9A0
+
+###
+GET http://localhost:3000/api/v1/users/64b2c7792c633e05bb27340d
+###
+POST http://localhost:3000/api/v1/users/login
+Content-Type:  application/json
+
+{
+    "email": "hung@gmail.com",
+    "password":"1111"
+}
+
+
+
+###
+
+POST http://localhost:3000/api/v1/orders
+Content-Type:  application/json
+
+{
+    "orderItems" : [
+        {
+            "quantity": 100,
+            "product" : "64b269eef8a33bbd743377c2"
+        },
+        {
+            "quantity": 100,
+            "product" : "64b269f7f8a33bbd743377c5"
+        }
+    ],
+    "shippingAddress1" : "NV Troi , 45",
+    "shippingAddress2" : "bbbbbbbbbbb",
+    "city": "Prague",
+    "zip": "00000",
+    "country": "Czech Republic",
+    "phone": "+420702241333",
+    "user": "64b2c8888c87bdd10e35fd62"
+}
+
+###
+GET http://localhost:3000/api/v1/orders
+###
+PUT http://localhost:3000/api/v1/orders/64b3b292138ad4f170fea71d
+Content-Type:  application/json
+
+{
+    "status": "chua"
+}
+###
+GET http://localhost:3000/api/v1/orders/64b3a6be50d5947c96220139
+###
+DELETE http://localhost:3000/api/v1/orders/64b3b285138ad4f170fea717
+###
+GET http://localhost:3000/api/v1/orders/get/totalsales
+###
+GET http://localhost:3000/api/v1/orders/get/userorders/64b2c8888c87bdd10e35fd62
