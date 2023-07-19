@@ -2,7 +2,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {signAccessToken, verifyAccessToken} = require('../helpers/jwt');
-
+const session = require('express-session');
 
 ////////////////////////// API
 
@@ -59,7 +59,7 @@ const create_user = async(req,res,next)=>{
         const savedUser = await user.save()
         if(!savedUser ) res.status(404).send('the user cannot be created')
         res.redirect('/api/v1/users/login')
-        // res.send(savedUser)
+        // res.render('index', {user: savedUser})
     }catch(error){
         next(error)
     }
@@ -70,15 +70,18 @@ const login_user  = async(req,res,next)=>{
     if(!user){
         return res.status(400).send('The user not found')
     }
+    const isLoggedIn = false;
     console.log('kkkkkkk', user);
     if(user && bcrypt.compareSync(req.body.password, user.passwordHash)){
-        const accessToken = await signAccessToken(user._id);
+        // const accessToken = await signAccessToken(user._id);
         // res.status(200).send({user: user.email, accessToken: accessToken});
-        res.render('index')
+        // Đặt isLoggedIn thành true
+        req.session.isLoggedIn = true;
+        req.session.user = { name: user.name }; // Thay thế bằng thông tin người dùng thực tế
+        res.render('index', { isLoggedIn: req.session.isLoggedIn, user: req.session.user })
     }else{
         res.status(400).send('password is wrong')
     }
-    
 
 }
 
@@ -110,7 +113,11 @@ const get_count_user = async(req, res, next)=>{
     }
 }
 
-
+const logout_user = (req, res, next) => {
+    // Xóa session và đánh dấu người dùng đã đăng xuất
+    req.session.destroy();
+    res.redirect('/'); // Chuyển hướng về trang chủ hoặc trang đăng nhập
+  }
 
 module.exports = {
     get_all_user,
@@ -121,6 +128,5 @@ module.exports = {
     get_count_user,
     get_login_user,
     get_register_user,
-
-
+    logout_user
 }

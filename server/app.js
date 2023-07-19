@@ -5,6 +5,7 @@ const app = express();
 const cors = require('cors');
 const DBconnect = require("./connections/DBconnect")
 const initRoutes = require('./routes/index')
+const session = require('express-session');
 
 app.use(cors());
 app.use('*', cors()); // cho phep tat ca http
@@ -18,14 +19,39 @@ app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 app.set('view engine', 'ejs')
 app.use(express.static('public/styles')) ;// ơ dau cung truy cạp dc
 
+app.use(session({
+  secret: 'your-secret-key', // Khóa bí mật để mã hóa session (có thể thay đổi)
+  resave: false, // Không lưu lại session mỗi lần yêu cầu được gửi lại
+  saveUninitialized: true, // Lưu session ngay cả khi chưa có dữ liệu
+}));
+
 DBconnect
 app.listen(3000, ()=>{
     console.log('Server is running http://localhost:3000')
 })
 
-app.get('/', (req,res)=>{
-  res.render('index')
-  // res.redirect('users/register')
-})
+const Category = require('./models/category');
+const Product = require('./models/product');
+// Truy vấn và truyền categories vào res.locals để sử dụng trên toàn bộ ứng dụng
+// middlewares sử dụng cho mọi ware
+app.use(async (req, res, next) => {
+  try {
+    const categories = await Category.find();
+    const products = await Product.find();
+    res.locals.categories = categories;
+    res.locals.products = products;
+    next();// chuyển sang mdlleware khác
+  } catch (error) {
+    console.error('Error retrieving categories from MongoDB:', error);
+    next(error);
+  }
+});
+
+app.get('/', (req, res) => {
+  const isLoggedIn = req.session.isLoggedIn || false;
+  const user = req.session.user || null;
+  res.render('index', { isLoggedIn: isLoggedIn, user: user });
+});
+
 initRoutes(app);
 

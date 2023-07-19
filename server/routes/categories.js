@@ -4,7 +4,7 @@ const categoryController = require('../controllers/categoryController');
 const {verifyAccessToken} = require('../helpers/jwt')
 
 
-router.get('/',verifyAccessToken , categoryController.all_category);
+router.get('/' , categoryController.all_category);
 router.put('/:id', categoryController.update_category);
 router.get('/:id', categoryController.get_category);
 router.post('/', categoryController.create_category);
