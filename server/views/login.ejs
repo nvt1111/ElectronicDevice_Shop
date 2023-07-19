@@ -62,7 +62,7 @@
 <body>
   <div class="container">
     <h2>Đăng nhập</h2>
-    <form>
+    <form action="/api/v1/users/login" method="post">
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" placeholder="Nhập email" value="" required>
@@ -75,6 +75,9 @@
         <input type="submit" class="button" value="Đăng nhập">
       </div>
     </form>
+    <div class="form-group">
+      <p>Bạn chưa có tài khoản? <a href="/api/v1/users/register">Đăng ký ngay</a></p> <!-- Thêm liên kết đăng ký -->
+    </div>
   </div>
 </body>
 </html>

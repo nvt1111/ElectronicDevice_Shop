@@ -4,6 +4,16 @@ const jwt = require('jsonwebtoken');
 const {signAccessToken, verifyAccessToken} = require('../helpers/jwt');
 
 
+////////////////////////// API
+
+const get_login_user = (req,res,next) =>{
+    res.render('login')
+}
+
+const get_register_user = (req,res,next) =>{
+    res.render('register')
+}
+
 const get_all_user = async (req,res,next)=>{
     try{
         const userList = await User.find().select("-passwordHash");
@@ -39,15 +49,17 @@ const create_user = async(req,res,next)=>{
             email: req.body.email,
             passwordHash: bcrypt.hashSync(req.body.password,10),
             phone: req.body.phone,
-            isAdmin: req.body.isAdmin,
-            apartment: req.body.apartment, 
-            zip: req.body.zip,
-            city: req.body.city,
-            country: req.body.country,  
+            // isAdmin: req.body.isAdmin,
+            // apartment: req.body.apartment, 
+            // zip: req.body.zip,
+            // city: req.body.city,
+            // country: req.body.country,  
         })
+        
         const savedUser = await user.save()
-        if(!savedUser ) res.status(404).send('the category cannot be created')
-        res.send(savedUser)
+        if(!savedUser ) res.status(404).send('the user cannot be created')
+        res.redirect('/api/v1/users/login')
+        // res.send(savedUser)
     }catch(error){
         next(error)
     }
@@ -55,14 +67,14 @@ const create_user = async(req,res,next)=>{
 
 const login_user  = async(req,res,next)=>{
     const user = await User.findOne({email: req.body.email});
-    // const secret = process.env.secret;
     if(!user){
         return res.status(400).send('The user not found')
     }
     console.log('kkkkkkk', user);
     if(user && bcrypt.compareSync(req.body.password, user.passwordHash)){
         const accessToken = await signAccessToken(user._id);
-        res.status(200).send({user: user.email, accessToken: accessToken});
+        // res.status(200).send({user: user.email, accessToken: accessToken});
+        res.render('index')
     }else{
         res.status(400).send('password is wrong')
     }
@@ -98,11 +110,17 @@ const get_count_user = async(req, res, next)=>{
     }
 }
 
+
+
 module.exports = {
     get_all_user,
     get_user_id,
     create_user,
     login_user,
     delete_user,
-    get_count_user
+    get_count_user,
+    get_login_user,
+    get_register_user,
+
+
 }

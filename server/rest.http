@@ -76,12 +76,12 @@ GET http://localhost:3000/api/v1/products?categories=64b251b662fd98962c2d1313,64
 
 
 #####
-POST http://localhost:3000/api/v1/users
+POST http://localhost:3000/api/v1/users/register
 Content-Type: application/json
 
 {
-    "name": "hy",
-    "email": "hy@gmail.com",
+    "name": "ww",
+    "email": "ww@gmail.com",
     "password": "1111",
     "phone": "123456",
     "isAdmin": true,

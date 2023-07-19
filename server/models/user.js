@@ -18,31 +18,31 @@ var userSchema = new mongoose.Schema({
     phone:{
         type:String,
         required:true,
-    },
-    isAdmin:{
-        type:Boolean,
-        default:'',
-    },
-    street:{
-        type:String,
-        default:'',
-    },
-    apartment:{
-        type: String,
-        default:'',
-    },
-    zip:{
-        type: String,
-        default:'',
-    },
-    city:{
-        type: String,
-        default:'',
-    },
-    country:{
-        type: String,
-        default:'',
     }
+    // isAdmin:{
+    //     type:Boolean,
+    //     default:false,
+    // },
+    // street:{
+    //     type:String,
+    //     default:'',
+    // },
+    // apartment:{
+    //     type: String,
+    //     default:'',
+    // },
+    // zip:{
+    //     type: String,
+    //     default:'',
+    // },
+    // city:{
+    //     type: String,
+    //     default:'',
+    // },
+    // country:{
+    //     type: String,
+    //     default:'',
+    // }
 });
 
 //Export the model
