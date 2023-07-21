@@ -3,7 +3,8 @@ const router = express.Router();
 const productController = require('../controllers/productController');
 const mongoose = require('mongoose');
 const {verifyAccessToken} = require('../helpers/jwt')
-const multer = require('multer')
+const multer = require('multer');
+const Product = require('../models/product')
 
 // VALLIDATE UPLOAD FILE
 const FILE_TYPE_MAP = {

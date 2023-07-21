@@ -7,25 +7,25 @@
 		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 		<title>Electro - HTML Ecommerce Template</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ 		<!-- Google font -->
+ 		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
-		<!-- Google font -->
-		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+ 		<!-- Bootstrap -->
+ 		<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
 
-		<!-- Bootstrap  -->
-		<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
-		<!-- thêm  "/" ở đâu href để nó lấy đương link cố định không bị ảnh hưởng từ API-->
-		<!-- Slick -->
-		<link type="text/css" rel="stylesheet" href="/css/slick.css"/>
-		<link type="text/css" rel="stylesheet" href="/css/slick-theme.css"/>
+ 		<!-- Slick -->
+ 		<link type="text/css" rel="stylesheet" href="/css/slick.css"/>
+ 		<link type="text/css" rel="stylesheet" href="/css/slick-theme.css"/>
 
-		<!-- nouislider -->
-		<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css"/>
+ 		<!-- nouislider -->
+ 		<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css"/>
 
-		<!-- Font Awesome Icon -->
-		<link rel="stylesheet" href="/css/font-awesome.min.css">
+ 		<!-- Font Awesome Icon -->
+ 		<link rel="stylesheet" href="/css/font-awesome.min.css">
 
-		<!-- Custom stlylesheet -->
-		<link type="text/css" rel="stylesheet" href="/css/style.css"/>
+ 		<!-- Custom stlylesheet -->
+ 		<link type="text/css" rel="stylesheet" href="/css/style.css"/>
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -48,13 +48,7 @@
 					</ul>
 					<ul class="header-links pull-right">
 						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-						<% if (isLoggedIn) { %>
-							<li><a href="#"><i class="fa fa-user-o"></i>Xin chào :<%=user.name%></a></li>
-						  <%}%>
-						  <li><a href="/api/v1/users/login"><i class="fa fa-sign-in"></i> Login</a></li>
-						  <% if (isLoggedIn) { %>
-							<li><a href="/api/v1/users/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
-						  <%}%>
+						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
 					</ul>
 				</div>
 			</div>
@@ -177,11 +171,12 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li class="active"><a href="#">Home</a></li>
-						<% if( categories.length > 0){%>
-							<% categories.forEach ( c => {%>
-								<li><a href="#"><%=c.name %></a></li>
-							<%})%>
-						<%}%>
+						<li><a href="#">Hot Deals</a></li>
+						<li><a href="#">Categories</a></li>
+						<li><a href="#">Laptops</a></li>
+						<li><a href="#">Smartphones</a></li>
+						<li><a href="#">Cameras</a></li>
+						<li><a href="#">Accessories</a></li>
 					</ul>
 					<!-- /NAV -->
 				</div>
@@ -191,62 +186,94 @@
 		</nav>
 		<!-- /NAVIGATION -->
 
-		<!-- SECTION -->
-		<div class="section">
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
 				<div class="row">
-					<!-- shop -->
-					<div class="col-md-4 col-xs-6">
-						<div class="shop">
-							<div class="shop-img">
-								<img src="./img/shop01.png" alt="">
-							</div>
-							<div class="shop-body">
-								<h3>Laptop<br>Collection</h3>
-								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
-							</div>
-						</div>
+					<div class="col-md-12">
+						<h3 class="breadcrumb-header">Checkout</h3>
+						<ul class="breadcrumb-tree">
+							<li><a href="#">Home</a></li>
+							<li class="active">Checkout</li>
+						</ul>
 					</div>
-					<!-- /shop -->
-
-					<!-- shop -->
-					<div class="col-md-4 col-xs-6">
-						<div class="shop">
-							<div class="shop-img">
-								<img src="./img/shop03.png" alt="">
-							</div>
-							<div class="shop-body">
-								<h3>Accessories<br>Collection</h3>
-								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
-							</div>
-						</div>
-					</div>
-					<!-- /shop -->
-
-					<!-- shop -->
-					<div class="col-md-4 col-xs-6">
-						<div class="shop">
-							<div class="shop-img">
-								<img src="./img/shop02.png" alt="">
-							</div>
-							<div class="shop-body">
-								<h3>Cameras<br>Collection</h3>
-								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
-							</div>
-						</div>
-					</div>
-					<!-- /shop -->
 				</div>
 				<!-- /row -->
 			</div>
 			<!-- /container -->
 		</div>
-		<!-- /SECTION -->
+		<!-- /BREADCRUMB -->
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		<div class="container">
+			<h1 class="text-center">Shopping Cart</h1>
+			<div class="row">
+				<!-- Bên trái (6 phần) -->
+				<div class="col-md-7">
+					<!-- Hiển thị thông tin giỏ hàng trong bảng -->
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>Product Image</th>
+								<th>Product Name</th>
+								<th>Quantity</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% if(orderItem.length >0) { %>
+								<% orderItem.forEach( item =>{%>
+									<tr>
+										<td><img src="<%=item.product.image%>" alt="Product 1"></td>
+										<td><%= item.product.name%></td>
+										<td><%= item.quantity%></td>
+										<td><%= item.price%></td>
+									</tr>
+								<%})%>
+							<%}%>
+							
+							
+						</tbody>
+					</table>
+				</div>
+				<!-- Bên phải (4 phần) -->
+				<div class="col-md-3 offset-md-2">
+					<div class="user-info">
+						<h2>User Information</h2>
+						<p>Name: <%= user.name%></p>
+						<p>Email: <%= user.email%></p>
+					</div>
+					<!-- xử lí totalprice bên controller -->
+					<div class="total-price">
+						Total Price: $<%=totalPrice%> 
+					</div>
+	
+					<button class="btn btn-primary btn-block mt-3">Đặt Hàng</button>
+				</div>
+			</div>
+		</div>
+		<!-- Link đến Bootstrap JS (nếu bạn sử dụng các tính năng JavaScript của Bootstrap) -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 		<!-- NEWSLETTER -->
 		<div id="newsletter" class="section">
