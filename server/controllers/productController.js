@@ -1,6 +1,19 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
+const User = require('../models/user');
 const mongoose = require('mongoose');
+
+const get_product_id = async(req,res,next)=>{
+    const product = await Product.findById(req.params.id).populate('category');
+    const user_id= req.query.user_id;
+    const user = await User.findById(user_id);
+    if(!product){
+        res.status(500).json({
+            success: false
+        })
+    }
+    res.render('product_detail', {product:product ,user: user });
+}
 
 const get_product_category = async(req,res,next)=>{  
         try{
@@ -62,15 +75,7 @@ const get_all = async(req,res,next)=>{
     res.send(productList);
 }
 
-const get_product_id = async(req,res,next)=>{
-    const product = await Product.findById(req.params.id).populate('category');
-    if(!product){
-        res.status(500).json({
-            success: false
-        })
-    }
-    res.send(product);
-}
+
 
 const update_product = async (req,res,next)=>{
     try{

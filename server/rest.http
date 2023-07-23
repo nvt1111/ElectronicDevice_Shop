@@ -2,9 +2,9 @@ POST http://localhost:3000/api/v1/categories
 Content-Type: application/json
 
 {
-    "name": "Galaxy",
-    "icon": "gla",
-    "color": "#9999"
+    "name": "Accessories",
+    "icon": "null",
+    "color": "null"
 }
 ###
 DELETE http://localhost:3000/api/v1/categories/1sdcvxcvxcvx
@@ -109,18 +109,20 @@ Content-Type:  application/json
 
 ###
 
-POST http://localhost:3000/api/v1/orders
+POST http://localhost:3000/api/v1/orders/create-order
 Content-Type:  application/json
 
 {
     "orderItems" : [
         {
+            "product" : "64b269eef8a33bbd743377c2",
             "quantity": 100,
-            "product" : "64b269eef8a33bbd743377c2"
+            "price": 25
         },
         {
+            "product" : "64b269f7f8a33bbd743377c5",
             "quantity": 100,
-            "product" : "64b269f7f8a33bbd743377c5"
+            "price": 25
         }
     ],
     "shippingAddress1" : "NV Troi , 45",

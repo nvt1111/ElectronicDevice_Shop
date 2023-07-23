@@ -1,12 +1,13 @@
 const mongoose = require('mongoose'); // Erase if already required
-
+const OrderItem = require('./order-item');
 // Declare the Schema of the Mongo model
 var orderSchema = new mongoose.Schema({
-    orderItems:[{// mang cac item
-        type:mongoose.Schema.Types.ObjectId,
-        required:true,
-        ref:'OrderItem',
-    }],
+    // orderItems:[{// mang don giản chưa 3 objectID thôi
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     required:true,
+    //     ref:'OrderItem',
+    // }],
+    orderItems: [OrderItem.schema],
     shippingAddress1: {
         type: String,
         required: true,
@@ -42,6 +43,23 @@ var orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    orderItemsHistory: [
+        {
+          product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+          },
+          price: {
+            type: Number,
+            required: true,
+          },
+        },
+      ],
     dateOrdered: {
         type: Date,
         default: Date.now,

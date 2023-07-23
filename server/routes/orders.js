@@ -4,7 +4,7 @@ const orderController = require('../controllers/orderController');
 const {verifyAccessToken} = require('../helpers/jwt')
 
 
-router.post('/', orderController.create_order);
+router.post('/create-order', orderController.create_order);
 router.get('/', orderController.get_order_detail);
 router.get('/:id', orderController.get_order_id);
 router.put('/:id', orderController.update_order);

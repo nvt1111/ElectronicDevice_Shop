@@ -30,7 +30,6 @@ const storage = multer.diskStorage({
   })
   
 const uploadOptions = multer({ storage: storage })
-
 // PUT image
 router.put('/gallery-images/:id', uploadOptions.array('images', 10), async (req, res, next)=>{
     if(!mongoose.isValidObjectId(req.params.id)) {
@@ -57,10 +56,15 @@ router.put('/gallery-images/:id', uploadOptions.array('images', 10), async (req,
     res.send(product);
 })
 
-router.get('/', productController.get_product_category);
 router.post('/',uploadOptions.single('image') ,productController.create_product);
-router.get('/', productController.get_all);
 router.get('/:id',productController.get_product_id);
+
+
+///////
+router.get('/', productController.get_product_category);
+
+router.get('/', productController.get_all);
+
 router.put('/:id', productController.update_product);
 router.delete('/:id', productController.delete_product);
 router.get('/get/count', productController.get_count);

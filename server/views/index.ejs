@@ -75,8 +75,10 @@
 								<form>
 									<select class="input-select">
 										<option value="0">All Categories</option>
-										<option value="1">Category 01</option>
-										<option value="1">Category 02</option>
+										<% categories.forEach( category => {%>
+											<!-- MỖI OPTIONS MỘT ID -->
+											<option value="<%=category._id%>"><%=category.name%></option>
+										<%})%>
 									</select>
 									<input class="input" placeholder="Search here">
 									<button class="search-btn">Search</button>
@@ -280,6 +282,9 @@
 										<% if(products.length >0){%>
 											<% products.forEach( (pro) =>{%>
 												<div class="product">
+													<% if (isLoggedIn) { %>
+														<a href="/api/v1/products/<%= pro._id %>?user_id=<%= user._id %>">  
+														
 													<div class="product-img">
 														<img src="<%= pro.image %>" alt="">
 														<div class="product-label">
@@ -290,7 +295,7 @@
 													<div class="product-body">
 														<p class="product-category"><%= pro.category.name %></p>
 														<h3 class="product-name"><a href="#"><%= pro.name %></a></h3>
-														<h4 class="product-price"><%= pro.price %> <del class="product-old-price">$990.00</del></h4>
+														<h4 class="product-price">$<%= pro.price %> <del class="product-old-price">$990.00</del></h4>
 														<div class="product-rating">
 															<% for (let i = 0; i < pro.rating; i++) { %>
 																<i class="fa fa-star"></i>
@@ -301,7 +306,34 @@
 															<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
 															<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 														</div>
-													</div>									
+													</div>	
+												</a>
+												<%} else{%>	
+													<!--SAO CHEP TẠM THOI XỬ LÍ ĐÃ LOGIN VÀ CHƯA LOGIN  -->
+													<div class="product-img">
+														<img src="<%= pro.image %>" alt="">
+														<div class="product-label">
+															<span class="sale">-30%</span>
+															<span class="new">NEW</span>
+														</div>
+													</div>
+													<div class="product-body">
+														<p class="product-category"><%= pro.category.name %></p>
+														<h3 class="product-name"><a href="#"><%= pro.name %></a></h3>
+														<h4 class="product-price">$<%= pro.price %> <del class="product-old-price">$990.00</del></h4>
+														<div class="product-rating">
+															<% for (let i = 0; i < pro.rating; i++) { %>
+																<i class="fa fa-star"></i>
+															<% } %>
+														</div>
+														<div class="product-btns">
+															<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+															<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+															<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+														</div>
+													</div>
+													<!--SAO CHEP TẠM THOI XỬ LÍ ĐÃ LOGIN VÀ CHƯA LOGIN  -->
+													<%}%>
 													<div class="add-to-cart">
 														<% if (isLoggedIn) { %>
 															<!-- ĐẢM BẢO Một FORM MỘt ID -->
@@ -319,6 +351,7 @@
 												
 											<%})%>
 										<%}%>
+									
 									</div>
 									<div id="slick-nav-1" class="products-slick-nav"></div>
 								</div>
@@ -337,7 +370,7 @@
 		<script>
 			function addToCart(id) {
 				// Gửi form ẩn tới API "/add-to-cart"
-				const form = document.getElementById(`addToCartForm-${id}`);
+				const form = document.getElementById(`addToCartForm-${id}`);// của tưng form nhé
 				form.submit();
 			}
 		</script>

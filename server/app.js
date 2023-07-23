@@ -6,10 +6,12 @@ const cors = require('cors');
 const DBconnect = require("./connections/DBconnect")
 const initRoutes = require('./routes/index')
 const session = require('express-session');
+const bodyParser = require('body-parser');
 
 app.use(cors());
 app.use('*', cors()); // cho phep tat ca http
 // middleware
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());//bodyparser
 app.use(morgan('dev'));
 // Middleware để xử lý dữ liệu từ form
@@ -34,10 +36,11 @@ const Category = require('./models/category');
 const Product = require('./models/product');
 // Truy vấn và truyền categories vào res.locals để sử dụng trên toàn bộ ứng dụng
 // middlewares sử dụng cho mọi ware
+const category = require('./models/category')
 app.use(async (req, res, next) => {
   try {
     const categories = await Category.find();
-    const products = await Product.find();
+    const products = await Product.find().populate('category');
     res.locals.categories = categories;
     res.locals.products = products;
     next();// chuyển sang mdlleware khác
@@ -50,6 +53,7 @@ app.use(async (req, res, next) => {
 app.get('/', (req, res) => {
   const isLoggedIn = req.session.isLoggedIn || false;
   const user = req.session.user || null;
+  console.log(user)
   res.render('index', { isLoggedIn: isLoggedIn, user: user });
 });
 
