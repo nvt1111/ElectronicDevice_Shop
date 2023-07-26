@@ -3,6 +3,9 @@ const Category = require('../models/category');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
+const search_page = (req,res,next)=>{
+    res.render('search')
+}
 const get_product_id = async(req,res,next)=>{
     const product = await Product.findById(req.params.id).populate('category');
     const user_id= req.query.user_id;
@@ -15,20 +18,26 @@ const get_product_id = async(req,res,next)=>{
     res.render('product_detail', {product:product ,user: user });
 }
 
+// lọc sản phẩm theo category
 const get_product_category = async(req,res,next)=>{  
         try{
-            let filter = {};
+            let filter = {};// lấy query trên request
         if(req.query.categories)
         {
              filter = {category: req.query.categories.split(',')}
         }
-        console.log('hahahahahah', filter)
-        const productList = await Product.find(filter);
-    
-        if(!productList) {
+        console.log('Dạng của Fillterrrrrr: ', filter)
+        const products = await Product.find({category: filter.category});
+        const category = await Category.findById({_id: filter.category});
+        if(!products) {
             res.status(500).json({success: false})
         } 
-        res.send(productList);
+        // các giá trị này nó tồn tại trên sesion lên có thể lấy ở bất kì đâu
+        const isLoggedIn = req.session.isLoggedIn || false;
+        const user = req.session.user || null;
+        // send dữ liệu cho trnag đó hiển thị thoi
+        // send nhiều cái cho trong Object {}
+        res.render('category',{products, category,isLoggedIn: isLoggedIn, user: user});// phương thức get chỉ cần gửi DL ko cần redirect trnag khác
         }catch(error){
             next(error)
         }    
@@ -74,8 +83,6 @@ const get_all = async(req,res,next)=>{
     }
     res.send(productList);
 }
-
-
 
 const update_product = async (req,res,next)=>{
     try{
@@ -178,9 +185,28 @@ const get_product_feature_count = async(req, res, next)=>{
         next(error)
     }
 }
+const search_product_key = async(req,res,next)=>{
+    try{
+        const key = req.body.keyword;
+        console.log('llllllsafjsdkfjskgjk',key)
+        const filteredProducts = await Product.find({
+            name: { $regex: key, $options: 'i' }
+        });
+        console.log('llllllsafjsdkfjskgjk',filteredProducts)
+        const isLoggedIn = req.session.isLoggedIn;
+        const user = req.session.user
+        // res.render('s');
+        res.render('search', {products: filteredProducts, isLoggedIn, user, key});// bên phần data chỉ cần {}
+    }catch(error){
+        next(error)
+    }
+
+}
+
 
 module.exports = {
     get_product_category,
+    search_page,
     create_product,
     get_all,
     get_product_id,
@@ -188,7 +214,8 @@ module.exports = {
     delete_product,
     get_count,
     get_product_feature,
-    get_product_feature_count
+    get_product_feature_count,
+    search_product_key
 }
 
 // router.get('/', async (req, res, next) => {

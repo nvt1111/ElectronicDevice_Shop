@@ -77,8 +77,10 @@ const login_user  = async(req,res,next)=>{
         // res.status(200).send({user: user.email, accessToken: accessToken});
         // Đặt isLoggedIn thành true
         req.session.isLoggedIn = true;
-        req.session.user = { name: user.name }; // Thay thế bằng thông tin người dùng thực tế
-        res.render('index', { isLoggedIn: req.session.isLoggedIn, user: user })
+        req.session.user = { name: user.name, _id: user.id }; // Thay thế bằng thông tin người dùng thực tế
+        // req.session.user = { name: user.name }; 
+        // res.send({ isLoggedIn: req.session.isLoggedIn, user: user })
+        res.redirect('/')
     }else{
         res.status(400).send('password is wrong')
     }

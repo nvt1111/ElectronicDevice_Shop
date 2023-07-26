@@ -81,7 +81,7 @@ const create_order = async (req, res, next) => {
       }
       
       // Xoá các OrderItem đã mua
-    //   await OrderItem.deleteMany({ _id: { $in: OrderItems } });
+      await OrderItem.deleteMany({ _id: { $in: orderItemIDs } });
   
       // Lưu Order mới và thông tin đơn hàng cũ vào CSDL
       const savedOrder = await newOrder.save();

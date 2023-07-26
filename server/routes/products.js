@@ -58,13 +58,13 @@ router.put('/gallery-images/:id', uploadOptions.array('images', 10), async (req,
 
 router.post('/',uploadOptions.single('image') ,productController.create_product);
 router.get('/:id',productController.get_product_id);
+router.get('/', productController.get_product_category);// filter theo category
+router.post('/search-key',productController.search_product_key);
+router.get('/search-page',productController.search_page);
 
 
 ///////
-router.get('/', productController.get_product_category);
-
 router.get('/', productController.get_all);
-
 router.put('/:id', productController.update_product);
 router.delete('/:id', productController.delete_product);
 router.get('/get/count', productController.get_count);

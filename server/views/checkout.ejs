@@ -59,7 +59,13 @@
 				</ul>
 				<ul class="header-links pull-right">
 					<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-					<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+					<% if (isLoggedIn) { %>
+						<li><a href="#"><i class="fa fa-user-o"></i>Xin chào :<%=user.name%></a></li>
+					  <%}%>
+					  <li><a href="/api/v1/users/login"><i class="fa fa-sign-in"></i> Login</a></li>
+					  <% if (isLoggedIn) { %>
+						<li><a href="/api/v1/users/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+					  <%}%>
 				</ul>
 			</div>
 		</div>
@@ -87,32 +93,57 @@
 							<form>
 								<select class="input-select">
 									<option value="0">All Categories</option>
-									<option value="1">Category 01</option>
-									<option value="1">Category 02</option>
+									<% categories.forEach( category => {%>
+										<!-- MỖI OPTIONS MỘT ID -->
+										<option value="<%=category._id%>"><%=category.name%></option>
+									<%})%>
 								</select>
-								<input class="input" placeholder="Search here">
-								<button class="search-btn">Search</button>
+								<input class="input" placeholder="Search here" id="searchInput">
+								<button class="search-btn" id="searchButton">Search</button>
 							</form>
 						</div>
 					</div>
+					<form id="searchForm" method="post" action="/api/v1/products/search-key" style="display: none;">
+						<input type="hidden" name="keyword" id="searchInputHidden">
+					  </form>
+					<script>
+						const searchInput = document.getElementById('searchInput');
+						const searchButton = document.getElementById('searchButton');
+						const searchForm = document.getElementById('searchForm');
+						const searchInputHidden = document.getElementById('searchInputHidden');
+
+						searchButton.addEventListener('click', () => {
+							event.preventDefault();// ngăn chặn hành vi mặc định không ảnh hưởng bỏi form trên
+							const keyword = searchInput.value;
+							searchInputHidden.value = keyword;
+							searchForm.submit(); // Gửi yêu cầu tìm kiếm bằng form ẩn
+						});
+						</script>
+
 					<!-- /SEARCH BAR -->
 
 					<!-- ACCOUNT -->
 					<div class="col-md-3 clearfix">
 						<div class="header-ctn">
 							<!-- Wishlist -->
-							<div>
+							<!-- <div>
 								<a href="#">
 									<i class="fa fa-heart-o"></i>
 									<span>Your Wishlist</span>
 									<div class="qty">2</div>
+								</a>
+							</div> -->
+							<div>
+								<a href="#">
+									<i class="fa fa-user"></i>
+									<span>Profile</span>
 								</a>
 							</div>
 							<!-- /Wishlist -->
 
 							<!-- Cart -->
 							<div class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+								<!-- <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 									<i class="fa fa-shopping-cart"></i>
 									<span>Your Cart</span>
 									<div class="qty">3</div>
@@ -147,9 +178,9 @@
 									</div>
 									<div class="cart-btns">
 										<a href="#">View Cart</a>
-										<a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+										<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
 									</div>
-								</div>
+								</div> -->
 							</div>
 							<!-- /Cart -->
 
@@ -181,14 +212,14 @@
 			<div id="responsive-nav">
 				<!-- NAV -->
 				<ul class="main-nav nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#">Hot Deals</a></li>
-					<li><a href="#">Categories</a></li>
-					<li><a href="#">Laptops</a></li>
-					<li><a href="#">Smartphones</a></li>
-					<li><a href="#">Cameras</a></li>
-					<li><a href="#">Accessories</a></li>
+					<li class="active"><a href="/">Home</a></li>
+					<% if( categories.length > 0){%>
+						<% categories.forEach ( c => {%>
+							<li><a href="/api/v1/products?categories=<%=c._id%>"><%=c.name %></a></li>
+						<%})%>
+					<%}%>	
 				</ul>
+				
 				<!-- /NAV -->
 			</div>
 			<!-- /responsive-nav -->

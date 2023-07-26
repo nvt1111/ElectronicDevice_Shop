@@ -34,7 +34,9 @@ const viewCartUserid = async (req, res, next)=>{
                 totalPrice += item.product.price * item.quantity;
             });
         }
-        res.render('cart',{orderItem: orderItem, user: user, totalPrice: totalPrice});
+        const isLoggedIn = req.session.isLoggedIn;
+        // const user = req.session.user
+        res.render('cart',{orderItem: orderItem, user: user, totalPrice: totalPrice, isLoggedIn, user});
     }catch(error){
         next(error);
     }
@@ -65,7 +67,9 @@ const getCheckout = (req, res, next) => {
     const  productNames  = req.body.productNames;
     const quantities = req.body.quantities;
     const prices = req.body.prices;
-    res.render('checkout', { totalPrice, userName, productNames, quantities, prices, user_id  });
+    const isLoggedIn = req.session.isLoggedIn;
+    const user = req.session.user
+    res.render('checkout', { totalPrice, userName, productNames, quantities, prices, user_id,isLoggedIn, user  });
     } catch (error) {
         next(error);
     }
