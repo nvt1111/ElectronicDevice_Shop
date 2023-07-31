@@ -20,6 +20,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 app.set('view engine', 'ejs')
 app.use(express.static('public/styles')) ;// ơ dau cung truy cạp dc
+// app.set('view engine', 'pug');
+
+
 
 app.use(session({
   secret: 'your-secret-key', // Khóa bí mật để mã hóa session (có thể thay đổi)
@@ -53,7 +56,7 @@ app.use(async (req, res, next) => {
 app.get('/', (req, res) => {
   const isLoggedIn = req.session.isLoggedIn || false;
   const user = req.session.user || null;
-  console.log(user)
+  console.log('kkkkkkkkkkkkkkkkk'.user)
   res.render('index', { isLoggedIn: isLoggedIn, user: user });
 });
 

@@ -74,7 +74,7 @@ const create_order = async (req, res, next) => {
       for (const itemId of orderItemIDs) {
         const orderItem = await OrderItem.findById(itemId).populate('product');
         newOrder.orderItemsHistory.push({
-          product: mongoose.Types.ObjectId(orderItem.product),
+          product: orderItem.product,
           quantity: orderItem.quantity,
           price: orderItem.price,
         });
@@ -82,11 +82,14 @@ const create_order = async (req, res, next) => {
       
       // Xoá các OrderItem đã mua
       await OrderItem.deleteMany({ _id: { $in: orderItemIDs } });
-  
       // Lưu Order mới và thông tin đơn hàng cũ vào CSDL
-      const savedOrder = await newOrder.save();
-  
-      res.render('payment')
+      const SavedOrder = await newOrder.save();
+    // populate() không được áp dụng trực tiếp cho phương thức save() trong Mongoose.
+    // Populate 'orderItemsHistory.product' trên SavedOrder
+      await SavedOrder.populate('orderItemsHistory.product');
+      const isLoggedIn = req.session.isLoggedIn;
+      const user = req.session.user ;
+      res.render('payment', {isLoggedIn, user , SavedOrder })
     } catch (error) {
       next(error);
     }
@@ -194,6 +197,12 @@ const get_user_order = async (req, res) =>{
     res.send(userOrderList);
 }
 
+
+const get_pages_payment = (req,res,next)=>{
+    const isLoggedIn = req.session.isLoggedIn;
+      const user = req.session.user ;
+      res.render('payment', {isLoggedIn, user  })
+}
 module.exports = {
     create_order,
     get_order_detail,
@@ -202,5 +211,6 @@ module.exports = {
     delete_order,
     get_totalSale,
     get_count,
-    get_user_order
+    get_user_order,
+    get_pages_payment
 }

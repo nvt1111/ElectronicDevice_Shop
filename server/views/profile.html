@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <!-- Add Bootstrap CSS link -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+VTPtzaWKnBEdn0Zb3XB9Zs3qtg8//z6RSaG0d1NcCwHd2U" crossorigin="anonymous">
+  <!-- Add your custom CSS link (optional) -->
+  <link href="styles.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- The content will be loaded dynamically using JavaScript (React in the original code) -->
+  <div id="app"></div>
+
+  <!-- Add Bootstrap JS scripts (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-xuFz+K6LgZvK4EB0soUXzLq3cck2w1+cy0zL+4zP3Wv0K1wo8A6KEy0G3J28F7N4" crossorigin="anonymous"></script>
+
+
+    <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-5 col-xs-12">
+            <h2>User Profile</h2>
+            <div class="card">
+              <div class="card-body">
+                <form id="profileForm">
+                  <div class="form-group">
+                    <label for="name">Username</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter name">
+                    <p class="invalid-feedback"></p>
+                  </div>
+      
+                  <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter email">
+                    <p class="invalid-feedback"></p>
+                  </div>
+      
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="********">
+                    <p class="invalid-feedback"></p>
+                  </div>
+      
+                  <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="********">
+                    <p class="invalid-feedback"></p>
+                  </div>
+      
+                  <button style="background-color: #e03a3c; color: #fff;" type="submit" class="btn btn-outline-none mt-3 w-full">
+                    Update
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-md-7 col-lg-8">
+            <!-- Table content will be populated dynamically using JavaScript (React in the original code) -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Order id</th>
+                  <th>Price</th>
+                  <th>Address</th>
+                  <th>Paid</th>
+                  <th>Date</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    <!-- Add Bootstrap JS scripts (optional) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-xuFz+K6LgZvK4EB0soUXzLq3cck2w1+cy0zL+4zP3Wv0K1wo8A6KEy0G3J28F7N4" crossorigin="anonymous"></script>
+
+        <!-- Add the React icons -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-icons/4.2.0/react-icons.min.js"
+        integrity="sha512-x2ExjMcZ6wBFwwZqKZu3wVJCy2lQ0uRbJnqfj3wbUfR8JklmQIi0mnOxT2FxTl8PBCDOkR6y3nNz5QaktkkJg=="
+        crossorigin="anonymous"></script>
+
+        <!-- Add the custom JavaScript file -->
+        <script src="script.js"></script>
+</body>
+<!-- Add the following HTML content inside the "app" div -->
+
+</html>
