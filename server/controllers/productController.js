@@ -188,11 +188,9 @@ const get_product_feature_count = async(req, res, next)=>{
 const search_product_key = async(req,res,next)=>{
     try{
         const key = req.body.keyword;
-        console.log('llllllsafjsdkfjskgjk',key)
         const filteredProducts = await Product.find({
             name: { $regex: key, $options: 'i' }
         });
-        console.log('llllllsafjsdkfjskgjk',filteredProducts)
         const isLoggedIn = req.session.isLoggedIn;
         const user = req.session.user
         // res.render('s');

@@ -65,13 +65,14 @@ const create_user = async(req,res,next)=>{
     }
 }
 
+
+
 const login_user  = async(req,res,next)=>{
     const user = await User.findOne({email: req.body.email});
     if(!user){
         return res.status(400).send('The user not found')
     }
     const isLoggedIn = false;
-    console.log('kkkkkkk', user);
     if(user && bcrypt.compareSync(req.body.password, user.passwordHash)){
         // const accessToken = await signAccessToken(user._id);
         // res.status(200).send({user: user.email, accessToken: accessToken});

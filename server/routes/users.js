@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const {signAccessToken, verifyAccessToken} = require('../helpers/jwt');
+const {check_Admin} = require('../helpers/loginAuth')
 // {} nhaajp mot phan cu the tu module
 
 ////// API new
 router.get('/login', userController.get_login_user);
 router.get('/register', userController.get_register_user);
 router.post('/register', userController.create_user);
-router.post('/login',userController.login_user);
+router.post('/login',check_Admin, userController.login_user);
 router.get('/logout',userController.logout_user);
 
 //////

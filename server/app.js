@@ -37,6 +37,8 @@ app.listen(3000, ()=>{
 
 const Category = require('./models/category');
 const Product = require('./models/product');
+const Order = require('./models/order');
+const User = require('./models/user');
 // Truy vấn và truyền categories vào res.locals để sử dụng trên toàn bộ ứng dụng
 // middlewares sử dụng cho mọi ware
 const category = require('./models/category')
@@ -44,8 +46,12 @@ app.use(async (req, res, next) => {
   try {
     const categories = await Category.find();
     const products = await Product.find().populate('category');
+    const orders = await Order.find();
+    const users = await User.find();
     res.locals.categories = categories;
     res.locals.products = products;
+    res.locals.orders = orders;
+    res.locals.users = users;
     next();// chuyển sang mdlleware khác
   } catch (error) {
     console.error('Error retrieving categories from MongoDB:', error);
@@ -56,7 +62,6 @@ app.use(async (req, res, next) => {
 app.get('/', (req, res) => {
   const isLoggedIn = req.session.isLoggedIn || false;
   const user = req.session.user || null;
-  console.log('kkkkkkkkkkkkkkkkk'.user)
   res.render('index', { isLoggedIn: isLoggedIn, user: user });
 });
 

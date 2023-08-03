@@ -18,11 +18,11 @@ var userSchema = new mongoose.Schema({
     phone:{
         type:String,
         required:true,
+    },
+    isAdmin:{
+        type:Boolean,
+        default:false,
     }
-    // isAdmin:{
-    //     type:Boolean,
-    //     default:false,
-    // },
     // street:{
     //     type:String,
     //     default:'',

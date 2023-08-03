@@ -1,0 +1,121 @@
+<%- include('./layouts/header') %>
+  <style>
+    #product-image-td img { 
+            max-width: 70px; /* Điều chỉnh kích thước tối đa theo chiều rộng */
+            max-height: 100px; /* Điều chỉnh kích thước tối đa theo chiều cao */
+            /* Thêm các thuộc tính khác nếu cần (ví dụ: padding, margin, ... ) */
+        }
+  </style>
+  <header id="main-header" class="py-2 bg-primary text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h1>
+            <i class="fas fa-pencil-alt"></i> Products
+          </h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Area -->
+  <section id="search" class="py-4 mb-4 bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 ml-auto">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search Product...">
+            <div class="input-group-append">
+              <button class="btn btn-primary">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Posts -->
+  <section id="post">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-header">
+              <h4>Products</h4>
+              <table class="table table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Brand</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Rating</th>
+                    <th>Reviews</th>
+                    <th>Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% let i=1 ;%>
+                  <%if(products.length > 0){%>
+                    <%products.sort((a,b)=> new Date(b.dateCreated)-new Date(a.dateCreated)).slice(0,5).forEach(pro =>{ %>
+                  <tr>
+                    <td><%=i%></td>
+                    <td><%=pro.name%></td>
+                    <td><%=pro.description%></td>
+                    <td id="product-image-td"><img src="<%= pro.image%>" alt=""></td>
+                    <!-- hiển thị ảnh dùng thẻ image -->
+                    <td><%=pro.brand%></td>
+                    <td><%=pro.price%></td>
+                    <td><%=pro.category.name%></td>
+                    <td><%=pro.countInStock%></td>
+                    <td><%=pro.rating%></td>
+                    <td><%=pro.numReviews%></td>
+                    <td>
+                      <a href="details.html" class="btn btn-secondary btn-sm">
+                        <!-- <i class="fas fa-angle-double-right"></i> -->
+                        Details
+                      </a>
+                      <a href="details.html" class="btn btn-secondary btn-sm">
+                        <!-- <i class="fas fa-angle-double-right"></i> -->
+                        Delete
+                      </a>
+                    </td>
+                  </tr>
+                  <% i++%>
+                  <%})%>
+                  <%}%>  
+                </tbody>
+              </table>
+
+              <!-- PAGINATION -->
+              <div class="ml-4">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a href="#" class="page-link">Prev</a>
+                  </li>
+                  <li class="page-item active">
+                    <a href="#" class="page-link">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a href="#" class="page-link">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a href="#" class="page-link">3</a>
+                  </li>
+                  <li class="page-item">
+                    <a href="#" class="page-link">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <%- include('./layouts/footer') %>
+  
