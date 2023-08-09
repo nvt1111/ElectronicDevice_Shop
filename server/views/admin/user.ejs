@@ -11,10 +11,17 @@
     </div>
   </header>
 
+  
+
   <!-- Search Area -->
   <section id="search" class="py-4 mb-4 bg-light">
     <div class="container">
       <div class="row">
+        <div class="col-md-3">
+          <a href="" class="btn btn-warning btn-block" data-toggle="modal" data-target="#addUserModal">
+            <i class="fas fa-plus"></i> Add User
+          </a>
+        </div>
         <div class="col-md-6 ml-auto">
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Search Users...">
@@ -50,6 +57,7 @@
                   <% let i=1 ;%>
                   <%if(users.length > 0){%>
                     <%users.slice(0,8).forEach(u =>{ %>
+                      <% if (u.isAdmin === false){%>
                   <tr>
                     <td><%=i%></td>
                     <td><%=u.name%></td>
@@ -57,17 +65,18 @@
                     <td><%=u.phone%></td>
                     <td><%=u.isAdmin%></td>
                     <td>
-                      <a href="details.html" class="btn btn-secondary btn-sm">
+                      <a href="/admins/user/<%=u._id%>" class="btn btn-secondary btn-sm">
                         <!-- <i class="fas fa-angle-double-right"></i> -->
                         Edit
                       </a>
-                      <a href="details.html" class="btn btn-secondary btn-sm">
+                      <a href="" id="delete" class="btn btn-secondary btn-sm" data-doc="<%=u._id%>">
                         <!-- <i class="fas fa-angle-double-right"></i> -->
                         Delete
                       </a>
                     </td>
                   </tr>
                   <% i++%>
+                  <%}%>
                   <%})%>
                   <%}%>  
                 </tbody>
@@ -78,5 +87,79 @@
       </div>
     </div>
   </section>
+<!-- Add User Modal -->
+
+<div class="modal fade" id="addUserModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-white">
+        <h5 class="modal-title">Add User</h5>
+        <button class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/admins/addUser"  method="POST" id="add">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" name="phone">
+          </div>
+          <div class="form-group">
+            <label for="isAdmin">Is Admin</label>
+            <select class="form-control" id="isAdmin" name="isAdmin" >
+                <option value="true">True</option>
+                <option value="false" selected>False</option>
+            </select>
+        </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password">
+          </div>
+          <div class="form-group">
+            <label for="password2">Confirm Password</label>
+            <input type="password" class="form-control">
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-warning" data-dismiss="modal" onclick="document.getElementById('add').submit()">
+          <i class="fas fa-user"></i>
+          Register
+        </button>
+      </div>
+      </form>
+    </div>
+  
+  </div>
+</div>
+<script>
+  const deleteButtons = document.querySelectorAll('a#delete');
+
+  deleteButtons.forEach((but)=>{
+    but.addEventListener('click', (e)=>{
+      endpoint = `/admins/delUser/${but.dataset.doc}`
+      fetch(endpoint, {
+        method: 'DELETE'
+      })
+      .then(response =>{
+        response.json()
+      })
+      .then(data =>{
+        window.location.href  = data.redirect
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    })
+  })
+</script>
 
   <%- include('./layouts/footer') %>

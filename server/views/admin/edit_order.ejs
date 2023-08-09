@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-6">
           <h1>
-            Details
+            Edit
           </h1>
         </div>
       </div>
@@ -17,24 +17,15 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3">
-          <a href="index.html" class="btn btn-dark btn-block">
+          <a href="/admins/dashboard" class="btn btn-dark btn-block">
             <i class="fas fa-arrow-left"></i> Back To Dashboard
           </a>
         </div>
-        <div class="col-md-3">
-          <a href="index.html" class="btn btn-success btn-block">
-            <i class="fas fa-save"></i> Save Changes
-          </a>
-        </div>
-        <div class="col-md-3">
-          <a href="index.html" class="btn btn-danger btn-block">
-            <i class="fas fa-trash"></i> Delete Post
-          </a>
-        </div>
+        
       </div>
     </div>
   </section>
-
+  
   <!-- Details -->
   <section id="posts">
     <div class="container">
@@ -42,36 +33,38 @@
         <div class="col">
           <div class="card">
             <div class="card-header">
-              <h4>Edit Post</h4>
+              <h4>Edit Order</h4>
             </div>
-            <div class="card-body">
-              <form>
-                <div class="form-group">
-                  <label for="title">Title</label>
-                  <input type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                  <label for="category">Category</label>
-                  <select class="form-control">
-                    <option value="" selected>Web Development</option>
-                    <option value="">Tech Gadgets</option>
-                    <option value="">Business</option>
-                    <option value="">Health & Wellness</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="image">Upload Image</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="image">
-                    <label for="image" class="custom-file-label">Choose File</label>
-                    <small class="form-text text-muted">Max Size 3mb</small>
+            <div class="card-body"> 
+              <form action="/admins/updateOrder/<%=order._id%>?_method=PUT" id="update" method="POST" >
+                  <div class="form-group">
+                    <label for="name">Price</label>
+                    <input type="text" class="form-control" name="totalPrice"  value="<%=order.totalPrice%>">
                   </div>
+                  <div class="form-group">
+                    <label for="email">Addres</label>
+                    <input type="text" class="form-control" name="shippingAddress1" value="<%=order.shippingAddress1%>">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="isAdmin">Status</label>
+                    <select class="form-control" id="isAdmin" name="status" >
+                        <option value="pending">pending</option>
+                        <option value="đã thanh toán" selected>đã thanh toán</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                  <label for="body">Body</label>
-                  <textarea name="editor1"
-                    class="form-control">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores illo eum quis asperiores harum nam debitis. Recusandae qui eligendi repellat doloremque reiciendis quis accusamus rem sit fugit dolorem ea libero repudiandae consequatur beatae, labore aut eos, nisi voluptates alias magnam. Recusandae voluptatum quos nemo facere rerum error quaerat sed ex.</textarea>
-                </div>
+                <!-- <div class="form-group">
+                    <label for="phone">Date</label>
+                    <input type="text" class="form-control"  value="<%=order.dateOrdered.getDate() + '-'+ (order.dateOrdered.getMonth()+1) + '-' + order.dateOrdered.getFullYear()%>">
+                  </div> -->
+                  
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-warning" data-dismiss="modal" onclick="document.getElementById('update').submit()">
+                  <i class="fas fa-user"></i>
+                  Update
+                </button>
+              </div>
               </form>
             </div>
           </div>

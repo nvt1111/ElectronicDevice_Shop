@@ -300,7 +300,7 @@
 											<% products.forEach( (pro) =>{%>
 												<div class="product">
 													<% if (isLoggedIn) { %>
-														<a href="/api/v1/products/<%= pro._id %>?user_id=<%= user._id %>">  
+														<a href="/api/v1/products/<%= pro._id %>?user_id=<%= user.id %>">  
 														
 													<div class="product-img">
 														<img src="<%= pro.image %>" alt="">
@@ -355,7 +355,7 @@
 														<% if (isLoggedIn) { %>
 															<!-- ĐẢM BẢO Một FORM MỘt ID -->
 															<form id="addToCartForm-<%= pro._id %>" action="/api/v1/orderItems/add-to-cart" method="POST" style="display: none;">
-																<input type="hidden" name="user_id" value="<%= user._id %>">
+																<input type="hidden" name="user_id" value="<%= user.id %>">
 																<input type="hidden" name="product_id" value="<%= pro._id %>"> <!-- Truyền product_id của sản phẩm -->
 																<input type="number" name="quantity" value="1" min="1" required> <!-- Chọn số lượng -->
 																<input type="number" name="price" value="<%= pro.price %>" readonly> <!-- Giá của sản phẩm (readonly) -->

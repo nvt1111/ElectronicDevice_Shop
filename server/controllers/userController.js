@@ -68,7 +68,8 @@ const create_user = async(req,res,next)=>{
 
 
 const login_user  = async(req,res,next)=>{
-    const user = await User.findOne({email: req.body.email});
+    // const user = await User.findOne({email: req.body.email});
+    const user = req.user
     if(!user){
         return res.status(400).send('The user not found')
     }
@@ -78,9 +79,10 @@ const login_user  = async(req,res,next)=>{
         // res.status(200).send({user: user.email, accessToken: accessToken});
         // Đặt isLoggedIn thành true
         req.session.isLoggedIn = true;
-        req.session.user = { name: user.name, _id: user.id }; // Thay thế bằng thông tin người dùng thực tế
+        req.session.user = { name: user.name, id: user._id }; // Thay thế bằng thông tin người dùng thực tế
         // req.session.user = { name: user.name }; 
         // res.send({ isLoggedIn: req.session.isLoggedIn, user: user })
+        console.log(req.session.user.id)
         res.redirect('/')
     }else{
         res.status(400).send('password is wrong')

@@ -1,0 +1,150 @@
+<%- include('./layouts/header') %>
+
+  <header id="main-header" class="py-2 bg-dark text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h1>
+            Edit
+          </h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Actions And Buttons -->
+  <section id="actions" class="py-4 mb-4 bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <a href="/admins/dashboard" class="btn btn-dark btn-block">
+            <i class="fas fa-arrow-left"></i> Back To Dashboard
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="" onclick="Savechange()" class="btn btn-success btn-block">
+            <i class="fas fa-save"></i> Save Changes
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="index.html" class="btn btn-danger btn-block">
+            <i class="fas fa-trash"></i> Delete Post
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    function Savechange() {
+      event.preventDefault(); // Chặn hoạt động mặc định của thẻ <a>
+  
+      const updateForm = document.getElementById('update');
+      updateForm.submit(); // Submit form
+    }
+  </script>
+  <!-- Details -->
+  <section id="posts">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-header">
+              <h4>Edit Product</h4>
+            </div>
+            <div class="card-body"> 
+              <form action="/admins/updatePro/<%=pro._id%>?_method=PUT" id="update" method="POST" >
+              <div class="form-group">
+                <label for="title">Name</label>
+                <input type="text" class="form-control" name="name" value="<%=pro.name%>">
+              </div>
+              <div class="form-group">
+                <label for="title">Description</label>
+                <input type="text" class="form-control" name="description" value="<%=pro.description%>">
+              </div>
+              <div>
+                <label for="avatar">Choose a profile picture:</label>
+              <input type="file" id="avatar" name="image" accept="image/png, image/jpeg, image/jpg" value="<%=pro.image%>" />
+              </div>
+  
+              <div class="form-group">
+                <label for="title">Brand</label>
+                <input type="text" class="form-control" name="brand" value="<%=pro.brand%>">
+              </div>
+              <div class="form-group">
+                <label for="title">Price</label>
+                <input type="text" class="form-control" name="price" value="<%=pro.price%>">
+              </div>
+              <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" name="category">
+                  <%categories.forEach(cate =>{%>
+                  <option value="<%=cate._id%>"><%=cate.name%></option>
+                  <%})%>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="title">Stock</label>
+                <input type="text" class="form-control" name="countInStock" value="<%=pro.countInStock%>">
+              </div>
+              <div class="form-group">
+                <label for="title">Rating</label>
+                <input type="text" class="form-control" name="rating" value="<%=pro.rating%>">
+              </div>
+              <div class="form-group">
+                <label for="title">Number review</label>
+                <input type="text" class="form-control" name="numReviews" value="<%=pro.numReviews%>">
+              </div>
+              <div class="form-group">
+                <label for="body">Body</label>
+                <textarea name="editor1" class="form-control"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" onclick="document.getElementById('update').submit()">
+                  <i class="fas fa-save"></i>
+                  Update
+                </button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+
+  <footer id="main-footer" class="bg-dark text-white mt-5 p-5">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p class="lead text-center">
+            Copyright &copy; <span id="year"></span>
+            JLABS Dashboard
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="http://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+
+  <script>
+    // Get the current year for the copyright
+    $("#year").text(new Date().getFullYear());
+
+    // CKEditor
+    CKEDITOR.replace('editor1');
+  </script>
+</body>
+
+</html>

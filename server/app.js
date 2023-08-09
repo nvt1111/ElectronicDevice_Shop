@@ -7,6 +7,7 @@ const DBconnect = require("./connections/DBconnect")
 const initRoutes = require('./routes/index')
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override')
 
 app.use(cors());
 app.use('*', cors()); // cho phep tat ca http
@@ -21,7 +22,7 @@ app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 app.set('view engine', 'ejs')
 app.use(express.static('public/styles')) ;// ơ dau cung truy cạp dc
 // app.set('view engine', 'pug');
-
+app.use(methodOverride('_method'));// để sử dụng pthuc PUT
 
 
 app.use(session({

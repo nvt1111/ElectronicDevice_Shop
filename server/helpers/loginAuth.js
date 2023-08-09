@@ -1,10 +1,23 @@
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
+const session = require('express-session')
 
-const check_Admin = async (req,res,next)=>{
-    const user = await User.findOne({email: req.body.email});
-    console.log('lllllllllllllllllllll', user.isAdmin)
-    if(user && user.isAdmin){ res.redirect('/admins/dashboard')}
-    else {next()}
+const check_Admin =  (req,res,next)=>{
+    User.findOne({email: req.body.email})
+    .then(user =>{
+        if(user && user.isAdmin && bcrypt.compareSync(req.body.password,user.passwordHash)){
+            req.session.isLoggedIn = true;
+            req.session.user = { name: user.name, id: user._id };
+            res.redirect('/admins/dashboard')  
+        }
+        else {
+            req.user = user;
+            next()
+        }
+    }).catch(error=>{
+        next(error)
+    })
+    
 }
 
 module.exports = {

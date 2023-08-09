@@ -55,25 +55,27 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <% let i=1 %>
                   <% if(orders.length > 0){ %>
                     <% orders.sort((a, b) => new Date(b.dateOrdered) - new Date(a.dateOrdered)).slice(0, 8).forEach( (o,index) =>{%>
                       <tr>
-                        <td><%=o._id%></td>
+                        <td><%=i%></td>
                         <td><%=o.totalPrice%></td>
                         <td><%=o.shippingAddress1%></td>
                         <td><%=o.status%></td>
                         <td><%= o.dateOrdered.getDate() + '-' + (o.dateOrdered.getMonth() +1) + '-' + o.dateOrdered.getFullYear() %></td>
                         <td>
-                          <a href="details.html" class="btn btn-secondary btn-sm">
+                          <a href="/admins/order/<%=o._id%>" class="btn btn-secondary btn-sm">
                             <!-- <i class="fas fa-angle-double-right"></i> -->
-                            Details
+                            Edit
                           </a>
-                          <a href="details.html" class="btn btn-secondary btn-sm">
-                            <!-- <i class="fas fa-angle-double-right"></i> -->
+                          <a href="" id="delete" class="btn btn-secondary btn-sm" data-doc="<%=o._id%>">
+                            <!-- truyền vào data-doc -->
                             Delete
                           </a>
                         </td>
                       </tr>
+                      <%i++%>
                       <%})%>
                   <%}%>
                   
@@ -116,6 +118,23 @@
     </div>
   </section>
 
+  <script>
+    const deleteButtons = document.querySelectorAll('a#delete');
+
+    deleteButtons.forEach(button =>{
+      button.addEventListener('click', (e)=>{
+        const endpoint = `/admins/delOrder/${button.dataset.doc}`;
+        fetch(endpoint, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then((data)=>{
+          window.location.href = data.redirect;
+        })
+        .catch(err => console.log(err));
+      })
+    })
+  </script>
   <!-- Footer -->
 
   <footer id="main-footer" class="bg-dark text-white mt-5 p-5">

@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-6">
           <h1>
-            <i class="fas fa-cog"></i> Settings
+            Edit
           </h1>
         </div>
       </div>
@@ -16,57 +16,54 @@
   <section id="actions" class="py-4 mb-4 bg-light">
     <div class="container">
       <div class="row">
-        <div class="col-md-6">
-          <a href="index.html" class="btn btn-dark btn-block">
+        <div class="col-md-3">
+          <a href="/admins/dashboard" class="btn btn-dark btn-block">
             <i class="fas fa-arrow-left"></i> Back To Dashboard
           </a>
         </div>
-        <div class="col-md-6">
-          <a href="index.html" class="btn btn-success btn-block">
-            <i class="fas fa-save"></i> Save Changes
-          </a>
-        </div>
+        
       </div>
     </div>
   </section>
-
-  <!-- Settings -->
-  <section id="settings">
+  
+  <!-- Details -->
+  <section id="posts">
     <div class="container">
       <div class="row">
         <div class="col">
           <div class="card">
             <div class="card-header">
-              <h4>Edit Settings</h4>
+              <h4>Edit User</h4>
             </div>
-            <div class="card-body">
-              <form>
-                <fieldset class="form-group">
-                  <legend>Allow User Registrations</legend>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input type="radio" name="first" class="form-check-input" value="Yes" checked>Yes
-                    </label>
+            <div class="card-body"> 
+              <form action="/admins/updateUser/<%=user._id%>?_method=PUT" id="update" method="POST" >
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" value="<%=user.name%>">
                   </div>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input type="radio" name="first" class="form-check-input" value="No">No
-                    </label>
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email" value="<%=user.email%>">
                   </div>
-                </fieldset>
-                <fieldset class="form-group">
-                  <legend>Homepage Format</legend>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input type="radio" name="second" class="form-check-input" value="posts" checked>Blog Page
-                    </label>
+                  <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" class="form-control" name="phone" value="<%=user.phone%>">
                   </div>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input type="radio" name="second" class="form-check-input" value="page">Home Page
-                    </label>
-                  </div>
-                </fieldset>
+                  <div class="form-group">
+                    <label for="isAdmin">Is Admin</label>
+                    <select class="form-control" id="isAdmin" name="isAdmin" >
+                        <option value="true">True</option>
+                        <option value="false" selected>False</option>
+                    </select>
+                </div>
+                  
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-warning" data-dismiss="modal" onclick="document.getElementById('update').submit()">
+                  <i class="fas fa-user"></i>
+                  Update
+                </button>
+              </div>
               </form>
             </div>
           </div>

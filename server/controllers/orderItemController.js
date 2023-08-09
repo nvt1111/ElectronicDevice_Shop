@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const addToCart = async (req, res, next)=>{
     try{
         const {user_id, product_id, quantity, price} = req.body;
+        console.log('jjjjjjjjjjjjjjjjjjjjjjjjjj',user_id)
         if (!mongoose.isValidObjectId(user_id)) {
             return res.status(400).json({ error: 'Invalid user ID' });
         }
