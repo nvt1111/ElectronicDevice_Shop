@@ -5,18 +5,33 @@ const mongoose = require('mongoose');
 const addToCart = async (req, res, next)=>{
     try{
         const {user_id, product_id, quantity, price} = req.body;
-        console.log('jjjjjjjjjjjjjjjjjjjjjjjjjj',user_id)
         if (!mongoose.isValidObjectId(user_id)) {
             return res.status(400).json({ error: 'Invalid user ID' });
         }
-        const orderItem = new OrderItem({
-            user: user_id,
-            product: product_id,
-            quantity: quantity,
-            price: price
-        });
-        const savedOrderItem = await orderItem.save();
+        const productOrderItem = await OrderItem.findOne({ user: user_id, product: product_id });
+        // productOrderItem chứa chính xác user và product trên 
+        // nếu trùng  thì tăng số lượng sp
+        // nếu không trùng  thì tạo mới
+        // productOrderItem.forEach( p=>{ Kàm forEach không hỗ trọ await
+        if(productOrderItem){
+            const quantities = Number(quantity) + productOrderItem.quantity;
+            await OrderItem.findByIdAndUpdate( // update thì khoogn cần .save()
+                productOrderItem._id,{
+                quantity: quantities,
+                price: price
+            },{ new: true } // Tùy chọn new để trả về đối tượng đã được cập nhật
+            );
+        }else{
+            let orderItem = new OrderItem({
+                user: user_id,
+                product: product_id,
+                quantity: quantity,
+                price: price
+            });
+            await orderItem.save();
+        }
         res.redirect(`/api/v1/orderItems/view-cart/${user_id}`)
+    
     }catch(error){
         next(error);
     }

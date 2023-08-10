@@ -1,9 +1,9 @@
 const User = require('../models/user');
+const Order = require('../models/order');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {signAccessToken, verifyAccessToken} = require('../helpers/jwt');
 const session = require('express-session');
-
 ////////////////////////// API
 
 const get_login_user = (req,res,next) =>{
@@ -65,8 +65,6 @@ const create_user = async(req,res,next)=>{
     }
 }
 
-
-
 const login_user  = async(req,res,next)=>{
     // const user = await User.findOne({email: req.body.email});
     const user = req.user
@@ -122,7 +120,62 @@ const logout_user = (req, res, next) => {
     // Xóa session và đánh dấu người dùng đã đăng xuất
     req.session.destroy();
     res.redirect('/'); // Chuyển hướng về trang chủ hoặc trang đăng nhập
-  }
+}
+
+const profile = async (req,res,next)=>{
+    try{
+    const userId = req.params.id;
+    const user =  await User.findById(userId);// không cần new
+    if(user){
+        const isLoggedIn = req.session.isLoggedIn;
+        const order = await Order.find({user: userId});
+        res.render('profile', {user,order,isLoggedIn})
+    }
+    else{
+        res.status(400).send('User khôn tồn tại ')
+    }
+    } catch (error) {
+        console.error('Error:', error);
+        next(error);
+} 
+}
+
+const changepassword = async (req,res,next)=>{
+    try{
+        const id = req.params.id;
+        const user = await User.findById(id);
+        if(user && bcrypt.compareSync(req.body.oldpassword, user.passwordHash)){
+            if(req.body.newpassword === req.body.confirmpassword){
+                await User.findByIdAndUpdate(
+                    id, {
+                        name: req.body.name,
+                        email: req.body.email,
+                        phone: req.body.phone,
+                        passwordHash: bcrypt.hashSync(req.body.newpassword, 10),
+                    }
+                )
+            }else{
+                res.status(400).send('không xác nhận mật khẩu thành công')
+            }
+        }
+        const message = 'Cập nhật thông tin cá nhân thành công';
+        res.render('success', {message})
+    }catch(error){
+        next(error)
+    }
+    
+}
+
+const deleteOrder =  (req,res,next)=>{ //delete nên trả về promise
+    const id = req.params.id;
+    Order.findByIdAndDelete(id)
+        .then((result)=>{
+            res.json({redirect: `/api/v1/users/profile/${req.session.user.id}`}) 
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+}
 
 module.exports = {
     get_all_user,
@@ -133,5 +186,8 @@ module.exports = {
     get_count_user,
     get_login_user,
     get_register_user,
-    logout_user
+    logout_user,
+    profile,
+    changepassword,
+    deleteOrder
 }

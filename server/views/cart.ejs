@@ -38,7 +38,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 50px;
+            height: 100px;
         }
         /* CSS để thêm màu sắc và thay đổi hình dạng của biểu tượng xoá */
         .delete-icon i {
@@ -51,6 +51,50 @@
 		
 		/* THU GỌN ẢNH */
     </style>
+	<!-- CSS bảng cart -->
+	<style>
+		.primary-btn.order-submit {
+			width: 420px; /* Chiều rộng mong muốn */
+			padding: 10px; /* Độ dày của nút */
+			font-size: 16px; /* Kích thước chữ của nút */
+		}
+		
+			/* CSS cho bảng */
+			.order-table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+			}
+	
+			.order-table th,
+			.order-table td {
+				border: 1px solid #ddd;
+				padding: 8px;
+				text-align: center;
+			}
+	
+			.order-table th {
+				background-color: #f2f2f2;
+			}
+	
+			.option-icon {
+				margin: 0 5px;
+				color: #333;
+			}
+	
+			/* CSS cho biểu tượng */
+			.delete-icon {
+				color: #ff0000;
+			}
+	
+			.details-icon {
+				color: #0088cc;
+			}
+		
+	</style>
+	<!-- thư viện boot cho 2 icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 
     </head>
 	<body>
@@ -150,44 +194,7 @@
 
 							<!-- Cart -->
 							<div class="dropdown">
-								<!-- <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-									<i class="fa fa-shopping-cart"></i>
-									<span>Your Cart</span>
-									<div class="qty">3</div>
-								</a>
-								<div class="cart-dropdown">
-									<div class="cart-list">
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product01.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
-
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product02.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
-									</div>
-									<div class="cart-summary">
-										<small>3 Item(s) selected</small>
-										<h5>SUBTOTAL: $2940.00</h5>
-									</div>
-									<div class="cart-btns">
-										<a href="#">View Cart</a>
-										<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
-									</div>
-								</div> -->
+								
 							</div>
 							<!-- /Cart -->
 
@@ -255,75 +262,6 @@
 	</div>
 	<!-- /BREADCRUMB -->
 		
-		<div class="container">
-			<h1 class="text-center">Shopping Cart</h1>
-			<div class="row">
-				<!-- Bên trái (6 phần) -->
-				<div class="col-md-8">
-					<!-- Hiển thị thông tin giỏ hàng trong bảng -->
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>Product Image</th>
-								<th>Product Name</th>
-								<th>Quantity</th>
-								<th>Price</th>
-								<th>Action</th> 
-							</tr>
-						</thead>
-						<tbody>
-							<% if(orderItem.length >0) { %>
-								<% orderItem.forEach( item =>{%>
-									<tr>
-										<td id="product-image-td"><img src="<%=item.product.image%>" alt="Product 1"></td>
-										<td><%= item.product.name%></td>
-										<td><%= item.quantity%></td>
-										<td><%= item.price%></td>
-										<td class="delete-icon">
-											<!-- a chứa i -->
-											<a class="delete" data-doc="<%= item._id%>">
-												<i class="fa fa-trash" aria-hidden="true"></i>
-											</a>
-                        				</td>
-									</tr>
-									
-								<%})%>
-							<%}%>					
-							
-						</tbody>
-					</table>
-				</div>
-				<!-- Bên phải (4 phần) -->
-				<div class="col-md-2 offset-md-2">
-					<div class="user-info">
-						<h2>User Information</h2>
-						<p>Name: <%= user.name%></p>
-						<p>Email: <%= user.email%></p>
-					</div>
-					<!-- xử lí totalprice bên controller -->
-					<div class="total-price">
-						Total Price: $<%=totalPrice%> 
-					</div>
-					<form id="checkoutForm" action="/api/v1/orderItems/checkout" method="POST">
-						<input type="hidden" name="totalPrice" value="<%=totalPrice%>">
-						<input type="hidden" name="userName" value="<%=user.name%>">
-						<!-- GỬI THÊM USER_ID ĐỂ THỰC HIỆN CHO TRANG PAYMENT GỌI LẠI ORDERHISTORY -->
-						<input type="hidden" name="user_id" value="<%=user._id%>">
-						<% orderItem.forEach(item => { %>
-							<input type="hidden" name="productNames[]" value="<%= item.product.name %>">
-							<input type="hidden" name="quantities[]" value="<%= item.quantity %>">
-							<input type="hidden" name="prices[]" value="<%=item.price%>">
-						<% }) %>
-						<!-- GỬI MỘT MẢNG PRODUCT -->
-						<!-- KHOOGN ĐỂ VỪA POST vừa TYPE = SUBMIT conflict				 -->
-					</form>	
-					<button class="btn btn-primary btn-block mt-3"  onclick="document.getElementById('checkoutForm').submit()" type="button">Đặt Hàng</button>
-					<a href="/" class="btn btn-primary btn-block center-button" style="width: 165px; align-items: center; ">Tiếp tục mua hàng</a>
-
-					<!-- <button class="btn btn-primary btn-block mt-3">Đặt Hàng</button> -->
-				</div>
-			</div>
-		</div>
 		
 		
 		<!-- Link đến Bootstrap JS (nếu bạn sử dụng các tính năng JavaScript của Bootstrap) -->
@@ -349,6 +287,125 @@
 		});
 			
 		  </script>
+
+
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<!-- Order Details -->
+			<div class="col-md-9 order-details">
+				<div class="section-title text-center">
+					<h3 class="title">Shopping cart</h3>
+				</div>
+					<table class="order-table">
+						
+						<thead>
+							<tr>
+								<th>Product Image</th>
+								<th>Product Name</th>
+								<th>Quantity</th>
+								<th>Price</th>
+								<th>Action</th> 
+							</tr>
+						</thead>
+						<tbody>
+							<% if(orderItem.length >0) { %>
+								<% orderItem.forEach( item =>{%>
+									<tr>
+										<td id="product-image-td"><img src="<%=item.product.image%>" alt="Product 1"></td>
+										<td><%= item.product.name%></td>
+										<td><%= item.quantity%></td>
+										<td><%= item.price * item.quantity %></td>
+										<td class="delete-icon">
+											<!-- a chứa i -->
+											<a class="delete" data-doc="<%= item._id%>">
+												<i class="fa fa-trash" aria-hidden="true"></i>
+											</a>
+                        				</td>
+									</tr>
+									
+								<%})%>
+							<%}%>					
+							
+						</tbody>
+						
+					</table>
+			</div>
+			<!-- /Order Details -->
+
+
+			<div class="col-md-3 order-details" >
+				<!-- Billing Details -->
+				<div class="user-info">
+					<h2>User Information</h2>
+					<p>Name: <%= user.name%></p>
+					<p>Email: <%= user.email%></p>
+				</div>
+				<!-- xử lí totalprice bên controller -->
+				<div class="total-price">
+					Total Price: $<%=totalPrice%> 
+				</div>
+				<form id="checkoutForm" action="/api/v1/orderItems/checkout" method="POST">
+					<input type="hidden" name="totalPrice" value="<%=totalPrice%>">
+					<input type="hidden" name="userName" value="<%=user.name%>">
+					<!-- GỬI THÊM USER_ID ĐỂ THỰC HIỆN CHO TRANG PAYMENT GỌI LẠI ORDERHISTORY -->
+					<input type="hidden" name="user_id" value="<%=user._id%>">
+					<% orderItem.forEach(item => { %>
+						<input type="hidden" name="productNames[]" value="<%= item.product.name %>">
+						<input type="hidden" name="quantities[]" value="<%= item.quantity %>">
+						<input type="hidden" name="prices[]" value="<%=item.price%>">
+					<% }) %>
+					<!-- GỬI MỘT MẢNG PRODUCT -->
+					<!-- KHOOGN ĐỂ VỪA POST vừa TYPE = SUBMIT conflict				 -->
+				</form>	
+				<button class="btn btn-primary btn-block mt-3"  onclick="document.getElementById('checkoutForm').submit()" type="button">Đặt Hàng</button>
+				<a href="/" class="btn btn-primary btn-block center-button" style="width: 231px; align-items: center; ">Tiếp tục mua hàng</a>
+
+				<!-- <button class="btn btn-primary btn-block mt-3">Đặt Hàng</button> -->
+			</div>
+
+			
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		<!-- NEWSLETTER -->
 		<div id="newsletter" class="section">

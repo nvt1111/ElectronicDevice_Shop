@@ -5,7 +5,6 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 	<title>Electro - HTML Ecommerce Template</title>
 
@@ -28,21 +27,48 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="/css/style.css" />
 
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
 	<style>
-		/* Điều chỉnh chiều dài và kiểu dáng nút "Place order" */
 		.primary-btn.order-submit {
 			width: 420px; /* Chiều rộng mong muốn */
 			padding: 10px; /* Độ dày của nút */
 			font-size: 16px; /* Kích thước chữ của nút */
-			/* Thêm các thuộc tính CSS khác tùy chỉnh kiểu dáng của nút */
 		}
-		</style>
+		
+			/* CSS cho bảng */
+			.order-table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+			}
+	
+			.order-table th,
+			.order-table td {
+				border: 1px solid #ddd;
+				padding: 8px;
+				text-align: center;
+			}
+	
+			.order-table th {
+				background-color: #f2f2f2;
+			}
+	
+			.option-icon {
+				margin: 0 5px;
+				color: #333;
+			}
+	
+			/* CSS cho biểu tượng */
+			.delete-icon {
+				color: #ff0000;
+			}
+	
+			.details-icon {
+				color: #0088cc;
+			}
+		
+	</style>
+	<!-- thư viện boot cho 2 icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 </head>
 
@@ -125,65 +151,17 @@
 					<!-- ACCOUNT -->
 					<div class="col-md-3 clearfix">
 						<div class="header-ctn">
-							<!-- Wishlist -->
-							<!-- <div>
-								<a href="#">
-									<i class="fa fa-heart-o"></i>
-									<span>Your Wishlist</span>
-									<div class="qty">2</div>
-								</a>
-							</div> -->
 							<div>
 								<a href="#">
 									<i class="fa fa-user"></i>
 									<span>Profile</span>
 								</a>
 							</div>
-							<!-- /Wishlist -->
 
 							<!-- Cart -->
 							<div class="dropdown">
-								<!-- <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-									<i class="fa fa-shopping-cart"></i>
-									<span>Your Cart</span>
-									<div class="qty">3</div>
-								</a>
-								<div class="cart-dropdown">
-									<div class="cart-list">
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product01.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
-
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product02.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
-									</div>
-									<div class="cart-summary">
-										<small>3 Item(s) selected</small>
-										<h5>SUBTOTAL: $2940.00</h5>
-									</div>
-									<div class="cart-btns">
-										<a href="#">View Cart</a>
-										<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
-									</div>
-								</div> -->
 							</div>
 							<!-- /Cart -->
-
 							<!-- Menu Toogle -->
 							<div class="menu-toggle">
 								<a href="#">
@@ -235,10 +213,10 @@
 			<!-- row -->
 			<div class="row">
 				<div class="col-md-12">
-					<h3 class="breadcrumb-header">Checkout</h3>
+					<h3 class="breadcrumb-header">Profile</h3>
 					<ul class="breadcrumb-tree">
 						<li><a href="#">Home</a></li>
-						<li class="active">Checkout</li>
+						<li class="active">Profile</li>
 					</ul>
 				</div>
 			</div>
@@ -249,145 +227,116 @@
 	<!-- /BREADCRUMB -->
 
 	<!-- SECTION -->
-	<div class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
 
-				<div class="col-md-7">
-					<!-- Billing Details -->
-					<div class="billing-details">
-						<div class="section-title">
-							<h3 class="title">Billing address</h3>
-						</div>
-						<!-- FORM ẨN -->
-						<form id="paymentForm" action="/api/v1/orders/create-order" method="POST">
-							<input type="hidden" name="totalPrice" value="<%= totalPrice %>">
-							<input type="hidden" name="user_id" value="<%= user_id %>">
-							<!-- Thêm các input hidden cho thông tin địa chỉ -->
-							<div class="form-group">
-								<input class="input" type="text" name="shippingAddress1" placeholder="Address1">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="shippingAddress2" placeholder="Address2">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="city" placeholder="City">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="country" placeholder="Country">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="zip" placeholder="ZIP Code">
-							</div>
-							<div class="form-group">
-								<input class="input" type="tel" name="phone" placeholder="Telephone">
-							</div>
-						  </form>
-					    <!-- FORM ẨN -->
-
+                <div class="col-md-3 order-details" >
+                    <!-- Billing Details -->
+                    <div class="billing-details">
+                        <div class="section-title">
+                            <h3 class="title">User Profile</h3>
+                        </div>
+						<form action="/api/v1/users/changepassword/<%=user._id%>?_method=PUT" method="POST">
+                        <div class="form-group">
+							<label for="name">User Name</label>
+                            <input class="input" type="text" name="name" placeholder="Name" value="<%=user.name%>">
+                        </div>
+                        <div class="form-group">
+							<label for="name">Email</label>
+                            <input class="input" type="email" name="email" placeholder="Email" value="<%=user.email%>">
+                        </div>
+                        <div class="form-group">
+							<label for="name">Phone</label>
+                            <input class="input" type="text" name="phone" placeholder="Phone" value="<%=user.phone%>">
+                        </div>
+                        <div class="form-group">
+							<label for="name">Old password</label>
+                            <input class="input" type="password" name="oldpassword" placeholder="Old Password" value="">
+                        </div>
 						<div class="form-group">
-							<div class="input-checkbox">
-								<input type="checkbox" id="create-account">
-								<label for="create-account">
-									<span></span>
-									Create Account?
-								</label>
-								<div class="caption">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-										incididunt.</p>
-									<input class="input" type="password" name="password"
-										placeholder="Enter Your Password">
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- /Billing Details -->
+							<label for="name">New password</label>
+                            <input class="input" type="password" name="newpassword" placeholder="New Password" value="">
+                        </div>
+                        <div class="form-group">
+							<label for="name">Confirm password</label>
+                            <input class="input" type="password" name="confirmpassword" placeholder="Confirm password">
+                        </div>
+                        <button class="primary-btn order-submit" style="width: 100%;" type="submit">Update</button>
+					</form>
+                    </div>
+                </div>
 
-					<!-- Shiping Details -->
-					<div class="shiping-details">
-						<div class="section-title">
-							<h3 class="title">Shiping address</h3>
+                <!-- Order Details -->
+                <div class="col-md-9 order-details">
+                    <div class="section-title text-center">
+                        <h3 class="title">Your Order</h3>
+                    </div>
+                        <table class="order-table">
+							
+                            <thead>
+                                <tr>
+                                    <th>Orderid</th>
+                                    <th>Price</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+							
+                            <tbody>
+								<% if(order.length >0){%>
+									<% order.forEach( o =>{%>
+                                <tr>
+                                    <td><%=o._id%></td>
+                                    <td><%=o.totalPrice%></td>
+                                    <td><%=o.shippingAddress1%></td>
+                                    <td><%=o.status%></td>
+                                    <td><%=o.dateOrdered.getDate() + '-'+ (o.dateOrdered.getMonth()+1) +'-'+ o.dateOrdered.getFullYear()%></td>
+                                    <td>
+                                        <a href="" class="option-icon view-icon"><i class="fas fa-eye"></i></a>
+                                        <a href="" id="delete" data-doc="<%=o._id%>"  class="option-icon delete-icon"><i class="fas fa-trash-alt" ></i></a>
+                                    </td>
+                                </tr>
+                                <!-- You can add more rows with similar structure for additional orders -->
+								<%})%>
+							<%}%>
+                            </tbody>
+							
+                        </table>
+						<div class="form-group" style="display: grid; place-items: center; height: 50%;">
+							<a href="#" class="primary-btn order-submit">Place Order</a>
 						</div>
-						<!-- <div class="input-checkbox">
-							<input type="checkbox" id="shiping-address">
-							<label for="shiping-address">
-								<span></span>
-								Ship to a diffrent address?
-							</label>
-							<div class="caption">
-								<div class="form-group">
-									<input class="input" type="text" name="shippingAddress1" placeholder="Address1">
-								</div>
-								<div class="form-group">
-									<input class="input" type="text" name="shippingAddress2" placeholder="Address2">
-								</div>
-								<div class="form-group">
-									<input class="input" type="text" name="city" placeholder="City">
-								</div>
-								<div class="form-group">
-									<input class="input" type="text" name="country" placeholder="Country">
-								</div>
-								<div class="form-group">
-									<input class="input" type="text" name="zip" placeholder="ZIP Code">
-								</div>
-								<div class="form-group">
-									<input class="input" type="tel" name="phone" placeholder="Telephone">
-								</div>
-							</div>
-						</div> -->
-					</div>
-					<!-- /Shiping Details -->
+                </div>
+                <!-- /Order Details -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+	<script>
+		const deleteButtons = document.querySelectorAll('a#delete');
 
-					<!-- Order notes -->
-					<div class="order-notes">
-						<textarea class="input" placeholder="Order Notes"></textarea>
-					</div>
-					<!-- /Order notes -->
-				</div>
 
-				<!-- Order Details -->
-				<div class="col-md-5 order-details">
-					<div class="section-title text-center">
-						<h3 class="title">Your Order</h3>
-					</div>
-					<div class="order-summary">
-						<div class="order-col">
-							<div><strong>PRODUCT</strong></div>
-							<div><strong>TOTAL</strong></div>
-						</div>
-						<% quantities.forEach((quantity, index) => { %>
-						<div class="order-products">
-							<div class="order-col">
-								<!-- IN CẢ 3 GIA TRỊ ĐÒNG THỜI -->							
-									<div><%= quantity %>x <%= productNames[index] %></div>
-									<div><%= prices[index] * quantity %></div>							  
-							</div>
-						</div>
-						<% }) %>
-						<div class="order-col">
-							<div>Shiping</div>
-							<div><strong>FREE</strong></div>
-						</div>
-						<div class="order-col">
-							<div><strong>TOTAL</strong></div>
-							<div><strong class="order-total">$<%= totalPrice%></strong></div>
-						</div>
-					</div>
-						
-					
-					  <button type="button" onclick="document.getElementById('paymentForm').submit()"  class="primary-btn order-submit">Place order</button>
-					<!-- <a href="#" class="primary-btn order-submit">Place order</a> -->
-				</div>
-				<!-- /Order Details -->
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /SECTION -->
-
+		////////////////// Khoogn được chèn cú phép viewengine vào script (vì viewengine chỉ tác dụng trên HTMl)
+		deleteButtons.forEach((button) =>{
+      button.addEventListener('click', (e)=>{
+        const endpoint = `/api/v1/users/deleteOrder/${button.dataset.doc}`;
+        fetch(endpoint, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then((data)=>{
+          window.location.href = data.redirect;
+        })
+        .catch(err => console.log(err));
+      })
+     })
+	</script>
 	<!-- NEWSLETTER -->
 	<div id="newsletter" class="section">
 		<!-- container -->
@@ -525,12 +474,12 @@
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/slick.min.js"></script>
-	<script src="/js/nouislider.min.js"></script>
-	<script src="/js/jquery.zoom.min.js"></script>
-	<script src="/js/main.js"></script>
+	    <script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/slick.min.js"></script>
+		<script src="/js/nouislider.min.js"></script>
+		<script src="/js/jquery.zoom.min.js"></script>
+		<script src="/js/main.js"></script>
 
 </body>
 

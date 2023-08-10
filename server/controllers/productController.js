@@ -33,8 +33,8 @@ const get_product_category = async(req,res,next)=>{
             res.status(500).json({success: false})
         } 
         // các giá trị này nó tồn tại trên sesion lên có thể lấy ở bất kì đâu
-        const isLoggedIn = req.session.isLoggedIn || false;
-        const user = req.session.user || null;
+        const isLoggedIn = req.session.isLoggedIn;
+        const user = req.session.user;
         // send dữ liệu cho trnag đó hiển thị thoi
         // send nhiều cái cho trong Object {}
         res.render('category',{products, category,isLoggedIn: isLoggedIn, user: user});// phương thức get chỉ cần gửi DL ko cần redirect trnag khác

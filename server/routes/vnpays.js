@@ -128,7 +128,8 @@ router.get('/vnpay_return', async function (req, res, next) {
           $set: { status: "Đã thanh toán" },
         };
         const updateStatus = await Order.findByIdAndUpdate(orderId, updateDocument);
-        res.render('success_payment')
+        const message = 'Chúc mừng bạn thanh toán thành công!!!'
+        res.render('success',{message})
     } else{
         const isLoggedIn = req.session.isLoggedIn;
          const user = req.session.user

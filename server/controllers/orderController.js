@@ -53,7 +53,6 @@ const create_order = async (req, res, next) => {
     try {
       // Lấy thông tin từ request body
       const {shippingAddress1, shippingAddress2, city, zip, country, phone, totalPrice, user_id } = req.body;
-      
       // Tìm các OrderITems để ghi vào lịch sử đã nhé tìm theo User_ID
       const OrderItems = await OrderItem.find({user: user_id}).populate('product');
       const orderItemIDs = OrderItems.map(item => item._id);
@@ -67,6 +66,7 @@ const create_order = async (req, res, next) => {
         country,
         phone,
         totalPrice,
+        user: user_id,
         orderItemsHistory: [], // Khởi tạo trường orderItemsHistory là một mảng rỗng
       });
   

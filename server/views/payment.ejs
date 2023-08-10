@@ -250,8 +250,6 @@
 					</div>
 						
 					<form id="paymentForm" method="post" action="/api/v1/vnpays/create_payment_url">
-						
-
 						<input type="hidden" name="orderId_id" value="<%= SavedOrder._id %>">
 						<input type="hidden" name="amount" value="<%= SavedOrder.totalPrice %>">
 						<input type="hidden" name="bankCode" value="NCB">

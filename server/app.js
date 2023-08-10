@@ -8,6 +8,7 @@ const initRoutes = require('./routes/index')
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
+const axios = require('axios');
 
 app.use(cors());
 app.use('*', cors()); // cho phep tat ca http

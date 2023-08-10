@@ -11,7 +11,9 @@ router.get('/register', userController.get_register_user);
 router.post('/register', userController.create_user);
 router.post('/login',check_Admin, userController.login_user);
 router.get('/logout',userController.logout_user);
-
+router.get('/profile/:id',userController.profile);
+router.put('/changepassword/:id',userController.changepassword);
+router.delete('/deleteOrder/:id',userController.deleteOrder);
 //////
 // router.get('/' ,userController.get_all_user);
 // router.get('/:id', userController.get_user_id);
