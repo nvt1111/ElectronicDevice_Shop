@@ -306,7 +306,7 @@
 											<% products.forEach( (pro) =>{%>
 												<div class="product">
 													<% if (isLoggedIn) { %>
-														<a href="/api/v1/products/<%= pro._id %>?user_id=<%= user.id %>">  
+														<a href="/api/v1/products/<%= pro._id %>">  
 														
 													<div class="product-img">
 														<img src="<%= pro.image %>" alt="">

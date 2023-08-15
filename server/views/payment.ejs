@@ -238,16 +238,22 @@
 									<div>$<%=(orderHistory.price ) * (orderHistory.quantity) %></div>							  
 							</div>
 						</div>
-						<%})%>
+						
 						<div class="order-col">
 							<div>Shiping</div>
 							<div><strong>FREE</strong></div>
 						</div>
 						<div class="order-col">
+							<div>Date Order</div>
+							<div><strong><%=newOrder.dateOrdered.getDate() + '-'+ (newOrder.dateOrdered.getMonth()+1) +'-'+newOrder.dateOrdered.getFullYear()%></strong></div>
+						</div>
+						<%})%>
+						<div class="order-col">
 							<div><strong>TOTAL</strong></div>
 							<div><strong class="order-total">$<%= SavedOrder.totalPrice%></strong></div>
 						</div>
 					</div>
+					
 						
 					<form id="paymentForm" method="post" action="/api/v1/vnpays/create_payment_url">
 						<input type="hidden" name="orderId_id" value="<%= SavedOrder._id %>">

@@ -34,10 +34,11 @@ router.put('/gallery-images/:id', uploadOptions.array('images', 10), async (req,
 })
 
 router.post('/',uploadOptions.single('image') ,productController.create_product);
-router.get('/:id',productController.get_product_id);
+router.get('/:id',productController.get_product_id); // có thể chèn thêm query page = i đê PANIGATION
 router.get('/', productController.get_product_category);// filter theo category
 router.post('/search-key',productController.search_product_key);
 router.get('/search-page',productController.search_page);
+router.post('/review/:id',productController.review);// id này id san rphaarm
 
 
 ///////

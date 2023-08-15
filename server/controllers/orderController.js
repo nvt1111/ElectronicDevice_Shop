@@ -89,7 +89,7 @@ const create_order = async (req, res, next) => {
       await SavedOrder.populate('orderItemsHistory.product');
       const isLoggedIn = req.session.isLoggedIn;
       const user = req.session.user ;
-      res.render('payment', {isLoggedIn, user , SavedOrder })
+      res.render('payment', {isLoggedIn, user , SavedOrder,newOrder })
     } catch (error) {
       next(error);
     }
@@ -107,14 +107,15 @@ const get_order_detail = async(req,res,next)=>{
 
 const get_order_id = async(req,res,next)=>{
     const order = await Order.findById(req.params.id)
-    .populate('user','name')
-    .populate('orderItems');
+    .populate('orderItemsHistory.product');
+    const isLoggedIn = req.session.isLoggedIn;
+    const user = req.session.user;
     if(!order){
         res.status(500).json({
             success: false
         })
     }
-    res.send(order);
+    res.render('order_detail', {order, isLoggedIn, user})
 }
 
 const update_order = async (req,res,next)=>{

@@ -1,6 +1,7 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
 const User = require('../models/user');
+const Review = require('../models/review');
 const mongoose = require('mongoose');
 
 const search_page = (req,res,next)=>{
@@ -8,14 +9,38 @@ const search_page = (req,res,next)=>{
 }
 const get_product_id = async(req,res,next)=>{
     const product = await Product.findById(req.params.id).populate('category');
-    const user_id= req.query.user_id;
+    const user_id= req.session.user.id;
     const user = await User.findById(user_id);
+    const review = await Review.find({product: product._id}).populate('user');
+    const Array = review.map(r => r.rating) // chuyển sang mảng để sử dụng reduce
+    const rating_avg = (Array.reduce((sum, rating)=> sum+rating,0)/review.length).toFixed(1);// lam tròn số tp 1
+    const ratingStar = {
+        1:0,
+        2:0,
+        3:0,
+        4:0,
+        5:0
+    }
+    Array.forEach( a =>{
+        ratingStar[a]++;
+    })
+    console.log(ratingStar);
+    console.log(ratingStar[1]);
+    // <%= ratingStar[5]%> từng cặp 1,0 là key, value
     if(!product){
         res.status(500).json({
             success: false
         })
     }
-    res.render('product_detail', {product:product ,user: user });
+
+///// PANIGATION
+    const slReview1Page = 3;
+    const currentPage = parseInt(req.query.page) || 1;// gửi giá trị trnag page hiện tại sang trang page tiếp theo, nêu trang đầu tiên mặc định 1
+    let start = (currentPage-1)*slReview1Page;
+    let end= start + slReview1Page;
+    const totalPage = Math.ceil(review.length / slReview1Page);
+
+    res.render('product_detail', {product:product ,user: user , review: review.slice(start,end), rating_avg, ratingStar, totalPage, currentPage});
 }
 
 // lọc sản phẩm theo category
@@ -201,6 +226,17 @@ const search_product_key = async(req,res,next)=>{
 
 }
 
+const review = async (req,res,next)=>{
+    const rating = req.body.rating;
+    const review = req.body.review;
+    await Review.create({
+        user: req.session.user.id,
+        product: req.params.id,
+        rating,
+        review
+    })
+    res.redirect(`/api/v1/products/${req.params.id}`)
+}
 
 module.exports = {
     get_product_category,
@@ -213,7 +249,8 @@ module.exports = {
     get_count,
     get_product_feature,
     get_product_feature_count,
-    search_product_key
+    search_product_key,
+    review
 }
 
 // router.get('/', async (req, res, next) => {

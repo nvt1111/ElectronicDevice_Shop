@@ -14,6 +14,7 @@ router.get('/logout',userController.logout_user);
 router.get('/profile/:id',userController.profile);
 router.put('/changepassword/:id',userController.changepassword);
 router.delete('/deleteOrder/:id',userController.deleteOrder);
+
 //////
 // router.get('/' ,userController.get_all_user);
 // router.get('/:id', userController.get_user_id);

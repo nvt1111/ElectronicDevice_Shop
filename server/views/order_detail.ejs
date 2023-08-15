@@ -33,6 +33,11 @@
 			padding: 10px; /* Độ dày của nút */
 			font-size: 16px; /* Kích thước chữ của nút */
 		}
+        #product-image-td img { 
+            max-width: 70px; /* Điều chỉnh kích thước tối đa theo chiều rộng */
+            max-height: 100px; /* Điều chỉnh kích thước tối đa theo chiều cao */
+            /* Thêm các thuộc tính khác nếu cần (ví dụ: padding, margin, ... ) */
+        }
 		
 			/* CSS cho bảng */
 			.order-table {
@@ -232,111 +237,92 @@
         <div class="container">
             <!-- row -->
             <div class="row">
-
-                <div class="col-md-3 order-details" >
+                <div class="col-md-8 order-details">
+                    <div class="section-title text-center">
+                        <h3 class="title"><%=user.name%>'s Order</h3>
+                    </div>
+                        <table class="order-table">
+                            <thead>
+                                <tr>
+                                    <th>Product Image</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(order.orderItemsHistory.length > 0){%>
+                                    <%order.orderItemsHistory.forEach( o =>{%> 
+                                        <!-- Vì mỗi orderItemsHistory có nhiều product 
+                                        Không dùng order.length nếu chỉ toofnt ại một order-->
+                                <tr>
+                                    <td id="product-image-td"> <img src="<%=o.product.image%>" alt=""></td>
+                                    <!-- chèn ảnh dùng thẻ td kèm img -->
+                                    <td><%=o.product.name%></td>
+                                    <td><%=o.quantity%></td>
+                                    <td><%=o.price%></td>
+                                </tr>
+                                <%})%>
+                                <%}%>
+                                <!-- You can add more rows with similar structure for additional orders -->
+                            </tbody>
+                        </table>
+                        <div class="rectangle">
+                            <div class="order-col">
+                                <div><strong>Date order:        <%=order.dateOrdered.getDate() + '-'+ (order.dateOrdered.getMonth()+1) +'-'+ order.dateOrdered.getFullYear()%></strong></div>
+                                <div><strong><%=order.dateOrdered.getDate() + '-'+ (order.dateOrdered.getMonth()+1) +'-'+ order.dateOrdered.getFullYear()%></strong></div>
+                            </div>
+                            <div class="order-col">
+                                <div><strong>Status:            <%=order.status%></strong></div>
+                                <div><strong><%=order.status%></strong></div>
+                            </div>
+                        </div>
+                    <a href="/" class="primary-btn order-submit">Quay về trang chủ</a>
+                </div>
+                <!-- /Order Details -->
+                <div class="col-md-4">
                     <!-- Billing Details -->
-                    <div class="billing-details">
-                        <div class="section-title">
-                            <h3 class="title">User Profile</h3>
+                    <div class="section-title text-center">
+                        <h3 class="title">Information</h3>
+                    </div>
+
+                    <div class="order-summary">
+                        <div class="order-col">
+                            <div><strong>PRODUCT</strong></div>
+                            <div><strong>TOTAL</strong></div>
                         </div>
-						<form action="/api/v1/users/changepassword/<%=user._id%>?_method=PUT" method="POST">
-                        <div class="form-group">
-							<label for="name">User Name</label>
-                            <input class="input" type="text" name="name" placeholder="Name" value="<%=user.name%>">
+                        <% if(order.orderItemsHistory.length > 0){%>
+                            <%order.orderItemsHistory.forEach( o =>{%>
+                        <div class="order-products">
+                            <div class="order-col">
+                                <!-- IN CẢ 3 GIA TRỊ ĐÒNG THỜI -->							
+                                    <div><%=o.quantity%>x <%=o.product.name%></div>
+                                    <div>$<%=o.price%></div>							  
+                            </div>
                         </div>
-                        <div class="form-group">
-							<label for="name">Email</label>
-                            <input class="input" type="email" name="email" placeholder="Email" value="<%=user.email%>">
+                        <%})%>
+                                <%}%>
+                                
+                        <div class="order-col">
+                            <div>Shiping</div>
+                            <div><strong>FREE</strong></div>
                         </div>
-                        <div class="form-group">
-							<label for="name">Phone</label>
-                            <input class="input" type="text" name="phone" placeholder="Phone" value="<%=user.phone%>">
+                        <div class="order-col">
+                            <div><strong>TOTAL</strong></div>
+                            <div><strong class="order-total">$<%=order.totalPrice%></strong></div>
                         </div>
-                        <div class="form-group">
-							<label for="name">Old password</label>
-                            <input class="input" type="password" name="oldpassword" placeholder="Old Password" value="">
-                        </div>
-						<div class="form-group">
-							<label for="name">New password</label>
-                            <input class="input" type="password" name="newpassword" placeholder="New Password" value="">
-                        </div>
-                        <div class="form-group">
-							<label for="name">Confirm password</label>
-                            <input class="input" type="password" name="confirmpassword" placeholder="Confirm password">
-                        </div>
-                        <button class="primary-btn order-submit" style="width: 100%;" type="submit">Update</button>
-					</form>
                     </div>
                 </div>
 
                 <!-- Order Details -->
-                <div class="col-md-9 order-details">
-                    <div class="section-title text-center">
-                        <h3 class="title">Your Order</h3>
-                    </div>
-                        <table class="order-table">
-							
-                            <thead>
-                                <tr>
-                                    <th>Orderid</th>
-                                    <th>Price</th>
-                                    <th>Address</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Options</th>
-                                </tr>
-                            </thead>
-							
-                            <tbody>
-								<% if(order.length >0){%>
-									<% order.forEach( o =>{%>
-                                <tr>
-                                    <td><%=o._id%></td>
-                                    <td><%=o.totalPrice%></td>
-                                    <td><%=o.shippingAddress1%></td>
-                                    <td><%=o.status%></td>
-                                    <td><%=o.dateOrdered.getDate() + '-'+ (o.dateOrdered.getMonth()+1) +'-'+ o.dateOrdered.getFullYear()%></td>
-                                    <td>
-                                        <a href="/api/v1/orders/<%=o._id%>" class="option-icon view-icon"><i class="fas fa-eye"></i></a>
-                                        <a href="" id="delete" data-doc="<%=o._id%>"  class="option-icon delete-icon"><i class="fas fa-trash-alt" ></i></a>
-                                    </td>
-                                </tr>
-                                <!-- You can add more rows with similar structure for additional orders -->
-								<%})%>
-							<%}%>
-                            </tbody>
-							
-                        </table>
-						<div class="form-group" style="display: grid; place-items: center; height: 50%;">
-							<a href="#" class="primary-btn order-submit">Place Order</a>
-						</div>
-                </div>
-                <!-- /Order Details -->
+                
             </div>
             <!-- /row -->
         </div>
         <!-- /container -->
     </div>
     <!-- /SECTION -->
-	<script>
-		const deleteButtons = document.querySelectorAll('a#delete');
-
-
-		////////////////// Khoogn được chèn cú phép viewengine vào script (vì viewengine chỉ tác dụng trên HTMl)
-		deleteButtons.forEach((button) =>{
-      button.addEventListener('click', (e)=>{
-        const endpoint = `/api/v1/users/deleteOrder/${button.dataset.doc}`;
-        fetch(endpoint, {
-          method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then((data)=>{
-          window.location.href = data.redirect;
-        })
-        .catch(err => console.log(err));
-      })
-     })
-	</script>
+	
 	<!-- NEWSLETTER -->
 	<div id="newsletter" class="section">
 		<!-- container -->

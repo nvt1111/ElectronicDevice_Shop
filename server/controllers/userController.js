@@ -177,6 +177,8 @@ const deleteOrder =  (req,res,next)=>{ //delete nên trả về promise
         })
 }
 
+
+
 module.exports = {
     get_all_user,
     get_user_id,
