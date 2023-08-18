@@ -9,7 +9,7 @@ const signAccessToken = async (userId) =>{
         }
         const secret = process.env.secret;
         const options = {
-            expiresIn: '10m'
+            expiresIn: '30m'
         }
         JWT.sign(payload, secret, options, (err, token)=>{
             if(err) reject(err)
@@ -18,17 +18,8 @@ const signAccessToken = async (userId) =>{
     })
 }
 
-// Verify accesstoken
-// xử lí rõ nỗi đúng ý như hết hạn , ko valid
-
 const verifyAccessToken = (req, res, next) =>{
-    if(!req.headers['authorization']){
-        return next(createError.Unauthorized())
-    }
-    const authHeader = req.headers['authorization'];
-    const bearerToken = authHeader.split(' ');
-    const token = bearerToken[1];
-    // nos thuoc authorization cua req.header
+    const token = req.cookies.accessToken;
     JWT.verify(token, process.env.secret, (err,payload)=>{
         if(err){
             if(err.name === 'JsonWebTokenError'){
@@ -38,10 +29,34 @@ const verifyAccessToken = (req, res, next) =>{
             // trả về lỗi rằng  à expired
         }
         req.payload = payload;
-        console.log(`day neeeeeeeeeeeeeeeeee ${payload}`)
         next();// ko lỗi thì next
     })
 }
+
+// Verify accesstoken
+// xử lí rõ nỗi đúng ý như hết hạn , ko valid
+
+// const verifyAccessToken = (req, res, next) =>{
+//     if(!req.headers['authorization']){
+//         return next(createError.Unauthorized())
+//     }
+//     const authHeader = req.headers['authorization'];
+//     const bearerToken = authHeader.split(' ');
+//     const token = bearerToken[1];
+//     // nos thuoc authorization cua req.header
+//     JWT.verify(token, process.env.secret, (err,payload)=>{
+//         if(err){
+//             if(err.name === 'JsonWebTokenError'){
+//                 return next(createError.Unauthorized()) // co function ()
+//             }
+//             return next(createError.Unauthorized(err.message));
+//             // trả về lỗi rằng  à expired
+//         }
+//         req.payload = payload;
+//         console.log(`day neeeeeeeeeeeeeeeeee ${payload}`)
+//         next();// ko lỗi thì next
+//     })
+// }
 
 // lấy accessToken sau khi hết hạn bằng refreshtoken
 // const signRefreshToken = async (userId) =>{

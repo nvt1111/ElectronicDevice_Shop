@@ -4,23 +4,34 @@ const Category = require('../models/category');
 const Order = require('../models/order');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {signAccessToken, verifyAccessToken} = require('../helpers/jwt');
+const {signAccessToken} = require('../helpers/jwt');
 const session = require('express-session');
 const {uploadOptions} = require('../helpers/uploadImage')
 
-const get_dashboard =async (req,res,next)=>{
-    const id  = req.session.user.id;
-    const user = await User.findById(id);
-    console.log('kkkkkkkkkkkkkkkkkkkkkk', user)
-    if(user && user.isAdmin){
-        res.render('admin/index')
-    }else{
-        res.status(404).json({mesage: "Bạn không thể truy cập trang web này"})
-    }  
+const get_dashboard =async (req,res,next)=>{// login admin   
+    //Panigation
+    const order = res.locals.orders ;
+    const currentPage = parseInt(req.query.page) || 1;// nếu ko có thì cho là 1
+    const slOrder1Page = 5;
+    // (n-1)*x
+    const start = (currentPage-1)*slOrder1Page;
+    const end = start + slOrder1Page;
+    const totalPage = Math.ceil(order.length / slOrder1Page);//lam tron leen
+
+    res.render('admin/index', {orders: order.slice(start,end), totalPage, currentPage});   
 }
 
 const get_page_user = (req,res,next)=>{
-    res.render('admin/user')
+    //Panigation
+    const user = res.locals.users ;
+    const currentPage = parseInt(req.query.page) || 1;// nếu ko có thì cho là 1
+    const slOrder1Page = 5;
+    // (n-1)*x
+    const start = (currentPage-1)*slOrder1Page;
+    const end = start + slOrder1Page;
+    const totalPage = Math.ceil(user.length / slOrder1Page);//lam tron leen
+
+    res.render('admin/user', {users: user.slice(start,end), totalPage, currentPage});
 }
 
 const get_page_category = (req,res,next)=>{
@@ -28,7 +39,16 @@ const get_page_category = (req,res,next)=>{
 }
 
 const get_page_product = (req,res,next)=>{
-    res.render('admin/product')
+    //Panigation
+    const product = res.locals.products ;
+    const currentPage = parseInt(req.query.page) || 1;// nếu ko có thì cho là 1
+    const slOrder1Page = 5;
+    // (n-1)*x
+    const start = (currentPage-1)*slOrder1Page;
+    const end = start + slOrder1Page;
+    const totalPage = Math.ceil(product.length / slOrder1Page);//lam tron leen
+
+    res.render('admin/product', {products: product.slice(start,end), totalPage, currentPage});
 }
 
 const addUser = async (req,res,next)=>{

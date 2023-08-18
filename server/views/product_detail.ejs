@@ -48,7 +48,13 @@
 					</ul>
 					<ul class="header-links pull-right">
 						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+						<% if (isLoggedIn) { %>
+							<li><a href="#"><i class="fa fa-user-o"></i>Xin chào :<%=user.name%></a></li>
+						  <%}%>
+						  <li><a href="/api/v1/users/login"><i class="fa fa-sign-in"></i> Login</a></li>
+						  <% if (isLoggedIn) { %>
+							<li><a href="/api/v1/users/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+						  <%}%>
 					</ul>
 				</div>
 			</div>
@@ -109,18 +115,30 @@
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
 								<!-- Wishlist -->
-								<div>
+								<!-- <div>
 									<a href="#">
 										<i class="fa fa-heart-o"></i>
 										<span>Your Wishlist</span>
 										<div class="qty">2</div>
 									</a>
+								</div> -->
+								<div><% if (isLoggedIn) { %>
+									<a href="/api/v1/users/profile/<%=user.id%>">
+										<i class="fa fa-user"></i>
+										<span>Profile</span>
+									</a>
+									<%}else{%>
+									<a href="">
+										<i class="fa fa-user"></i>
+										<span>Profile</span>
+									</a>
+									<%}%>
 								</div>
 								<!-- /Wishlist -->
 
 								<!-- Cart -->
 								<div class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<!-- <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
 										<div class="qty">3</div>
@@ -157,7 +175,7 @@
 											<a href="#">View Cart</a>
 											<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
-									</div>
+									</div> -->
 								</div>
 								<!-- /Cart -->
 
@@ -189,14 +207,14 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#">Hot Deals</a></li>
-						<li><a href="#">Categories</a></li>
-						<li><a href="#">Laptops</a></li>
-						<li><a href="#">Smartphones</a></li>
-						<li><a href="#">Cameras</a></li>
-						<li><a href="#">Accessories</a></li>
+						<li class="active"><a href="/">Home</a></li>
+						<% if( categories.length > 0){%>
+							<% categories.forEach ( c => {%>
+								<li><a href="/api/v1/products?categories=<%=c._id%>"><%=c.name %></a></li>
+							<%})%>
+						<%}%>	
 					</ul>
+					
 					<!-- /NAV -->
 				</div>
 				<!-- /responsive-nav -->
@@ -516,7 +534,7 @@
 														<%review.forEach( r =>{%>
 													<li>
 														<div class="review-heading">
-															<h5 class="name"><%=user.name%></h5>
+															<h5 class="name"><%=r.user.name%></h5>
 															<p class="date"><%=r.createAt.getDate() + '-'+ (r.createAt.getMonth()+1) +'-'+ r.createAt.getFullYear() + '  '+  r.createAt.getHours()+':'+r.createAt.getMinutes()%></p>
 															<div class="review-rating">
 																<% for(let i=0; i<r.rating;i++){%>
@@ -545,7 +563,8 @@
 														</li>
 													<% } %>
 													
-													<% for (let i = 1; i <= totalPage; i++) { %>
+													<% for (let i = 1; i <= totalPage; i++) { %> 
+														<!-- chay tu 1-n -->
 														<% if (i === currentPage) { %>
 															<li class="active"><%= i %></li>
 														<% } else { %>

@@ -2,8 +2,10 @@ const express = require('express');
 const route = express.Router();
 const adminController = require('../controllers/adminController')
 const {uploadOptions} = require('../helpers/uploadImage')
+const {check_Admin} = require('../helpers/loginAuth')
+const { verifyAccessToken} = require('../helpers/jwt');
 
-route.get('/dashboard', adminController.get_dashboard);
+route.get('/dashboard',verifyAccessToken, check_Admin, adminController.get_dashboard);
 route.get('/product', adminController.get_page_product);
 route.get('/category', adminController.get_page_category);
 route.get('/user', adminController.get_page_user);

@@ -184,11 +184,17 @@
 									<div class="qty">2</div>
 								</a>
 							</div> -->
-							<div>
-								<a href="#">
+							<div><% if (isLoggedIn) { %>
+								<a href="/api/v1/users/profile/<%=user.id%>">
 									<i class="fa fa-user"></i>
 									<span>Profile</span>
 								</a>
+								<%}else{%>
+								<a href="">
+									<i class="fa fa-user"></i>
+									<span>Profile</span>
+								</a>
+								<%}%>
 							</div>
 							<!-- /Wishlist -->
 

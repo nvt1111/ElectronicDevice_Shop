@@ -108,18 +108,30 @@
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
 								<!-- Wishlist -->
-								<div>
+								<!-- <div>
 									<a href="#">
 										<i class="fa fa-heart-o"></i>
 										<span>Your Wishlist</span>
 										<div class="qty">2</div>
 									</a>
+								</div> -->
+								<div><% if (isLoggedIn) { %>
+									<a href="/api/v1/users/profile/<%=user.id%>">
+										<i class="fa fa-user"></i>
+										<span>Profile</span>
+									</a>
+									<%}else{%>
+									<a href="">
+										<i class="fa fa-user"></i>
+										<span>Profile</span>
+									</a>
+									<%}%>
 								</div>
 								<!-- /Wishlist -->
 
 								<!-- Cart -->
 								<div class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<!-- <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
 										<div class="qty">3</div>
@@ -156,7 +168,7 @@
 											<a href="#">View Cart</a>
 											<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
-									</div>
+									</div> -->
 								</div>
 								<!-- /Cart -->
 
@@ -195,6 +207,7 @@
 							<%})%>
 						<%}%>	
 					</ul>
+					
 					<!-- /NAV -->
 				</div>
 				<!-- /responsive-nav -->

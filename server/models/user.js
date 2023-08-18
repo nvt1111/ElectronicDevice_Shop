@@ -22,7 +22,14 @@ var userSchema = new mongoose.Schema({
     isAdmin:{
         type:Boolean,
         default:false,
+    },
+    passwordResetToken:{
+        type:String,
+    },
+    passwordResetExprires:{
+        type:String,
     }
+    // thời gian còn hạn của token 
     // street:{
     //     type:String,
     //     default:'',

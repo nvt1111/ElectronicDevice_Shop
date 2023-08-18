@@ -9,11 +9,15 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
 const axios = require('axios');
+const cookieParser = require('cookie-parser');
+
+// npm install cookie-parser
 
 app.use(cors());
 app.use('*', cors()); // cho phep tat ca http
 // middleware
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(express.json());//bodyparser
 app.use(morgan('dev'));
 // Middleware để xử lý dữ liệu từ form
@@ -65,6 +69,10 @@ app.get('/', (req, res) => {
   const isLoggedIn = req.session.isLoggedIn || false;
   const user = req.session.user || null;
   res.render('index', { isLoggedIn: isLoggedIn, user: user });
+});
+app.get('/success', (req, res, next) => {
+  const message = res.locals.message;
+  res.render('success', { message});
 });
 
 initRoutes(app);

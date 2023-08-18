@@ -181,21 +181,27 @@
               <!-- PAGINATION -->
               <div class="ml-4">
                 <ul class="pagination">
-                  <li class="page-item">
-                    <a href="#" class="page-link">Prev</a>
-                  </li>
-                  <li class="page-item active">
-                    <a href="#" class="page-link">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link">2</a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a href="#" class="page-link">Next</a>
-                  </li>
+                  <%if(currentPage>1){%>
+                    <li class="page-item">
+                      <a href="/admins/product?page=<%=currentPage-1%>" class="page-link">Prev</a>
+                    </li>
+                    <%}%>
+                  <%for(let i=1;i<=totalPage;i++){%>
+                    <%if(i===currentPage){%>
+                      <li class="page-item active">
+                        <a href="" class="page-link"><%=i%></a>
+                      </li>
+                      <%} else{%>
+                        <li class="page-item">
+                          <a href="/admins/product?page=<%=i%>" class="page-link"><%=i%></a>
+                        </li>
+                        <%}%>
+                    <%}%>
+                    <%if(currentPage<totalPage){%>
+                      <li class="page-item">
+                        <a href="/admins/product?page=<%=currentPage+1%>" class="page-link">Next</a>
+                      </li>
+                      <%}%>
                 </ul>
               </div>
             </div>

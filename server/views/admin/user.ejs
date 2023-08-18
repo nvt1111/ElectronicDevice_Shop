@@ -81,6 +81,32 @@
                   <%}%>  
                 </tbody>
               </table>
+              <!-- PAGINATION -->
+              <div class="ml-4">
+                <ul class="pagination">
+                  <%if(currentPage>1){%>
+                    <li class="page-item">
+                      <a href="/admins/user?page=<%=currentPage-1%>" class="page-link">Prev</a>
+                    </li>
+                    <%}%>
+                  <%for(let i=1;i<=totalPage;i++){%>
+                    <%if(i===currentPage){%>
+                      <li class="page-item active">
+                        <a href="" class="page-link"><%=i%></a>
+                      </li>
+                      <%} else{%>
+                        <li class="page-item">
+                          <a href="/admins/user?page=<%=i%>" class="page-link"><%=i%></a>
+                        </li>
+                        <%}%>
+                    <%}%>
+                    <%if(currentPage<totalPage){%>
+                      <li class="page-item">
+                        <a href="/admins/user?page=<%=currentPage+1%>" class="page-link">Next</a>
+                      </li>
+                      <%}%>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

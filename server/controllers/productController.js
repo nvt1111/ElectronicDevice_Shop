@@ -40,7 +40,8 @@ const get_product_id = async(req,res,next)=>{
     let end= start + slReview1Page;
     const totalPage = Math.ceil(review.length / slReview1Page);
 
-    res.render('product_detail', {product:product ,user: user , review: review.slice(start,end), rating_avg, ratingStar, totalPage, currentPage});
+    const isLoggedIn = req.session.isLoggedIn;
+    res.render('product_detail', {isLoggedIn, product:product ,user: user , review: review.slice(start,end), rating_avg, ratingStar, totalPage, currentPage});
 }
 
 // lọc sản phẩm theo category
@@ -229,12 +230,13 @@ const search_product_key = async(req,res,next)=>{
 const review = async (req,res,next)=>{
     const rating = req.body.rating;
     const review = req.body.review;
-    await Review.create({
+    const reviewNew = await Review.create({
         user: req.session.user.id,
         product: req.params.id,
         rating,
         review
     })
+    await reviewNew.populate('user')
     res.redirect(`/api/v1/products/${req.params.id}`)
 }
 
