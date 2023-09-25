@@ -1,6 +1,6 @@
-const mongoose = require('mongoose'); // Erase if already required
+const mongoose = require('mongoose');
 const OrderItem = require('./order-item');
-// Declare the Schema of the Mongo model
+
 var orderSchema = new mongoose.Schema({
     // orderItems:[{// mang don giản chưa 3 objectID thôi
     //     type:mongoose.Schema.Types.ObjectId,
@@ -45,29 +45,28 @@ var orderSchema = new mongoose.Schema({
     },
     orderItemsHistory: [
         {
-          product: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-            required: true,
-          },
-          quantity: {
-            type: Number,
-            required: true,
-          },
-          price: {
-            type: Number,
-            required: true,
-          },
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Product',
+                required: true,
+            },
+            quantity: {
+                type: Number,
+                required: true,
+            },
+            price: {
+                type: Number,
+                required: true,
+            },
         },
-      ],
+    ],
     dateOrdered: {
         type: Date,
         default: Date.now,
     },
 });
 
-//Export the model
-module.exports = mongoose.model('Order', orderSchema);  
+module.exports = mongoose.model('Order', orderSchema);
 /**
 Order Example:
 
@@ -90,5 +89,4 @@ Order Example:
     "phone": "+420702241333",
     "user": "5fd51bc7e39ba856244a3b44"
 }
-
  */

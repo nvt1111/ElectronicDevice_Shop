@@ -1,32 +1,32 @@
 const JWT = require('jsonwebtoken')
 const createError = require('http-errors')
 
-// ham tao access Token
-const signAccessToken = async (userId) =>{
-    return new Promise((resolve, reject)=>{
-        const payload ={
+// create access Token
+const signAccessToken = async (userId) => {
+    return new Promise((resolve, reject) => {
+        const payload = {
             userId
         }
         const secret = process.env.secret;
         const options = {
             expiresIn: '30m'
         }
-        JWT.sign(payload, secret, options, (err, token)=>{
-            if(err) reject(err)
+        JWT.sign(payload, secret, options, (err, token) => {
+            if (err) reject(err)
             resolve(token)
         })
     })
 }
 
-const verifyAccessToken = (req, res, next) =>{
+const verifyAccessToken = (req, res, next) => {
     const token = req.cookies.accessToken;
-    JWT.verify(token, process.env.secret, (err,payload)=>{
-        if(err){
-            if(err.name === 'JsonWebTokenError'){
+    JWT.verify(token, process.env.secret, (err, payload) => {
+        if (err) {
+            if (err.name === 'JsonWebTokenError') {
                 return next(createError.Unauthorized()) // co function ()
             }
             return next(createError.Unauthorized(err.message));
-            // trả về lỗi rằng  à expired
+            // trả về lỗi rằng  là expired
         }
         req.payload = payload;
         next();// ko lỗi thì next
@@ -78,7 +78,7 @@ const verifyAccessToken = (req, res, next) =>{
 //                 }
 //                 resolve(token)
 //             })
-            
+
 //         })
 //     })
 // }
@@ -99,7 +99,7 @@ const verifyAccessToken = (req, res, next) =>{
 //              //thành công
 //         })
 //     })
-    
+
 // }
 
 module.exports = {

@@ -1,541 +1,252 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('layouts/header.ejs') %>
 
-<head>
-	<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<body>
+		<style>
+			.primary-btn.order-submit {
+				width: 420px;
+				padding: 10px;
+				font-size: 16px;
+			}
 
-		<title>Electro - HTML Ecommerce Template</title>
-
-		<!-- Google font -->
-		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
-
-		<!-- Bootstrap  -->
-		<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
-		<!-- thêm  "/" ở đâu href để nó lấy đương link cố định không bị ảnh hưởng từ API-->
-		<!-- Slick -->
-		<link type="text/css" rel="stylesheet" href="/css/slick.css"/>
-		<link type="text/css" rel="stylesheet" href="/css/slick-theme.css"/>
-
-		<!-- nouislider -->
-		<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css"/>
-
-		<!-- Font Awesome Icon -->
-		<link rel="stylesheet" href="/css/font-awesome.min.css">
-
-		<!-- Custom stlylesheet -->
-		<link type="text/css" rel="stylesheet" href="/css/style.css"/>
-
-	<style>
-		.primary-btn.order-submit {
-			width: 420px; /* Chiều rộng mong muốn */
-			padding: 10px; /* Độ dày của nút */
-			font-size: 16px; /* Kích thước chữ của nút */
-		}
-		
-			/* CSS cho bảng */
 			.order-table {
 				width: 100%;
 				border-collapse: collapse;
 				margin-top: 20px;
 			}
-	
+
 			.order-table th,
 			.order-table td {
 				border: 1px solid #ddd;
 				padding: 8px;
 				text-align: center;
 			}
-	
+
 			.order-table th {
 				background-color: #f2f2f2;
 			}
-	
+
 			.option-icon {
 				margin: 0 5px;
 				color: #ff0000;
 			}
-	
-			/* CSS cho biểu tượng */
+
 			.delete-icon {
 				color: #ff0000;
 			}
-	
+
 			.details-icon {
 				color: #0088cc;
 			}
-		
-	</style>
-	<!-- thư viện boot cho 2 icon -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+		</style>
+		<!-- thư viện boot cho 2 icon -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+		<!-- HEADER -->
+		<header>
+			<!-- TOP HEADER -->
+			<%- include('layouts/topHeader.ejs')%>
+				<!-- /TOP HEADER -->
 
-</head>
+				<!-- MAIN HEADER -->
+				<%- include('layouts/mainHeader.ejs')%>
+					<!-- /MAIN HEADER -->
+		</header>
+		<!-- /HEADER -->
 
-<body>
-	<!-- HEADER -->
-	<header>
-		<!-- TOP HEADER -->
-		<div id="top-header">
-			<div class="container">
-				<ul class="header-links pull-left">
-					<li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-					<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
-					<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
-				</ul>
-				<ul class="header-links pull-right">
-					<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-					<% if (isLoggedIn) { %>
-						<li><a href="#"><i class="fa fa-user-o"></i>Xin chào :<%=user.name%></a></li>
-					  <%}%>
-					  <li><a href="/api/v1/users/login"><i class="fa fa-sign-in"></i> Login</a></li>
-					  <% if (isLoggedIn) { %>
-						<li><a href="/api/v1/users/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
-					  <%}%>
-				</ul>
+		<%- include('layouts/navigation.ejs')%>
+
+			<!-- BREADCRUMB -->
+			<div id="breadcrumb" class="section">
+				<!-- container -->
+				<div class="container">
+					<!-- row -->
+					<div class="row">
+						<div class="col-md-12">
+							<h3 class="breadcrumb-header">
+								<%= __("Profile") %>
+							</h3>
+							<ul class="breadcrumb-tree">
+								<li><a href="#">
+										<%= __("Home") %>
+									</a></li>
+								<li class="active">
+									<%= __("Profile") %>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- /row -->
+				</div>
+				<!-- /container -->
 			</div>
-		</div>
-		<!-- /TOP HEADER -->
+			<!-- /BREADCRUMB -->
 
-		<!-- MAIN HEADER -->
-		<div id="header">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<!-- LOGO -->
-					<div class="col-md-3">
-						<div class="header-logo">
-							<a href="#" class="logo">
-								<img src="./img/logo.png" alt="">
-							</a>
-						</div>
-					</div>
-					<!-- /LOGO -->
+			<!-- SECTION -->
+			<div class="section">
+				<!-- container -->
+				<div class="container">
+					<!-- row -->
+					<div class="row">
 
-					<!-- SEARCH BAR -->
-					<div class="col-md-6">
-						<div class="header-search">
-							<form>
-								<select class="input-select">
-									<option value="0">All Categories</option>
-									<% categories.forEach( category => {%>
-										<!-- MỖI OPTIONS MỘT ID -->
-										<option value="<%=category._id%>"><%=category.name%></option>
-									<%})%>
-								</select>
-								<input class="input" placeholder="Search here" id="searchInput">
-								<button class="search-btn" id="searchButton">Search</button>
-							</form>
-						</div>
-					</div>
-					<form id="searchForm" method="post" action="/api/v1/products/search-key" style="display: none;">
-						<input type="hidden" name="keyword" id="searchInputHidden">
-					  </form>
-					<script>
-						const searchInput = document.getElementById('searchInput');
-						const searchButton = document.getElementById('searchButton');
-						const searchForm = document.getElementById('searchForm');
-						const searchInputHidden = document.getElementById('searchInputHidden');
-
-						searchButton.addEventListener('click', () => {
-							event.preventDefault();// ngăn chặn hành vi mặc định không ảnh hưởng bỏi form trên
-							const keyword = searchInput.value;
-							searchInputHidden.value = keyword;
-							searchForm.submit(); // Gửi yêu cầu tìm kiếm bằng form ẩn
-						});
-						</script>
-
-					<!-- /SEARCH BAR -->
-
-					<!-- ACCOUNT -->
-					<div class="col-md-3 clearfix">
-						<div class="header-ctn">
-							<!-- Wishlist -->
-							<!-- <div>
-								<a href="#">
-									<i class="fa fa-heart-o"></i>
-									<span>Your Wishlist</span>
-									<div class="qty">2</div>
-								</a>
-							</div> -->
-							<div><% if (isLoggedIn) { %>
-								<a href="/api/v1/users/profile/<%=user.id%>">
-									<i class="fa fa-user"></i>
-									<span>Profile</span>
-								</a>
-								<%}else{%>
-								<a href="">
-									<i class="fa fa-user"></i>
-									<span>Profile</span>
-								</a>
-								<%}%>
-							</div>
-							<!-- /Wishlist -->
-
-							<!-- Cart -->
-							<div class="dropdown">
-								<!-- <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-									<i class="fa fa-shopping-cart"></i>
-									<span>Your Cart</span>
-									<div class="qty">3</div>
-								</a>
-								<div class="cart-dropdown">
-									<div class="cart-list">
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product01.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
-
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product02.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
+						<div class="col-md-3 order-details">
+							<!-- Billing Details -->
+							<div class="billing-details">
+								<div class="section-title">
+									<h3 class="title">
+										<%= __("UserProfile") %>
+									</h3>
+								</div>
+								<form action="/api/v1/users/changepassword/<%=user._id%>?_method=PUT" method="POST">
+									<div class="form-group">
+										<label for="name">
+											<%= __("UserName") %>
+										</label>
+										<input class="input" type="text" name="name" placeholder="
+										<%= __(" Name") %>"
+										value="<%=user.name%>">
 									</div>
-									<div class="cart-summary">
-										<small>3 Item(s) selected</small>
-										<h5>SUBTOTAL: $2940.00</h5>
+									<div class="form-group">
+										<label for="name">Email</label>
+										<input class="input" type="email" name="email" placeholder="Email"
+											value="<%=user.email%>">
 									</div>
-									<div class="cart-btns">
-										<a href="#">View Cart</a>
-										<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+									<div class="form-group">
+										<label for="name">
+											<%= __("Phone") %>
+										</label>
+										<input class="input" type="text" name="phone" placeholder="
+										<%= __(" Phone") %>"
+										value="<%=user.phone%>">
 									</div>
-								</div> -->
+									<div class="form-group">
+										<label for="name">
+											<%= __("Oldpassword") %>
+										</label>
+										<input class="input" type="password" name="oldpassword" placeholder="
+										<%= __(" Oldpassword") %>" value="">
+									</div>
+									<div class="form-group">
+										<label for="name">
+											<%= __("Newpassword") %>
+										</label>
+										<input class="input" type="password" name="newpassword" placeholder="
+										<%= __(" Newpassword") %>" value="">
+									</div>
+									<div class="form-group">
+										<label for="name">
+											<%= __("Confirmpassword") %>
+										</label>
+										<input class="input" type="password" name="confirmpassword"
+											placeholder="<%= __(" Confirmpassword") %>">
+									</div>
+									<button class="primary-btn order-submit" style="width: 100%;" type="submit">
+										<%= __("Update") %>
+									</button>
+								</form>
 							</div>
-							<!-- /Cart -->
+						</div>
 
-							<!-- Menu Toogle -->
-							<div class="menu-toggle">
-								<a href="#">
-									<i class="fa fa-bars"></i>
-									<span>Menu</span>
+						<!-- Order Details -->
+						<div class="col-md-9 order-details">
+							<div class="section-title text-center">
+								<h3 class="title">
+									<%= __("YourOrder") %>
+								</h3>
+							</div>
+							<table class="order-table">
+
+								<thead>
+									<tr>
+										<th>
+											<%= __("Orderid") %>
+										</th>
+										<th>
+											<%= __("Price") %>
+										</th>
+										<th>
+											<%= __("Address") %>
+										</th>
+										<th>
+											<%= __("Status") %>
+										</th>
+										<th>
+											<%= __("Date") %>
+										</th>
+										<th>
+											<%= __("Options") %>
+										</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<% if(order.length>0){%>
+										<% order.forEach( o=>{%>
+											<tr>
+												<td>
+													<%=o._id%>
+												</td>
+												<td>
+													<%=o.totalPrice%>
+												</td>
+												<td>
+													<%=o.shippingAddress1%>
+												</td>
+												<td>
+													<%=o.status%>
+												</td>
+												<td>
+													<%=o.dateOrdered.getDate() + '-' + (o.dateOrdered.getMonth()+1)
+														+'-'+ o.dateOrdered.getFullYear()%>
+												</td>
+												<td>
+													<a href="/api/v1/orders/<%=o._id%>" class="option-icon view-icon"><i
+															class="fas fa-eye"></i></a>
+													<a href="" id="delete" data-doc="<%=o._id%>"
+														class="option-icon delete-icon"><i
+															class="fas fa-trash-alt"></i></a>
+												</td>
+											</tr>
+											<!-- You can add more rows with similar structure for additional orders -->
+											<%})%>
+												<%}%>
+								</tbody>
+
+							</table>
+							<div class="form-group" style="display: grid; place-items: center; height: 50%;">
+								<a href="#" class="primary-btn order-submit">
+									<%= __("back") %>
 								</a>
 							</div>
-							<!-- /Menu Toogle -->
 						</div>
+						<!-- /Order Details -->
 					</div>
-					<!-- /ACCOUNT -->
+					<!-- /row -->
 				</div>
-				<!-- row -->
+				<!-- /container -->
 			</div>
-			<!-- container -->
-		</div>
-		<!-- /MAIN HEADER -->
-	</header>
-	<!-- /HEADER -->
-
-	<!-- NAVIGATION -->
-	<nav id="navigation">
-		<!-- container -->
-		<div class="container">
-			<!-- responsive-nav -->
-			<div id="responsive-nav">
-				<!-- NAV -->
-				<ul class="main-nav nav navbar-nav">
-					<li class="active"><a href="/">Home</a></li>
-					<% if( categories.length > 0){%>
-						<% categories.forEach ( c => {%>
-							<li><a href="/api/v1/products?categories=<%=c._id%>"><%=c.name %></a></li>
-						<%})%>
-					<%}%>	
-				</ul>
-				
-				<!-- /NAV -->
-			</div>
-			<!-- /responsive-nav -->
-		</div>
-		<!-- /container -->
-	</nav>
-	<!-- /NAVIGATION -->
-
-	<!-- BREADCRUMB -->
-	<div id="breadcrumb" class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-12">
-					<h3 class="breadcrumb-header">Profile</h3>
-					<ul class="breadcrumb-tree">
-						<li><a href="#">Home</a></li>
-						<li class="active">Profile</li>
-					</ul>
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /BREADCRUMB -->
-
-	<!-- SECTION -->
-    <div class="section">
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-
-                <div class="col-md-3 order-details" >
-                    <!-- Billing Details -->
-                    <div class="billing-details">
-                        <div class="section-title">
-                            <h3 class="title">User Profile</h3>
-                        </div>
-						<form action="/api/v1/users/changepassword/<%=user._id%>?_method=PUT" method="POST">
-                        <div class="form-group">
-							<label for="name">User Name</label>
-                            <input class="input" type="text" name="name" placeholder="Name" value="<%=user.name%>">
-                        </div>
-                        <div class="form-group">
-							<label for="name">Email</label>
-                            <input class="input" type="email" name="email" placeholder="Email" value="<%=user.email%>">
-                        </div>
-                        <div class="form-group">
-							<label for="name">Phone</label>
-                            <input class="input" type="text" name="phone" placeholder="Phone" value="<%=user.phone%>">
-                        </div>
-                        <div class="form-group">
-							<label for="name">Old password</label>
-                            <input class="input" type="password" name="oldpassword" placeholder="Old Password" value="">
-                        </div>
-						<div class="form-group">
-							<label for="name">New password</label>
-                            <input class="input" type="password" name="newpassword" placeholder="New Password" value="">
-                        </div>
-                        <div class="form-group">
-							<label for="name">Confirm password</label>
-                            <input class="input" type="password" name="confirmpassword" placeholder="Confirm password">
-                        </div>
-                        <button class="primary-btn order-submit" style="width: 100%;" type="submit">Update</button>
-					</form>
-                    </div>
-                </div>
-
-                <!-- Order Details -->
-                <div class="col-md-9 order-details">
-                    <div class="section-title text-center">
-                        <h3 class="title">Your Order</h3>
-                    </div>
-                        <table class="order-table">
-							
-                            <thead>
-                                <tr>
-                                    <th>Orderid</th>
-                                    <th>Price</th>
-                                    <th>Address</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Options</th>
-                                </tr>
-                            </thead>
-							
-                            <tbody>
-								<% if(order.length >0){%>
-									<% order.forEach( o =>{%>
-                                <tr>
-                                    <td><%=o._id%></td>
-                                    <td><%=o.totalPrice%></td>
-                                    <td><%=o.shippingAddress1%></td>
-                                    <td><%=o.status%></td>
-                                    <td><%=o.dateOrdered.getDate() + '-'+ (o.dateOrdered.getMonth()+1) +'-'+ o.dateOrdered.getFullYear()%></td>
-                                    <td>
-                                        <a href="/api/v1/orders/<%=o._id%>" class="option-icon view-icon"><i class="fas fa-eye"></i></a>
-                                        <a href="" id="delete" data-doc="<%=o._id%>"  class="option-icon delete-icon"><i class="fas fa-trash-alt" ></i></a>
-                                    </td>
-                                </tr>
-                                <!-- You can add more rows with similar structure for additional orders -->
-								<%})%>
-							<%}%>
-                            </tbody>
-							
-                        </table>
-						<div class="form-group" style="display: grid; place-items: center; height: 50%;">
-							<a href="#" class="primary-btn order-submit">Place Order</a>
-						</div>
-                </div>
-                <!-- /Order Details -->
-            </div>
-            <!-- /row -->
-        </div>
-        <!-- /container -->
-    </div>
-    <!-- /SECTION -->
-	<script>
-		const deleteButtons = document.querySelectorAll('a#delete');
+			<!-- /SECTION -->
+			<script>
+				const deleteButtons = document.querySelectorAll('a#delete');
 
 
-		////////////////// Khoogn được chèn cú phép viewengine vào script (vì viewengine chỉ tác dụng trên HTMl)
-		deleteButtons.forEach((button) =>{
-      button.addEventListener('click', (e)=>{
-        const endpoint = `/api/v1/users/deleteOrder/${button.dataset.doc}`;
-        fetch(endpoint, {
-          method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then((data)=>{
-          window.location.href = data.redirect;
-        })
-        .catch(err => console.log(err));
-      })
-     })
-	</script>
-	<!-- NEWSLETTER -->
-	<div id="newsletter" class="section">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-12">
-					<div class="newsletter">
-						<p>Sign Up for the <strong>NEWSLETTER</strong></p>
-						<form>
-							<input class="input" type="email" placeholder="Enter Your Email">
-							<button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
-						</form>
-						<ul class="newsletter-follow">
-							<li>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-instagram"></i></a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-pinterest"></i></a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /NEWSLETTER -->
+				////////////////// Khoogn được chèn cú phép viewengine vào script (vì viewengine chỉ tác dụng trên HTMl)
+				deleteButtons.forEach((button) => {
+					button.addEventListener('click', (e) => {
+						const endpoint = `/api/v1/users/deleteOrder/${button.dataset.doc}`;
+						fetch(endpoint, {
+							method: 'DELETE'
+						})
+							.then(response => response.json())
+							.then((data) => {
+								window.location.href = data.redirect;
+							})
+							.catch(err => console.log(err));
+					})
+				})
+			</script>
+			<%- include('layouts/newLetter.ejs') %>
 
-	<!-- FOOTER -->
-	<footer id="footer">
-		<!-- top footer -->
-		<div class="section">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-3 col-xs-6">
-						<div class="footer">
-							<h3 class="footer-title">About Us</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-								incididunt ut.</p>
-							<ul class="footer-links">
-								<li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
-								<li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
-								<li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
-							</ul>
-						</div>
-					</div>
+				<%- include('layouts/footer.ejs') %>
 
-					<div class="col-md-3 col-xs-6">
-						<div class="footer">
-							<h3 class="footer-title">Categories</h3>
-							<ul class="footer-links">
-								<li><a href="#">Hot deals</a></li>
-								<li><a href="#">Laptops</a></li>
-								<li><a href="#">Smartphones</a></li>
-								<li><a href="#">Cameras</a></li>
-								<li><a href="#">Accessories</a></li>
-							</ul>
-						</div>
-					</div>
+	</body>
 
-					<div class="clearfix visible-xs"></div>
-
-					<div class="col-md-3 col-xs-6">
-						<div class="footer">
-							<h3 class="footer-title">Information</h3>
-							<ul class="footer-links">
-								<li><a href="#">About Us</a></li>
-								<li><a href="#">Contact Us</a></li>
-								<li><a href="#">Privacy Policy</a></li>
-								<li><a href="#">Orders and Returns</a></li>
-								<li><a href="#">Terms & Conditions</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="col-md-3 col-xs-6">
-						<div class="footer">
-							<h3 class="footer-title">Service</h3>
-							<ul class="footer-links">
-								<li><a href="#">My Account</a></li>
-								<li><a href="#">View Cart</a></li>
-								<li><a href="#">Wishlist</a></li>
-								<li><a href="#">Track My Order</a></li>
-								<li><a href="#">Help</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /top footer -->
-
-		<!-- bottom footer -->
-		<div id="bottom-footer" class="section">
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-12 text-center">
-						<ul class="footer-payments">
-							<li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
-							<li><a href="#"><i class="fa fa-credit-card"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
-							<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
-						</ul>
-						<span class="copyright">
-							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							Copyright &copy;
-							<script>document.write(new Date().getFullYear());</script> All rights reserved | This
-							template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a
-								href="https://colorlib.com" target="_blank">Colorlib</a>
-							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						</span>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /bottom footer -->
-	</footer>
-	<!-- /FOOTER -->
-
-	<!-- jQuery Plugins -->
-	    <script src="/js/jquery.min.js"></script>
-		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/slick.min.js"></script>
-		<script src="/js/nouislider.min.js"></script>
-		<script src="/js/jquery.zoom.min.js"></script>
-		<script src="/js/main.js"></script>
-
-</body>
-
-</html>
+	</html>

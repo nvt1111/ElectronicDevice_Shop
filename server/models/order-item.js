@@ -6,7 +6,7 @@ const orderItemSchema = mongoose.Schema({
         ref: 'User',
         required: true
     },
-    product: { // LK collection Product
+    product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     },

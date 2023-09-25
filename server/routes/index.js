@@ -6,8 +6,7 @@ const orderItem = require('./order-items')
 const vnpay = require('./vnpays')
 const admin = require('./admins')
 
-
-const initRoutes = (app) =>{// truyền vào server
+const initRoutes = (app) => {// truyền vào server
 
     app.use('/api/v1/users', user);
     app.use('/api/v1/products', product);
@@ -16,7 +15,7 @@ const initRoutes = (app) =>{// truyền vào server
     app.use('/api/v1/orderItems', orderItem);
     app.use('/api/v1/vnpays', vnpay);
     app.use('/admins', admin);
-}
 
+}
 
 module.exports = initRoutes
