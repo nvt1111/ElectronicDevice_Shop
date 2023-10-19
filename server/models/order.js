@@ -63,7 +63,7 @@ var orderSchema = new mongoose.Schema({
     dateOrdered: {
         type: Date,
         default: Date.now,
-    },
+    }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

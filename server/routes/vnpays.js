@@ -5,6 +5,7 @@ let router = express.Router();
 let $ = require('jquery');
 const request = require('request');
 const moment = require('moment');
+const sendmail = require('../helpers/sendmail');
 
 router.get('/', function (req, res, next) {
     res.render('orderlist', { title: 'Danh sách đơn hàng' })
@@ -113,22 +114,17 @@ router.get('/vnpay_return', async function (req, res, next) {
             const orderId = vnp_Params['vnp_TxnRef'].split('_')[1];
             console.log('OrderID:', orderId);
 
-            // const { Order } = require('../models/order'); // Đảm bảo import đúng model Order từ thư viện
-
-            // Chuyển orderId sang dạng ObjectId
-            // const orderIdAsObjectId = ObjectId(orderId);
-
             // Cập nhật trạng thái của orderId trong collection Order
             const updateDocument = {
                 $set: { status: "Đã thanh toán" },
             };
             const updateStatus = await Order.findByIdAndUpdate(orderId, updateDocument);
-            if (updateDocument) {
-                const message = 'Chúc mừng bạn thanh toán thành công!!!'
-                res.render('success', { message })
-            } else {
-                res.render('/')
-            }
+            const message = 'Bạn đã thanh toán thành công! Vui lòng kiểm tra email để biết chi tiết đơn hàng.';
+            const user = req.session.user;
+            const html = `Đơn hàng của bạn đã thanh toán thành công . Xem chi tiết đơn hàng tại.Link này sẽ hết hạn sau 15 phút kể từ bây giờ. <a href=${process.env.URL_SERVER_ORDER}/${orderId}>Click here</a>`
+            const rs = await sendmail({ email: user.email, html });
+            res.render('successVNpay', { message })
+
         } else {
             const isLoggedIn = req.session.isLoggedIn;
             const user = req.session.user

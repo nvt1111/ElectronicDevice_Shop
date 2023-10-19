@@ -66,21 +66,11 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 	<body>
-
-		<!-- HEADER -->
 		<header>
-			<!-- TOP HEADER -->
 			<%- include('layouts/topHeader.ejs')%>
-				<!-- /TOP HEADER -->
-
-				<!-- MAIN HEADER -->
 				<%- include('layouts/mainHeader.ejs')%>
-					<!-- /MAIN HEADER -->
 		</header>
-		<!-- /HEADER -->
-		<!-- navigation -->
 		<%- include('layouts/navigation.ejs')%>
-
 			<!-- BREADCRUMB -->
 			<div id="breadcrumb" class="section">
 				<!-- container -->
@@ -218,6 +208,8 @@
 							<form id="checkoutForm" action="/api/v1/orderItems/checkout" method="POST">
 								<input type="hidden" name="totalPrice" value="<%=totalPrice%>">
 								<input type="hidden" name="userName" value="<%=user.name%>">
+								<input type="hidden" name="check" value="0">
+								<input type="hidden" name="totalPricecheck" value="<%=totalPrice%>">
 								<!-- GỬI THÊM USER_ID ĐỂ THỰC HIỆN CHO TRANG PAYMENT GỌI LẠI ORDERHISTORY -->
 								<input type="hidden" name="user_id" value="<%=user._id%>">
 								<% orderItem.forEach(item=> { %>

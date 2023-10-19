@@ -5,6 +5,8 @@ const order = require('./orders')
 const orderItem = require('./order-items')
 const vnpay = require('./vnpays')
 const admin = require('./admins')
+const coupon = require('./coupon')
+const oauth2 = require('./oauth2')
 
 const initRoutes = (app) => {// truyền vào server
 
@@ -15,6 +17,8 @@ const initRoutes = (app) => {// truyền vào server
     app.use('/api/v1/orderItems', orderItem);
     app.use('/api/v1/vnpays', vnpay);
     app.use('/admins', admin);
+    app.use('/coupons', coupon);
+    app.use('/auth', oauth2);
 
 }
 

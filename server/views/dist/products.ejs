@@ -1,0 +1,62 @@
+<%- include('./layouts/header')%>
+
+    <body class="sb-nav-fixed">
+        <%- include('./layouts/navbar')%>
+            <div id="layoutSidenav">
+                <%- include('./layouts/layoutside')%>
+                    <div id="layoutSidenav_content">
+                        <main>
+                            <div class="container-fluid px-4">
+                                <h1 class="mt-4">Products</h1>
+                                <ol class="breadcrumb mb-4">
+                                    <li class="breadcrumb-item"><a href="/admins/dashboard">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Products</li>
+                                </ol>
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-table me-1"></i>
+                                        Products
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="styled-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Description</th>
+                                                    <th>Image</th>
+                                                    <th>Brand</th>
+                                                    <th>Price</th>
+                                                    <th>Category</th>
+                                                    <th>Stock</th>
+                                                    <th>Rating</th>
+                                                    <th>Reviews</th>
+                                                    <th>Options</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>Tiger Nixon</td>
+                                                    <td>System Architect</td>
+                                                    <td>Edinburgh</td>
+                                                    <td>61</td>
+                                                    <td>2011/04/25</td>
+                                                    <td>$320,800</td>
+                                                    <td>Tiger Nixon</td>
+                                                    <td>System Architect</td>
+                                                    <td>Edinburgh</td>
+                                                    <td>61</td>
+                                                    <td>2011/04/25</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                        <%- include('./layouts/footer')%>
+                    </div>
+            </div>
+            <%- include('./layouts/embed')%>

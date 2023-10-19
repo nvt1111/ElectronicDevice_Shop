@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous" />
+  <style>
+    /* Toast message styles */
+    .toast-container {
+      position: fixed;
+      top: 32px;
+      right: 32px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      background-color: #5cb85c;
+      color: white;
+      border-radius: 4px;
+      padding: 10px 20px;
+      margin-bottom: 10px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+      transform: translateX(100%);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .toast-content {
+      flex-grow: 1;
+    }
+
+    .toast-close {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    // Function to display the toast
+    function showToast(message) {
+      const toastContainer = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.classList.add('toast', 'show');
+
+      const toastContent = document.createElement('div');
+      toastContent.classList.add('toast-content');
+      toastContent.textContent = message;
+
+      const closeIcon = document.createElement('i');
+      closeIcon.classList.add('fas', 'fa-times', 'toast-close');
+      closeIcon.onclick = function () {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toast.remove();
+        }, 500);
+      };
+
+      toast.appendChild(toastContent);
+      toast.appendChild(closeIcon);
+
+      toastContainer.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toast.remove();
+          window.location.href = '/';
+        }, 500);
+      }, 3000);  // Show for 5 seconds
+    }
+
+    // Function to show the success toast
+    function showSuccessToast() {
+      const message = '<%= message %>';
+      showToast(message);
+    }
+
+    // Call the showSuccessToast function
+    showSuccessToast();
+  </script>
+</body>
+
+</html>

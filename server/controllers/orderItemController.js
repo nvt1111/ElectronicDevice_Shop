@@ -79,17 +79,20 @@ const deleteCartUserid = async (req, res, next) => {
     }
 };
 
-const getCheckout = (req, res, next) => {
+const getCheckout = (req, res, next) => { //==> createorder hoac apply Coupon
     try {
         const totalPrice = req.body.totalPrice;
+        const totalPriceCheck = req.body.totalPrice;
+        const check = req.body.check;
         const user_id = req.body.user_id;
         const userName = req.body.userName;
         const productNames = req.body.productNames;
         const quantities = req.body.quantities;
         const prices = req.body.prices;
         const isLoggedIn = req.session.isLoggedIn;
-        const user = req.session.user
-        res.render('checkout', { totalPrice, userName, productNames, quantities, prices, user_id, isLoggedIn, user });
+        const user = req.session.user;
+
+        res.render('checkout', { totalPriceCheck, check, totalPrice, userName, productNames, quantities, prices, user_id, isLoggedIn, user });
     } catch (error) {
         next(error);
     }

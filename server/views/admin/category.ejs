@@ -1,6 +1,5 @@
 <%- include('./layouts/header') %>
 
-
   <header id="main-header" class="py-2 bg-success text-white">
     <div class="container">
       <div class="row">
@@ -80,21 +79,25 @@
                 </thead>
                 <tbody>
                   <% let i=1 ;%>
-                  <%if(categories.length > 0){%>
-                    <%categories.forEach(cate =>{ %>
-                  <tr>
-                    <td><%=i%></td>
-                    <td><%=cate.name%></td>
-                    <td>
-                      <a href="" id="delete" data-doc="<%=cate._id%>" class="btn btn-secondary btn-sm">
-                        <!-- <i class="fas fa-angle-double-right"></i> -->
-                        Delete
-                      </a>
-                    </td>
-                  </tr>
-                  <% i++%>
-                  <%})%>
-                  <%}%>  
+                    <%if(categories.length> 0){%>
+                      <%categories.forEach(cate=>{ %>
+                        <tr>
+                          <td>
+                            <%=i%>
+                          </td>
+                          <td>
+                            <%=cate.name%>
+                          </td>
+                          <td>
+                            <a href="" id="delete" data-doc="<%=cate._id%>" class="btn btn-secondary btn-sm">
+                              <!-- <i class="fas fa-angle-double-right"></i> -->
+                              Delete
+                            </a>
+                          </td>
+                        </tr>
+                        <% i++%>
+                          <%})%>
+                            <%}%>
                 </tbody>
               </table>
 
@@ -127,17 +130,17 @@
   <script>
     const deleteButtons = document.querySelectorAll('a#delete');
 
-    deleteButtons.forEach((button) =>{
-      button.addEventListener('click', (e)=>{
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', (e) => {
         const endpoint = `/admins/delCate/${button.dataset.doc}`;
         fetch(endpoint, {
           method: 'DELETE'
         })
-        .then(response => response.json())
-        .then((data)=>{
-          window.location.href = data.redirect;
-        })
-        .catch(err => console.log(err));
+          .then(response => response.json())
+          .then((data) => {
+            window.location.href = data.redirect;
+          })
+          .catch(err => console.log(err));
       })
     })
   </script>

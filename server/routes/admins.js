@@ -10,6 +10,12 @@ route.get('/product', adminController.get_page_product);
 route.get('/category', adminController.get_page_category);
 route.get('/user', adminController.get_page_user);
 
+//////////
+route.get('/revenue', adminController.getRevenue);
+route.get('/products', adminController.getProducts);
+route.get('/users', adminController.getUsers);
+route.get('/orders', adminController.getOrders);
+
 ////////// USER
 route.post('/addUser', adminController.addUser);
 route.delete('/delUser/:id', adminController.delUser);

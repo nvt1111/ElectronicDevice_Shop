@@ -79,7 +79,25 @@
 
                     <!-- Cart -->
                     <div class="dropdown">
-
+                        <select id="languageSelect" onchange="changeLanguage(this.value)">
+                            <option>
+                                <%= __("Changelanguage") %>
+                            </option>
+                            <li>
+                                <option value="en">
+                                    <a>
+                                        <%= __("English") %>
+                                    </a>
+                                </option>
+                            </li>
+                            <li>
+                                <option value="vi">
+                                    <a>
+                                        <%= __("Vietnamese") %>
+                                    </a>
+                                </option>
+                            </li>
+                        </select>
                     </div>
                     <!-- /Cart -->
 

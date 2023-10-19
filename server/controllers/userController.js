@@ -69,7 +69,7 @@ const login = async (req, res, next) => {
     if (bcrypt.compareSync(req.body.password, user.passwordHash)) {
         const accessToken = await signAccessToken(user._id);
         req.session.isLoggedIn = true;
-        req.session.user = { name: user.name, id: user._id }; // Thay thế bằng thông tin người dùng thực tế
+        req.session.user = { name: user.name, id: user.id, email: user.email }; // Thay thế bằng thông tin người dùng thực tế
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000, // 1 ngày

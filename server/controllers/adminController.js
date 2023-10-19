@@ -18,7 +18,7 @@ const get_dashboard = async (req, res, next) => {// login admin
     const end = start + slOrder1Page;
     const totalPage = Math.ceil(order.length / slOrder1Page);//lam tron leen
 
-    res.render('admin/index', { orders: order.slice(start, end), totalPage, currentPage });
+    res.render('dist/index', { orders: order.slice(start, end), totalPage, currentPage });
 }
 
 const get_page_user = (req, res, next) => {
@@ -235,6 +235,25 @@ const detailOrder = async (req, res, next) => {
     res.render('admin/edit_order', { order })
 }
 
+const getRevenue = async (req, res, next) => {
+    let monthlyRevenue = Array(12).fill(0);
+    const orders = await Order.find();
+    orders.forEach(order => {
+        const month = new Date(order.dateOrdered).getMonth();
+        monthlyRevenue[month] += order.totalPrice
+    })
+    res.json({ monthlyRevenue });
+}
+
+const getProducts = async (req, res) => {
+    res.render('dist/products')
+}
+const getOrders = async (req, res) => {
+    res.render('dist/orders')
+}
+const getUsers = async (req, res) => {
+    res.render('dist/users')
+}
 
 module.exports = {
     get_dashboard,
@@ -250,5 +269,9 @@ module.exports = {
     delCate,
     update_product,
     detailProduct, detailUser,
-    update_user, detailOrder, update_order
+    update_user,
+    detailOrder,
+    update_order,
+    getRevenue,
+    getOrders, getUsers, getProducts
 }

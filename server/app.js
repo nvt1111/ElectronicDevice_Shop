@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 require('dotenv/config');
+require('./helpers/oauth2');
+const passport = require('passport')
 const app = express();
 const cors = require('cors');
 const DBconnect = require("./connections/DBconnect")
@@ -27,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 app.set('view engine', 'ejs')
 app.use(express.static('public/styles'));// ơ dau cung truy cạp dc
+app.use(express.static('public'));// ơ dau cung truy cạp dc
 app.use(methodOverride('_method'));// để sử dụng pthuc PUT
 
 app.use(session({
@@ -34,6 +37,10 @@ app.use(session({
   resave: false, // Không lưu lại session mỗi lần yêu cầu được gửi lại
   saveUninitialized: true, // Lưu session ngay cả khi chưa có dữ liệu
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 DBconnect
 app.listen(5001, () => {

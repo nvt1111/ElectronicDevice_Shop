@@ -1,20 +1,11 @@
 <%- include('layouts/header.ejs') %>
 
 	<body>
-		<!-- HEADER -->
 		<header>
-			<!-- TOP HEADER -->
 			<%- include('layouts/topHeader.ejs')%>
-				<!-- /TOP HEADER -->
-
-				<!-- MAIN HEADER -->
 				<%- include('layouts/mainHeader.ejs')%>
-					<!-- /MAIN HEADER -->
 		</header>
-		<!-- /HEADER -->
-
 		<%- include('layouts/navigation.ejs')%>
-
 			<!-- SECTION -->
 			<div class="section">
 				<!-- container -->
@@ -26,14 +17,14 @@
 						<div class="col-md-12">
 							<div class="section-title">
 								<h3 class="title">
-									<%=category.name%>
+									<%= __("NEWPRODUCTS") %>
 								</h3>
 								<div class="section-nav">
 									<ul class="section-tab-nav tab-nav">
 										<% if( categories.length> 0){%>
 											<% categories.forEach ( c=> {%>
 												<li><a data-toggle="tab" href="#tab1">
-														<%=c.name %>
+														<%= __(`${c.name}`)%>
 													</a></li>
 												<%})%>
 													<%}%>

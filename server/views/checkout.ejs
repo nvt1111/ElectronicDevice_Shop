@@ -178,14 +178,87 @@
 													<%= totalPrice%> VND
 												</strong></div>
 										</div>
-							</div>
+										<div class="order-col">
+											<div><!-- Form hidden apply coupon -->
 
+												<form id="checkoutForm" action="/api/v1/orders/applyCoupon"
+													method="POST">
+													<input type="text" name="nameCoupon" id="nameCouponInput"
+														placeholder="Code coupon..." />
+													<div id="couponErrorMessage" style="display: none; color: red;">
+														Coupon không hợp lệ hoặc đã hết hạn !!!
+													</div>
+													<div id="couponErrorMessage1" style="display: none; color: red;">
+														Chúc mừng apply đơn hàng thành công !!!
+													</div>
+													<div id="couponErrorMessage2" style="display: none; color: red;">
+														Bạn đã áp dụng coupon cho đơn hàng này! Vui lòng không nhập lại
+														!!!
+													</div>
+													<% if(check===1) { %>
+														<script>
+															const couponInput = document.getElementById('nameCouponInput');
+															const errorMessage = document.getElementById('couponErrorMessage');
+
+															couponInput.classList.add('input-error'); // Thêm lớp CSS
+															errorMessage.style.display = 'block'; // Hiển thị thông báo
+														</script>
+														<% } %>
+															<% if(check===2) { %>
+																<script>
+																	const couponInput1 = document.getElementById('nameCouponInput');
+																	const errorMessage1 = document.getElementById('couponErrorMessage1');
+
+																	couponInput1.classList.add('input-error'); // Thêm lớp CSS
+																	errorMessage1.style.display = 'block'; // Hiển thị thông báo
+																</script>
+																<% } %>
+																	<% if(check===3) { %>
+																		<script>
+																			const couponInput2 = document.getElementById('nameCouponInput');
+																			const errorMessage2 = document.getElementById('couponErrorMessage2');
+
+																			couponInput2.classList.add('input-error'); // Thêm lớp CSS
+																			errorMessage2.style.display = 'block'; // Hiển thị thông báo
+																		</script>
+																		<% } %>
+
+
+																			<input type="hidden" name="totalPrice"
+																				value="<%=totalPrice%>">
+																			<input type="hidden" name="userName[]"
+																				value="<%=userName%>">
+																			<input type="hidden" name="check"
+																				value="<%=check%>">
+																			<input type="hidden" name="totalPriceCheck"
+																				value="<%=totalPriceCheck%>">
+																			<!-- GỬI THÊM USER_ID ĐỂ THỰC HIỆN CHO TRANG PAYMENT GỌI LẠI ORDERHISTORY -->
+																			<input type="hidden" name="user_id"
+																				value="<%=user_id%>">
+																			<input type="hidden" name="productNames[]"
+																				value="<%= productNames %>">
+																			<input type="hidden" name="quantities[]"
+																				value="<%= quantities %>">
+																			<input type="hidden" name="prices[]"
+																				value="<%=prices%>">
+												</form>
+
+												<!-- Form  hidden apply coupon vi don hang chua dc luu len ko lay dc orderid -->
+											</div>
+
+											<div><button class="btn btn-primary btn-block mt-3" id="place"
+													onclick="document.getElementById('checkoutForm').submit()"
+													type="button">
+													<%= __("Apply coupon") %>
+												</button></div>
+										</div>
+							</div>
 
 							<button type="button" onclick="document.getElementById('paymentForm').submit()"
 								class="primary-btn order-submit">
 								<%= __("dathang") %>
 							</button>
-							<!-- <a href="#" class="primary-btn order-submit">Place order</a> -->
+
 						</div>
 						<!-- /Order Details -->
 					</div>

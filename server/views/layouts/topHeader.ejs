@@ -13,25 +13,7 @@
                 <li><a href="#"><i class="fa fa-phone"></i> +035-966-9399</a></li>
                 <li><a href="#"><i class="fa fa-envelope-o"></i> nguyenvanthai@gmail.com</a></li>
                 <li><a href="#"><i class="fa fa-map-marker"></i> 255 Nguyễn Văn Trỗi </a></li>
-                <select id="languageSelect" onchange="changeLanguage(this.value)">
-                    <option>
-                        <%= __("Changelanguage") %>
-                    </option>
-                    <li>
-                        <option value="en">
-                            <a>
-                                <%= __("English") %>
-                            </a>
-                        </option>
-                    </li>
-                    <li>
-                        <option value="vi">
-                            <a>
-                                <%= __("Vietnamese") %>
-                            </a>
-                        </option>
-                    </li>
-                </select>
+
                 <script>
                     function changeLanguage(language) {
                         const url = `/change-language/${language}`;
