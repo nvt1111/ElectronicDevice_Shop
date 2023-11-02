@@ -1,21 +1,7 @@
-const express = require('express');
+const express = require("express");
 const route = express.Router();
-const couponController = require('../controllers/couponController');
+const couponController = require("../controllers/couponController");
 
-route.post('/', couponController.createCoupon);// isAdmin
+route.post("/", couponController.createCoupon); // isAdmin
 
 module.exports = route;
-
-
-
-
-
-
-
-
-
-
-
-
-
-

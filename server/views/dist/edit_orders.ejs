@@ -1,0 +1,114 @@
+<%- include('./layouts/header') %>
+
+    <header id="main-header" class="py-2 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        Edit
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Actions And Buttons -->
+    <section id="actions" class="py-4 mb-4 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="/admins/dashboard" class="btn btn-dark btn-block">
+                        <i class="fas fa-arrow-left"></i> Back To Dashboard
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Details -->
+    <section id="posts">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Edit Order</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="/admins/updateOrder/<%=order._id%>?_method=PUT" id="update" method="POST">
+                                <div class="form-group">
+                                    <label for="name">Price</label>
+                                    <input type="text" class="form-control" name="totalPrice"
+                                        value="<%=order.totalPrice%>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Address</label>
+                                    <input type="text" class="form-control" name="shippingAddress1"
+                                        value="<%=order.shippingAddress1%>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="isAdmin">Status</label>
+                                    <select class="form-control" id="isAdmin" name="status">
+                                        <option value="pending">pending</option>
+                                        <option value="đã thanh toán" selected>đã thanh toán</option>
+                                    </select>
+                                </div>
+                                <!-- <div class="form-group">
+                    <label for="phone">Date</label>
+                    <input type="text" class="form-control"  value="<%=order.dateOrdered.getDate() + '-'+ (order.dateOrdered.getMonth()+1) + '-' + order.dateOrdered.getFullYear()%>">
+                  </div> -->
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-warning" data-dismiss="modal"
+                                onclick="document.getElementById('update').submit()">
+                                <i class="fas fa-user"></i>
+                                Update
+                            </button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+
+    <footer id="main-footer" class="bg-dark text-white mt-5 p-5">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p class="lead text-center">
+                        Copyright &copy; <span id="year"></span>
+                        JLABS Dashboard
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+
+    <script>
+        // Get the current year for the copyright
+        $("#year").text(new Date().getFullYear());
+
+        // CKEditor
+        CKEDITOR.replace('editor1');
+    </script>
+    </body>
+
+    </html>

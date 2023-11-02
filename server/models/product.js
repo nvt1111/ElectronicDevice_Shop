@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-// !dmb
+
 var productSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -9,7 +9,7 @@ var productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    richDescription: { // mo ta chi tiet
+    richDescription: {
         type: String,
         default: ''
     },
@@ -28,7 +28,7 @@ var productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    category: { // Lk
+    category: { 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         required: true

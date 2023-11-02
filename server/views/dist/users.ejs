@@ -12,56 +12,200 @@
                                     <li class="breadcrumb-item"><a href="/admins/dashboard">Dashboard</a></li>
                                     <li class="breadcrumb-item active">Users</li>
                                 </ol>
-
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-table me-1"></i>
-                                        Users
+                                <!-- Search Area -->
+                                <section id="search" class="py-4 mb-4 bg-light">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <a href="" class="btn btn-warning btn-block" data-toggle="modal"
+                                                    data-target="#addUserModal">
+                                                    <i class="fas fa-plus"></i> Add User
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 ml-auto">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <table id="datatablesSimple">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Phone</th>
-                                                    <th>IsAdmin</th>
-                                                    <th>Options</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Tiger Nixon</td>
-                                                    <td>System Architect</td>
-                                                    <td>Edinburgh</td>
-                                                    <td>61</td>
-                                                    <td>2011/04/25</td>
-                                                    <td>$320,800</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Garrett Winters</td>
-                                                    <td>Accountant</td>
-                                                    <td>Tokyo</td>
-                                                    <td>63</td>
-                                                    <td>2011/07/25</td>
-                                                    <td>$170,750</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Ashton Cox</td>
-                                                    <td>Junior Technical Author</td>
-                                                    <td>San Francisco</td>
-                                                    <td>66</td>
-                                                    <td>2009/01/12</td>
-                                                    <td>$86,000</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                </section>
+
+                                <!-- Dashboard Posts -->
+                                <section id="posts">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h4>List User</h4>
+                                                        <table class="table table-striped">
+                                                            <thead class="thead-dark">
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>Name</th>
+                                                                    <th>Email</th>
+                                                                    <th>Phone</th>
+                                                                    <th>IsAdmin</th>
+                                                                    <th>Options</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% let i=1 ;%>
+                                                                    <%if(users.length> 0){%>
+                                                                        <%users.slice(0,8).forEach(u=>{ %>
+                                                                            <% if (u.isAdmin===false){%>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <%=i%>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%=u.name%>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%=u.email%>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%=u.phone%>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%=u.isAdmin%>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a href="/admins/users/<%=u._id%>"
+                                                                                            class="btn btn-secondary btn-sm">
+                                                                                            <!-- <i class="fas fa-angle-double-right"></i> -->
+                                                                                            Edit
+                                                                                        </a>
+                                                                                        <a href="" id="delete"
+                                                                                            class="btn btn-secondary btn-sm"
+                                                                                            data-doc="<%=u._id%>">
+                                                                                            <!-- <i class="fas fa-angle-double-right"></i> -->
+                                                                                            Delete
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <% i++%>
+                                                                                    <%}%>
+                                                                                        <%})%>
+                                                                                            <%}%>
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- PAGINATION -->
+                                                        <div class="ml-4">
+                                                            <ul class="pagination">
+                                                                <%if(currentPage>1){%>
+                                                                    <li class="page-item">
+                                                                        <a href="/admins/users?page=<%=currentPage-1%>"
+                                                                            class="page-link">Prev</a>
+                                                                    </li>
+                                                                    <%}%>
+                                                                        <%for(let i=1;i<=totalPage;i++){%>
+                                                                            <%if(i===currentPage){%>
+                                                                                <li class="page-item active">
+                                                                                    <a href="" class="page-link">
+                                                                                        <%=i%>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <%} else{%>
+                                                                                    <li class="page-item">
+                                                                                        <a href="/admins/users?page=<%=i%>"
+                                                                                            class="page-link">
+                                                                                            <%=i%>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <%}%>
+                                                                                        <%}%>
+                                                                                            <%if(currentPage<totalPage){%>
+                                                                                                <li class="page-item">
+                                                                                                    <a href="/admins/users?page=<%=currentPage+1%>"
+                                                                                                        class="page-link">Next</a>
+                                                                                                </li>
+                                                                                                <%}%>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- Add User Modal -->
+
+                                <div class="modal fade" id="addUserModal">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-warning text-white">
+                                                <h5 class="modal-title">Add User</h5>
+                                                <button class="close" data-dismiss="modal">
+                                                    <span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/admins/addUser" method="POST" id="add">
+                                                    <div class="form-group">
+                                                        <label for="name">Name</label>
+                                                        <input type="text" class="form-control" name="name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        <input type="email" class="form-control" name="email">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="phone">Phone</label>
+                                                        <input type="text" class="form-control" name="phone">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="isAdmin">Is Admin</label>
+                                                        <select class="form-control" id="isAdmin" name="isAdmin">
+                                                            <option value="true">True</option>
+                                                            <option value="false" selected>False</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="password">Password</label>
+                                                        <input type="password" class="form-control" name="password">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="password2">Confirm Password</label>
+                                                        <input type="password" class="form-control">
+                                                    </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-warning" data-dismiss="modal"
+                                                    onclick="document.getElementById('add').submit()">
+                                                    <i class="fas fa-user"></i>
+                                                    Register
+                                                </button>
+                                            </div>
+                                            </form>
+                                        </div>
+
                                     </div>
                                 </div>
+                                <script>
+                                    const deleteButtons = document.querySelectorAll('a#delete');
+
+                                    deleteButtons.forEach((but) => {
+                                        but.addEventListener('click', (e) => {
+                                            endpoint = `/admins/delUser/${but.dataset.doc}`
+                                            fetch(endpoint, {
+                                                method: 'DELETE'
+                                            })
+                                                .then(response => {
+                                                    response.json()
+                                                })
+                                                .then(data => {
+                                                    window.location.href = data.redirect
+                                                })
+                                                .catch(err => {
+                                                    console.log(err)
+                                                })
+                                        })
+                                    })
+                                </script>
                             </div>
                         </main>
                         <%- include('./layouts/footer')%>
                     </div>
             </div>
+
             <%- include('./layouts/embed')%>

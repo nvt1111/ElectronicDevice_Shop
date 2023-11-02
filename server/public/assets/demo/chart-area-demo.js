@@ -4,7 +4,7 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
 (async function fetchData() {
   try {
     const data = await fetch(`http://localhost:5001/admins/revenue`);
-    revenue = await data.json();
+    const revenue = await data.json();
     // Area Chart Example
     var ctx = document.getElementById("myAreaChart");
 

@@ -2,32 +2,20 @@
 
 	<body>
 		<style>
-			/* place order */
 			.primary-btn.order-submit {
 				width: 420px;
 				padding: 10px;
 				font-size: 16px;
 			}
 		</style>
-		<!-- HEADER -->
 		<header>
-			<!-- TOP HEADER -->
 			<%- include('layouts/topHeader.ejs')%>
-				<!-- /TOP HEADER -->
-
-				<!-- MAIN HEADER -->
 				<%- include('layouts/mainHeader.ejs')%>
-					<!-- /MAIN HEADER -->
 		</header>
-		<!-- /HEADER -->
 
 		<%- include('layouts/navigation.ejs')%>
-
-			<!-- BREADCRUMB -->
 			<div id="breadcrumb" class="section">
-				<!-- container -->
 				<div class="container">
-					<!-- row -->
 					<div class="row">
 						<div class="col-md-12">
 							<h3 class="breadcrumb-header">
@@ -121,18 +109,11 @@
 									<h3 class="title">
 										<%= __("Shipingaddress?") %>
 									</h3>
+									<%-include ('layouts/map.ejs') %>
 								</div>
 
 							</div>
-							<!-- /Shiping Details -->
-
-							<!-- Order notes -->
-							<div class="order-notes">
-								<textarea class="input" placeholder="<%= __(" Ordernotes?") %>"></textarea>
-							</div>
-							<!-- /Order notes -->
 						</div>
-
 						<!-- Order Details -->
 						<div class="col-md-5 order-details">
 							<div class="section-title text-center">
@@ -267,11 +248,6 @@
 				<!-- /container -->
 			</div>
 			<!-- /SECTION -->
-
 			<%- include('layouts/newLetter.ejs') %>
 
 				<%- include('layouts/footer.ejs') %>
-
-	</body>
-
-	</html>

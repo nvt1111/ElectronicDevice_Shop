@@ -1,62 +1,249 @@
 <%- include('./layouts/header')%>
+  <style>
+    #product-image-td img {
+      max-width: 70px;
+      /* Điều chỉnh kích thước tối đa theo chiều rộng */
+      max-height: 100px;
+      /* Điều chỉnh kích thước tối đa theo chiều cao */
+      /* Thêm các thuộc tính khác nếu cần (ví dụ: padding, margin, ... ) */
+    }
+  </style>
 
-    <body class="sb-nav-fixed">
-        <%- include('./layouts/navbar')%>
-            <div id="layoutSidenav">
-                <%- include('./layouts/layoutside')%>
-                    <div id="layoutSidenav_content">
-                        <main>
-                            <div class="container-fluid px-4">
-                                <h1 class="mt-4">Products</h1>
-                                <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item"><a href="/admins/dashboard">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">Products</li>
-                                </ol>
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-table me-1"></i>
-                                        Products
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="styled-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th>Image</th>
-                                                    <th>Brand</th>
-                                                    <th>Price</th>
-                                                    <th>Category</th>
-                                                    <th>Stock</th>
-                                                    <th>Rating</th>
-                                                    <th>Reviews</th>
-                                                    <th>Options</th>
-                                                </tr>
-                                            </thead>
+  <body class="sb-nav-fixed">
+    <%- include('./layouts/navbar')%>
+      <div id="layoutSidenav">
+        <%- include('./layouts/layoutside')%>
+          <div id="layoutSidenav_content">
+            <main>
+              <div class="container-fluid px-4">
+                <h1 class="mt-4">Products</h1>
+                <ol class="breadcrumb mb-4">
+                  <li class="breadcrumb-item"><a href="/admins/dashboard">Dashboard</a></li>
+                  <li class="breadcrumb-item active">Products</li>
+                </ol>
+                <!-- Add Post Modal -->
+                <div class="modal fade" id="addPostModal">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">Add Product</h5>
+                        <button class="close" data-dismiss="modal">
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/admins/addProduct" id="add" method="POST" enctype="multipart/form-data">
+                          <div class="form-group">
+                            <label for="title">Name</label>
+                            <input type="text" class="form-control" name="name">
+                          </div>
+                          <div class="form-group">
+                            <label for="title">Description</label>
+                            <input type="text" class="form-control" name="description">
+                          </div>
+                          <div>
+                            <label for="avatar">Choose a profile picture:</label>
+                            <input type="file" id="avatar" name="image" accept="image/png, image/jpeg, image/jpg" />
+                          </div>
 
-                                            <tbody>
-                                                <tr>
-                                                    <td>Tiger Nixon</td>
-                                                    <td>System Architect</td>
-                                                    <td>Edinburgh</td>
-                                                    <td>61</td>
-                                                    <td>2011/04/25</td>
-                                                    <td>$320,800</td>
-                                                    <td>Tiger Nixon</td>
-                                                    <td>System Architect</td>
-                                                    <td>Edinburgh</td>
-                                                    <td>61</td>
-                                                    <td>2011/04/25</td>
-                                                </tr>
+                          <div class="form-group">
+                            <label for="title">Brand</label>
+                            <input type="text" class="form-control" name="brand">
+                          </div>
+                          <div class="form-group">
+                            <label for="title">Price</label>
+                            <input type="text" class="form-control" name="price">
+                          </div>
+                          <div class="form-group">
+                            <label for="category">Category</label>
+                            <select class="form-control" name="category">
+                              <%categories.forEach(cate=>{%>
+                                <option value="<%=cate._id%>">
+                                  <%=cate.name%>
+                                </option>
+                                <%})%>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="title">Stock</label>
+                            <input type="text" class="form-control" name="countInStock">
+                          </div>
+                          <div class="form-group">
+                            <label for="title">Rating</label>
+                            <input type="text" class="form-control" name="rating">
+                          </div>
+                          <div class="form-group">
+                            <label for="title">Number review</label>
+                            <input type="text" class="form-control" name="numReviews">
+                          </div>
+                          <div class="form-group">
+                            <label for="body">Body</label>
+                            <textarea name="editor1" class="form-control"></textarea>
+                          </div>
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </main>
-                        <%- include('./layouts/footer')%>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-primary" data-dismiss="modal"
+                          onclick="document.getElementById('add').submit()">
+                          <i class="fas fa-save"></i>
+                          Save
+                        </button>
+                      </div>
+                      </form>
                     </div>
-            </div>
-            <%- include('./layouts/embed')%>
+                  </div>
+                </div>
+
+
+                <!-- Search Area -->
+                <section id="search" class="py-4 mb-4 bg-light">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addPostModal">
+                          <i class="fas fa-plus"></i> Add Product
+                        </a>
+                      </div>
+                      <div class="col-md-6 ml-auto">
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- Posts -->
+                <section id="post">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col">
+                        <div class="card">
+                          <div class="card-header">
+                            <h4>Products</h4>
+                            <table class="table table-striped">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th>ID</th>
+                                  <th>Name</th>
+                                  <th>Description</th>
+                                  <th>Image</th>
+                                  <th>Brand</th>
+                                  <th>Price</th>
+                                  <th>Category</th>
+                                  <th>Stock</th>
+                                  <th>Rating</th>
+                                  <th>Reviews</th>
+                                  <th>Options</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% let i=1 ;%>
+                                  <%if(products.length> 0){%>
+                                    <%products.sort((a,b)=> new Date(b.dateCreated)-new
+                                      Date(a.dateCreated)).slice(0,5).forEach(pro =>{ %>
+                                      <tr>
+                                        <td>
+                                          <%=i%>
+                                        </td>
+                                        <td>
+                                          <%=pro.name%>
+                                        </td>
+                                        <td>
+                                          <%=pro.description%>
+                                        </td>
+                                        <td id="product-image-td"><img src="<%= pro.image%>" alt=""></td>
+                                        <td>
+                                          <%=pro.brand%>
+                                        </td>
+                                        <td>
+                                          <%=pro.price%>
+                                        </td>
+                                        <td>
+                                          <%=pro.category.name%>
+                                        </td>
+                                        <td>
+                                          <%=pro.countInStock%>
+                                        </td>
+                                        <td>
+                                          <%=pro.rating%>
+                                        </td>
+                                        <td>
+                                          <%=pro.numReviews%>
+                                        </td>
+                                        <td>
+                                          <a href="/admins/products/<%=pro._id%>" class="btn btn-secondary btn-sm">
+                                            Edit
+                                          </a>
+                                          <a href="" id="delete" class="btn btn-secondary btn-sm"
+                                            data-doc="<%=pro._id%>">
+                                            Delete
+                                          </a>
+                                        </td>
+                                      </tr>
+                                      <% i++%>
+                                        <%})%>
+                                          <%}%>
+                              </tbody>
+                            </table>
+
+                            <!-- PAGINATION -->
+                            <div class="ml-4">
+                              <ul class="pagination">
+                                <%if(currentPage>1){%>
+                                  <li class="page-item">
+                                    <a href="/admins/products?page=<%=currentPage-1%>" class="page-link">Prev</a>
+                                  </li>
+                                  <%}%>
+                                    <%for(let i=1;i<=totalPage;i++){%>
+                                      <%if(i===currentPage){%>
+                                        <li class="page-item active">
+                                          <a href="" class="page-link">
+                                            <%=i%>
+                                          </a>
+                                        </li>
+                                        <%} else{%>
+                                          <li class="page-item">
+                                            <a href="/admins/products?page=<%=i%>" class="page-link">
+                                              <%=i%>
+                                            </a>
+                                          </li>
+                                          <%}%>
+                                            <%}%>
+                                              <%if(currentPage<totalPage){%>
+                                                <li class="page-item">
+                                                  <a href="/admins/products?page=<%=currentPage+1%>"
+                                                    class="page-link">Next</a>
+                                                </li>
+                                                <%}%>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <script>
+                  const deleteButtons = document.querySelectorAll('a#delete');
+
+                  deleteButtons.forEach((button) => {
+                    button.addEventListener('click', (e) => {
+                      const endpoint = `/admins/delProduct/${button.dataset.doc}`;
+                      fetch(endpoint, {
+                        method: 'DELETE'
+                      })
+                        .then(response => response.json())
+                        .then((data) => {
+                          window.location.href = data.redirect;
+                        })
+                        .catch(err => console.log(err));
+                    })
+                  })
+                </script>
+
+              </div>
+            </main>
+            <%- include('./layouts/footer')%>
+          </div>
+      </div>
+
+      <%- include('./layouts/embed')%>

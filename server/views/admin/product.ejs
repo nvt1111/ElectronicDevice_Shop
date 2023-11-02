@@ -1,10 +1,12 @@
 <%- include('./layouts/header') %>
   <style>
-    #product-image-td img { 
-            max-width: 70px; /* Điều chỉnh kích thước tối đa theo chiều rộng */
-            max-height: 100px; /* Điều chỉnh kích thước tối đa theo chiều cao */
-            /* Thêm các thuộc tính khác nếu cần (ví dụ: padding, margin, ... ) */
-        }
+    #product-image-td img {
+      max-width: 70px;
+      /* Điều chỉnh kích thước tối đa theo chiều rộng */
+      max-height: 100px;
+      /* Điều chỉnh kích thước tối đa theo chiều cao */
+      /* Thêm các thuộc tính khác nếu cần (ví dụ: padding, margin, ... ) */
+    }
   </style>
   <header id="main-header" class="py-2 bg-primary text-white">
     <div class="container">
@@ -48,7 +50,7 @@
             </div> -->
             <div>
               <label for="avatar">Choose a profile picture:</label>
-            <input type="file" id="avatar" name="image" accept="image/png, image/jpeg, image/jpg" />
+              <input type="file" id="avatar" name="image" accept="image/png, image/jpeg, image/jpg" />
             </div>
 
             <div class="form-group">
@@ -62,9 +64,11 @@
             <div class="form-group">
               <label for="category">Category</label>
               <select class="form-control" name="category">
-                <%categories.forEach(cate =>{%>
-                <option value="<%=cate._id%>"><%=cate.name%></option>
-                <%})%>
+                <%categories.forEach(cate=>{%>
+                  <option value="<%=cate._id%>">
+                    <%=cate.name%>
+                  </option>
+                  <%})%>
               </select>
             </div>
             <div class="form-group">
@@ -83,7 +87,7 @@
               <label for="body">Body</label>
               <textarea name="editor1" class="form-control"></textarea>
             </div>
-          
+
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary" data-dismiss="modal" onclick="document.getElementById('add').submit()">
@@ -91,12 +95,12 @@
             Save
           </button>
         </div>
-      </form>
+        </form>
       </div>
     </div>
   </div>
 
-  
+
   <!-- Search Area -->
   <section id="search" class="py-4 mb-4 bg-light">
     <div class="container">
@@ -144,37 +148,56 @@
                 </thead>
                 <tbody>
                   <% let i=1 ;%>
-                  <%if(products.length > 0){%>
-                    <%products.sort((a,b)=> new Date(b.dateCreated)-new Date(a.dateCreated)).slice(0,5).forEach(pro =>{ %>
-                  <tr>
-                    <td><%=i%></td>
-                    <td><%=pro.name%></td>
-                    <td><%=pro.description%></td>
-                    <td id="product-image-td"><img src="<%= pro.image%>" alt=""></td>
-                    <!-- hiển thị ảnh dùng thẻ image -->
-                    <td><%=pro.brand%></td>
-                    <td><%=pro.price%></td>
-                    <td><%=pro.category.name%></td>
-                    <td><%=pro.countInStock%></td>
-                    <td><%=pro.rating%></td>
-                    <td><%=pro.numReviews%></td>
-                    <td>
-                      <!-- <a href="/admins/product/<%=pro._id%>" class="btn btn-secondary btn-sm">
+                    <%if(products.length> 0){%>
+                      <%products.sort((a,b)=> new Date(b.dateCreated)-new Date(a.dateCreated)).slice(0,5).forEach(pro
+                        =>{ %>
+                        <tr>
+                          <td>
+                            <%=i%>
+                          </td>
+                          <td>
+                            <%=pro.name%>
+                          </td>
+                          <td>
+                            <%=pro.description%>
+                          </td>
+                          <td id="product-image-td"><img src="<%= pro.image%>" alt=""></td>
+                          <!-- hiển thị ảnh dùng thẻ image -->
+                          <td>
+                            <%=pro.brand%>
+                          </td>
+                          <td>
+                            <%=pro.price%>
+                          </td>
+                          <td>
+                            <%=pro.category.name%>
+                          </td>
+                          <td>
+                            <%=pro.countInStock%>
+                          </td>
+                          <td>
+                            <%=pro.rating%>
+                          </td>
+                          <td>
+                            <%=pro.numReviews%>
+                          </td>
+                          <td>
+                            <!-- <a href="/admins/product/<%=pro._id%>" class="btn btn-secondary btn-sm">
                          <i class="fas fa-angle-double-right"></i> -->
-                        <!-- Edit -->
-                      <!-- </a> -->
-                      <a href="/admins/product/<%=pro._id%>" class="btn btn-secondary btn-sm" >
-                        Edit1
-                      </a>
-                      <a href="" id="delete" class="btn btn-secondary btn-sm" data-doc="<%=pro._id%>">
-                        <!-- <i class="fas fa-angle-double-right"></i> -->
-                        Delete
-                      </a>
-                    </td>
-                  </tr>
-                  <% i++%>
-                  <%})%>
-                  <%}%>  
+                            <!-- Edit -->
+                            <!-- </a> -->
+                            <a href="/admins/product/<%=pro._id%>" class="btn btn-secondary btn-sm">
+                              Edit1
+                            </a>
+                            <a href="" id="delete" class="btn btn-secondary btn-sm" data-doc="<%=pro._id%>">
+                              <!-- <i class="fas fa-angle-double-right"></i> -->
+                              Delete
+                            </a>
+                          </td>
+                        </tr>
+                        <% i++%>
+                          <%})%>
+                            <%}%>
                 </tbody>
               </table>
 
@@ -183,25 +206,29 @@
                 <ul class="pagination">
                   <%if(currentPage>1){%>
                     <li class="page-item">
-                      <a href="/admins/product?page=<%=currentPage-1%>" class="page-link">Prev</a>
+                      <a href="/admins/products?page=<%=currentPage-1%>" class="page-link">Prev</a>
                     </li>
                     <%}%>
-                  <%for(let i=1;i<=totalPage;i++){%>
-                    <%if(i===currentPage){%>
-                      <li class="page-item active">
-                        <a href="" class="page-link"><%=i%></a>
-                      </li>
-                      <%} else{%>
-                        <li class="page-item">
-                          <a href="/admins/product?page=<%=i%>" class="page-link"><%=i%></a>
-                        </li>
-                        <%}%>
-                    <%}%>
-                    <%if(currentPage<totalPage){%>
-                      <li class="page-item">
-                        <a href="/admins/product?page=<%=currentPage+1%>" class="page-link">Next</a>
-                      </li>
-                      <%}%>
+                      <%for(let i=1;i<=totalPage;i++){%>
+                        <%if(i===currentPage){%>
+                          <li class="page-item active">
+                            <a href="" class="page-link">
+                              <%=i%>
+                            </a>
+                          </li>
+                          <%} else{%>
+                            <li class="page-item">
+                              <a href="/admins/products?page=<%=i%>" class="page-link">
+                                <%=i%>
+                              </a>
+                            </li>
+                            <%}%>
+                              <%}%>
+                                <%if(currentPage<totalPage){%>
+                                  <li class="page-item">
+                                    <a href="/admins/products?page=<%=currentPage+1%>" class="page-link">Next</a>
+                                  </li>
+                                  <%}%>
                 </ul>
               </div>
             </div>
@@ -214,19 +241,18 @@
   <script>
     const deleteButtons = document.querySelectorAll('a#delete');
 
-    deleteButtons.forEach((button) =>{
-      button.addEventListener('click', (e)=>{
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', (e) => {
         const endpoint = `/admins/delProduct/${button.dataset.doc}`;
         fetch(endpoint, {
           method: 'DELETE'
         })
-        .then(response => response.json())
-        .then((data)=>{
-          window.location.href = data.redirect;
-        })
-        .catch(err => console.log(err));
+          .then(response => response.json())
+          .then((data) => {
+            window.location.href = data.redirect;
+          })
+          .catch(err => console.log(err));
       })
     })
   </script>
   <%- include('./layouts/footer') %>
-  

@@ -14,34 +14,49 @@
                                 <div class="row">
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card bg-primary text-white mb-4">
-                                            <div class="card-body">Products</div>
+                                            <div class="card-body">Products
+                                                <i class="fas fa-pencil-alt"></i>
+                                                <%=products.length%>
+                                            </div>
                                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                                <a class="small text-white stretched-link" href="#">View Details</a>
+                                                <a class="small text-white stretched-link" href="/admins/product">View
+                                                    Details</a>
                                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card bg-warning text-white mb-4">
-                                            <div class="card-body">Users</div>
+                                            <div class="card-body">Users
+                                                <i class="fas fa-users"></i>
+                                                <%=users.length%>
+                                            </div>
                                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                                <a class="small text-white stretched-link" href="#">View Details</a>
+                                                <a class="small text-white stretched-link" href="/admins/user">View
+                                                    Details</a>
                                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card bg-success text-white mb-4">
-                                            <div class="card-body">Orders</div>
+                                            <div class="card-body">Orders
+                                                <i class="fas fa-wallet"></i>
+                                                <%=categories.length%>
+                                            </div>
                                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                                <a class="small text-white stretched-link" href="#">View Details</a>
+                                                <a class="small text-white stretched-link" href="/admins/category">View
+                                                    Details</a>
                                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card bg-danger text-white mb-4">
-                                            <div class="card-body">Revenue</div>
+                                            <div class="card-body">Revenue
+                                                <i class="fas fa-comment-dollar"></i>&nbsp;
+                                                <i id="revenueMonthly"></i>
+                                            </div>
                                             <div class="card-footer d-flex align-items-center justify-content-between">
                                                 <a class="small text-white stretched-link" href="#">View Details</a>
                                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -72,9 +87,146 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-xl-6">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <i class="fas fa-chart-bar me-1"></i>
+                                                Biểu đồ thống kê sản phẩm
+                                            </div>
+                                            <div class="card-body"><canvas id="myPieChart" width="100%"
+                                                    height="40"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="container-fluid px-4">
+                                <h1 class="mt-4">Orders</h1>
+                                <ol class="breadcrumb mb-4">
+                                    <li class="breadcrumb-item"><a href="/admins/dashboard">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Orders</li>
+                                </ol>
+                                <!-- Dashboard Posts -->
+                                <section id="posts">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h4>Latest order</h4>
+                                                        <table class="table table-striped">
+                                                            <thead class="thead-dark">
+                                                                <tr>
+                                                                    <th>OrderId</th>
+                                                                    <th>Price</th>
+                                                                    <th>Address</th>
+                                                                    <th>Status</th>
+                                                                    <th>Date</th>
+                                                                    <th>Options</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% let i=1 %>
+                                                                    <% if(orders.length> 0){ %>
+                                                                        <% orders.sort((a, b)=> new Date(b.dateOrdered)
+                                                                            -
+                                                                            new Date(a.dateOrdered)).forEach(
+                                                                            (o,index)=>{%>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <%=i%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%=o.totalPrice%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%=o.shippingAddress1%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%=o.status%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%= o.dateOrdered.getDate() + '-' +
+                                                                                        (o.dateOrdered.getMonth() +1)
+                                                                                        + '-' +
+                                                                                        o.dateOrdered.getFullYear() %>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a href="/admins/orders/<%=o._id%>"
+                                                                                        class="btn btn-secondary btn-sm">
+                                                                                        Edit
+                                                                                    </a>
+                                                                                    <a href="" id="delete"
+                                                                                        class="btn btn-secondary btn-sm"
+                                                                                        data-doc="<%=o._id%>">
+                                                                                        Delete
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <%i++%>
+                                                                                <%})%>
+                                                                                    <%}%>
+
+
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- PAGINATION -->
+                                                        <div class="ml-4">
+                                                            <ul class="pagination">
+                                                                <%if(currentPage>1){%>
+                                                                    <li class="page-item">
+                                                                        <a href="/admins/dashboard?page=<%=currentPage-1%>"
+                                                                            class="page-link">Prev</a>
+                                                                    </li>
+                                                                    <%}%>
+                                                                        <%for(let i=1;i<=totalPage;i++){%>
+                                                                            <%if(i===currentPage){%>
+                                                                                <li class="page-item active">
+                                                                                    <a href="" class="page-link">
+                                                                                        <%=i%>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <%} else{%>
+                                                                                    <li class="page-item">
+                                                                                        <a href="/admins/dashboard?page=<%=i%>"
+                                                                                            class="page-link">
+                                                                                            <%=i%>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <%}%>
+                                                                                        <%}%>
+                                                                                            <%if(currentPage<totalPage){%>
+                                                                                                <li class="page-item">
+                                                                                                    <a href="/admins/dashboard?page=<%=currentPage+1%>"
+                                                                                                        class="page-link">Next</a>
+                                                                                                </li>
+                                                                                                <%}%>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                         </main>
+
+
+                        <script>
+                            const deleteButtons = document.querySelectorAll('a#delete');
+
+                            deleteButtons.forEach(button => {
+                                button.addEventListener('click', (e) => {
+                                    const endpoint = `/admins/delOrder/${button.dataset.doc}`;
+                                    fetch(endpoint, {
+                                        method: 'DELETE'
+                                    })
+                                        .then(response => response.json())
+                                        .then((data) => {
+                                            window.location.href = data.redirect;
+                                        })
+                                        .catch(err => console.log(err));
+                                })
+                            })
+                        </script>
                         <%- include('./layouts/footer')%>
                     </div>
             </div>

@@ -45,27 +45,13 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 	<body>
-
-
-		<!-- HEADER -->
 		<header>
-			<!-- TOP HEADER -->
 			<%- include('layouts/topHeader.ejs')%>
-				<!-- /TOP HEADER -->
-
-				<!-- MAIN HEADER -->
 				<%- include('layouts/mainHeader.ejs')%>
-					<!-- /MAIN HEADER -->
 		</header>
-		<!-- /HEADER -->
-
 		<%- include('layouts/navigation.ejs')%>
-
-			<!-- BREADCRUMB -->
 			<div id="breadcrumb" class="section">
-				<!-- container -->
 				<div class="container">
-					<!-- row -->
 					<div class="row">
 						<div class="col-md-12">
 							<h3 class="breadcrumb-header">
@@ -117,8 +103,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<% if(order.orderItemsHistory.length> 0){%>
-										<%order.orderItemsHistory.forEach( o=>{%>
+									<% if(orderItemHistory.length> 0){%>
+										<%orderItemHistory.forEach( o=>{%>
 											<!-- Vì mỗi orderItemsHistory có nhiều product 
                                         Không dùng order.length nếu chỉ toofnt ại một order-->
 											<tr>
@@ -162,8 +148,8 @@
 											<%= __("TOTAL") %>
 										</strong></div>
 								</div>
-								<% if(order.orderItemsHistory.length> 0){%>
-									<%order.orderItemsHistory.forEach( o=>{%>
+								<% if(orderItemHistory.length> 0){%>
+									<%orderItemHistory.forEach( o=>{%>
 										<div class="order-products">
 											<div class="order-col">
 												<!-- IN CẢ 3 GIA TRỊ ĐÒNG THỜI -->

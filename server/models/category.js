@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-// !dmbg
+
 var categorySchema = new mongoose.Schema({
     name: {
         type: String,

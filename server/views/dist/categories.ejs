@@ -1,0 +1,131 @@
+<%- include('./layouts/header')%>
+
+    <body class="sb-nav-fixed">
+        <%- include('./layouts/navbar')%>
+            <div id="layoutSidenav">
+                <%- include('./layouts/layoutside')%>
+                    <div id="layoutSidenav_content">
+                        <main>
+                            <div class="container-fluid px-4">
+                                <h1 class="mt-4">Orders</h1>
+                                <ol class="breadcrumb mb-4">
+                                    <li class="breadcrumb-item"><a href="/admins/dashboard">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Categories</li>
+                                </ol>
+                                <!-- Add Category Modal -->
+                                <div class="modal fade" id="addCategoryModal">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-success text-white">
+                                                <h5 class="modal-title">Add Category</h5>
+                                                <button class="close" data-dismiss="modal">
+                                                    <span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/admins/addCategory" method="POST" id="add">
+                                                    <div class="form-group">
+                                                        <label for="title">Name</label>
+                                                        <input type="text" class="form-control" name="name">
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-success" data-dismiss="modal"
+                                                    onclick="document.getElementById('add').submit()">
+                                                    <i class="fas fa-save"></i>
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Search Area -->
+                                <section id="search" class="py-4 mb-4 bg-light">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <a href="" class="btn btn-success btn-block" data-toggle="modal"
+                                                    data-target="#addCategoryModal">
+                                                    <i class="fas fa-plus"></i> Add Category
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 ml-auto">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <!-- Category Posts -->
+                                <section id="category">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h4>Latest Categories</h4>
+                                                        <table class="table table-striped">
+                                                            <thead class="thead-dark">
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>Category</th>
+                                                                    <th>Options</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% let i=1 ;%>
+                                                                    <%if(categories.length> 0){%>
+                                                                        <%categories.forEach(cate=>{ %>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <%=i%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%=cate.name%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a href="" id="delete"
+                                                                                        data-doc="<%=cate._id%>"
+                                                                                        class="btn btn-secondary btn-sm">
+                                                                                        <!-- <i class="fas fa-angle-double-right"></i> -->
+                                                                                        Delete
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <% i++%>
+                                                                                <%})%>
+                                                                                    <%}%>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <script>
+                                    const deleteButtons = document.querySelectorAll('a#delete');
+
+                                    deleteButtons.forEach((button) => {
+                                        button.addEventListener('click', (e) => {
+                                            const endpoint = `/admins/delCate/${button.dataset.doc}`;
+                                            fetch(endpoint, {
+                                                method: 'DELETE'
+                                            })
+                                                .then(response => response.json())
+                                                .then((data) => {
+                                                    window.location.href = data.redirect;
+                                                })
+                                                .catch(err => console.log(err));
+                                        })
+                                    })
+                                </script>
+
+                            </div>
+                        </main>
+                        <%- include('./layouts/footer')%>
+                    </div>
+            </div>
+            <%- include('./layouts/embed')%>
