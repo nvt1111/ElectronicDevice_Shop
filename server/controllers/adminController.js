@@ -90,13 +90,13 @@ const addUser = async (req, res, next) => {
 const addProduct = async (req, res, next) => {
   try {
     const file = req.file;
-    console.log(file);
+    
     if (!file) {
       return res.status(400).send("Không có ảnh trong yêu cầu");
     }
     const fileName = file.filename;
     const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
-
+    console.log('thai thai thiathtia', `${basePath}${fileName}`);
     const product = new Product({
       name: req.body.name,
       description: req.body.description,
@@ -240,7 +240,6 @@ const getRevenue = async (req, res, next) => {
 };
 
 const getQuantityEachCategory = async (req, res) => {
-  const categories = await Category.find();
   const orderItemHistory = await OrderItemHistory.find().populate({
     path: "product", // sử dụng path
     populate: {
@@ -250,7 +249,7 @@ const getQuantityEachCategory = async (req, res) => {
 
   let arrayQuantity = {};
   orderItemHistory.forEach((order) => {
-    if (!arrayQuantity[order.product.category.name]) {
+    if (!arrayQuantity[order.product?.category?.name]) {
       arrayQuantity[order.product.category.name] = 0;
     }
     arrayQuantity[order.product.category.name] += parseInt(order.quantity);
@@ -281,5 +280,5 @@ module.exports = {
   detailOrder,
   update_order,
   getRevenue,
-  getQuantityEachCategory,
+  // getQuantityEachCategory,
 };

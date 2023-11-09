@@ -75,8 +75,9 @@ const login = async (req, res, next) => {
     });
     if (user.isAdmin) {
       res.redirect("/admins/dashboard");
+    }else{
+      res.redirect("/");
     }
-    res.redirect("/");
   } else {
     res.status(400).send("password is wrong");
   }

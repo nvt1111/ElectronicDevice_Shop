@@ -90,7 +90,7 @@ const create_product = async (req, res) => {
 
   const fileName = file.filename;
   const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
-  console.log(basePath);
+  console.log('hskdfhksdghskagskjfgahahhh',basePath);
   let product = new Product({
     name: req.body.name,
     description: req.body.description,
