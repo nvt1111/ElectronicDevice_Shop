@@ -229,6 +229,8 @@
   }
 
   document.getElementById('dangnhap').addEventListener('click', function (event) {
+    // Chặn hành vi mặc định
+    event.preventDefault();
     registerPushNotification();
   });
 
