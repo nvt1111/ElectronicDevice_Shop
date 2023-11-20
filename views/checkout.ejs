@@ -62,7 +62,6 @@
 									<input type="hidden" name="totalPrice" value="<%= totalPrice %>">
 									<input type="hidden" name="user_id" value="<%= user_id %>">
 									<input type="hidden" name="userName" value="<%= userName %>">
-									<input type="hidden" name="token" value="<%= token %>">
 									<!-- Thêm các input hidden cho thông tin địa chỉ -->
 									<div class="form-group">
 										<input class="input" type="text" name="shippingAddress1" placeholder="
@@ -264,7 +263,6 @@
 				async function call2API() {
 					const userName = document.querySelector('input[name="userName"]').value;
 					const user_id = document.querySelector('input[name="user_id"]').value;
-					const token = document.querySelector('input[name="token"]').value;
 					document.getElementById('paymentForm').submit();
 
 					// Gọi cả hai API đồng thời bằng Promise.all
