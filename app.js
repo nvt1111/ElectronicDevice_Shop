@@ -16,12 +16,12 @@ const i18n = require("./config/i18n");
 // npm install cookie-parser
 app.use(cors());
 app.use("*", cors()); // cho phep tat ca http
-app.use(cors({
-  origin: 'https://web-electronic-shop.onrender.com', // Cho phép yêu cầu từ miền này
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Cho phép sử dụng cookie hoặc token xác thực
-  optionsSuccessStatus: 204, // Cho phép tiêu đề OPTIONS mà không gặp lỗi CORS
-}));
+// app.use(cors({
+//   origin: 'https://web-electronic-device-shop.onrender.com', // Cho phép yêu cầu từ miền này
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   credentials: true, // Cho phép sử dụng cookie hoặc token xác thực
+//   optionsSuccessStatus: 204, // Cho phép tiêu đề OPTIONS mà không gặp lỗi CORS
+// }));
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: true }));
