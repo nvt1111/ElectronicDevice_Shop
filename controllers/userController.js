@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Order = require("../models/order");
+const Token = require("../models/tokenDevice");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
@@ -73,9 +74,15 @@ const login = async (req, res, next) => {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 ngày
     });
+    const token = new Token({
+      user: user._id,
+      tokenDevice: req.body.registrationToken,
+    });
+    await token.save();
+
     if (user.isAdmin) {
       res.redirect("/admins/dashboard");
-    }else{
+    } else {
       res.redirect("/");
     }
   } else {
@@ -117,9 +124,10 @@ const get_count_user = async (req, res, next) => {
   }
 };
 
-const logout_user = (req, res, next) => {
+const logout_user = async (req, res, next) => {
+  const id = req.params.id;
+  await Token.deleteMany({ user: id });
   req.session.destroy();
-
   res.redirect("/");
 };
 

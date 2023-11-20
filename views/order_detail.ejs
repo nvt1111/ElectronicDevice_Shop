@@ -176,9 +176,9 @@
 																<%= __("DATEORDER") %>:
 															</strong></div>
 														<div>
-															<%=order.dateOrdered.getDate() + '-' +
-																(order.dateOrdered.getMonth()+1) +'-'+
-																order.dateOrdered.getFullYear()%>
+															<%=order?.dateOrdered.getDate() + '-' +
+																(order?.dateOrdered.getMonth()+1) +'-'+
+																order?.dateOrdered.getFullYear()%>
 														</div>
 
 													</div>
@@ -189,7 +189,7 @@
 																	<%= __("STATUS") %>:
 																</strong></div>
 															<div>
-																<%=order.status%>
+																<%=order?.status%>
 															</div>
 														</div>
 													</div>
@@ -199,7 +199,7 @@
 															<%= __("TOTAL") %>
 														</strong></div>
 													<div><strong class="order-total">
-															<%=order.totalPrice%> VND
+															<%=order?.totalPrice%> VND
 														</strong>
 													</div>
 												</div>

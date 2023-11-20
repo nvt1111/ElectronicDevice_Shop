@@ -7,7 +7,7 @@ router.get("/login", userController.get_login_user);
 router.get("/register", userController.get_register_user);
 router.post("/register", userController.create_user);
 router.post("/login", userController.login);
-router.get("/logout", userController.logout_user);
+router.get("/logout/:id", userController.logout_user);
 router.get("/profile/:id", userController.profile);
 router.put("/changepassword/:id", userController.changepassword);
 router.delete("/deleteOrder/:id", userController.deleteOrder);

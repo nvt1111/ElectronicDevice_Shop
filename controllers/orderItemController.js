@@ -1,7 +1,7 @@
-const orderItem = require("../models/order-item");
 const OrderItem = require("../models/order-item");
 const User = require("../models/user");
 const mongoose = require("mongoose");
+const Token = require("../models/tokenDevice");
 
 const addToCart = async (req, res, next) => {
   try {
@@ -84,7 +84,7 @@ const deleteCartUserid = async (req, res, next) => {
   }
 };
 
-const getCheckout = (req, res, next) => {
+const getCheckout = async (req, res, next) => {
   //==> create order hoac apply Coupon
   try {
     const totalPrice = req.body.totalPrice;
@@ -98,6 +98,11 @@ const getCheckout = (req, res, next) => {
     const isLoggedIn = req.session.isLoggedIn;
     const user = req.session.user;
 
+    const registrationToken = await Token.findOne({ user: user_id });
+
+    const token = registrationToken.tokenDevice;
+
+
     res.render("checkout", {
       totalPriceCheck,
       check,
@@ -109,6 +114,7 @@ const getCheckout = (req, res, next) => {
       user_id,
       isLoggedIn,
       user,
+      token
     });
   } catch (error) {
     next(error);

@@ -35,7 +35,7 @@
                                 <%= __("Login") %>
                             </a></li>
                         <% if (isLoggedIn) { %>
-                            <li><a href="/api/v1/users/logout"><i class="fa fa-sign-out"></i>
+                            <li><a href="/api/v1/users/logout/<%=user.id%>"><i class="fa fa-sign-out"></i>
                                     <%= __("Logout") %>
                                 </a>
                             </li>

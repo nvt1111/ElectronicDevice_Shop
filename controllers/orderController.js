@@ -1,8 +1,27 @@
 const Order = require("../models/order");
+const Token = require("../models/tokenDevice");
 const mongoose = require("mongoose");
 const OrderItem = require("../models/order-item");
 const Coupon = require("../models/coupon");
 const OrderItemsHistory = require("../models/orderItemHistory");
+
+///////////////////////////
+
+var FCM = require("fcm-node");
+var serviceAccount = require("../config/creds.json");
+
+var admin = require("firebase-admin");
+
+FCM = new FCM(
+  "AAAAr3H6pZo:APA91bEqu9Di3AeCJM9G3ch_F_PpD0YqyYl1IZA5STHLN4zAHj4VOAHz-htusFsPxeUbO5auqVtl5OZcGowDGlQtEPjx9qVI-1qtwnmTItVcrKjMfkEKLomO5DMNvpzJA2X5muF0fekY"
+);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+const certPath = admin.credential.cert(serviceAccount);
+
+/////////////////////////////////////////
 
 const create_order = async (req, res, next) => {
   try {
@@ -16,6 +35,7 @@ const create_order = async (req, res, next) => {
       totalPrice,
       user_id,
     } = req.body;
+
     // Tìm các OrderITems để ghi vào lịch sử đã nhé tìm theo User_ID
     const OrderItems = await OrderItem.find({ user: user_id }).populate(
       "product"
@@ -37,7 +57,7 @@ const create_order = async (req, res, next) => {
     const SavedOrder = await newOrder.save();
     let arrayOrderItemHistory = [];
 
-    OrderItems.forEach(async (orderItem) => {
+    for (const orderItem of OrderItems) {
       const orderItemsHistory = new OrderItemsHistory({
         product: orderItem.product,
         quantity: orderItem.quantity,
@@ -46,7 +66,7 @@ const create_order = async (req, res, next) => {
       });
       arrayOrderItemHistory.push(orderItemsHistory);
       await orderItemsHistory.save();
-    });
+    }
     await OrderItem.deleteMany({ _id: { $in: orderItemIDs } });
     // populate() không được áp dụng trực tiếp cho phương thức save() trong Mongoose.
     const isLoggedIn = req.session.isLoggedIn;
@@ -61,6 +81,33 @@ const create_order = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+// app.post('/send-noti',
+const sendNotify = (req, res) => {
+  try {
+    let message = {
+      // to: 'co2GtcUstURECe6X1xeUMu:APA91bHUwZt33fIp3p5JsGnYVbAg-uclq6Q1lsVsw8COfYtMaZo_AZZldkt9jq38jGBXerI7E0WRBUe8RN7NN_OvZC5j_2aS2GoY_1hF9RoGSK0MMwmYIVsUEgENhPyFZ_t-E16NicRK',
+      to: 'cau_dHfdfYsPAyvcI_Cort:APA91bHvGaAx7jpp-TJJPd0fP54CeAj2vgmSlfb7ra4LrqdusJz4huegIno74UbPtOGxmEQRdvdbWsuHD85_3KDtK2JuFWyZk4_7Ruq3XUWCQGu45BITGTij6xV9NjDV3MJ2RWIC-FVG',
+      notification: {
+        title: req.body.title,
+        body: req.body.content,
+      },
+    };
+    FCM.send(message, function (err, resp) {
+      if (err) {
+        return res.status(500).send({
+          message: err,
+        });
+      } else {
+        return res.status(200).send({
+          message: resp,
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -237,6 +284,7 @@ module.exports = {
   get_user_order,
   get_pages_payment,
   applyCoupon,
+  sendNotify,
 };
 
 // const  create_order = async (req,res,next)=>{

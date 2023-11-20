@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // const mongoURI = 'mongodb://localhost/Eshop';
-// const mongoURI = 'mongodb+srv://nguyenvanthai:nguyenvanthai@electronic-shop.jk0hiuo.mongodb.net/Eshop'
+const mongoURI = 'mongodb+srv://nguyenvanthai:nguyenvanthai@electronic-shop.jk0hiuo.mongodb.net/Eshop'
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {

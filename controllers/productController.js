@@ -88,14 +88,14 @@ const create_product = async (req, res) => {
   const file = req.file;
   if (!file) return res.status(400).send("No image in the request");
 
-  const fileName = file.filename;
+  const fileName = file.path;
   const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
-  console.log('hskdfhksdghskagskjfgahahhh',basePath);
+  console.log('hskdfhksdghskagskjfgahahhh',fileName);
   let product = new Product({
     name: req.body.name,
     description: req.body.description,
     richDescription: req.body.richDescription,
-    image: `${basePath}${fileName}`, // "http://localhost:3000/public/upload/image-2323232"
+    image: `${fileName}`, // "http://localhost:3000/public/upload/image-2323232"
     brand: req.body.brand,
     price: req.body.price,
     category: req.body.category,
