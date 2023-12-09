@@ -253,7 +253,7 @@
 				async function call2API() {
 					const userName = document.querySelector('input[name="userName"]').value;
 					const user_id = document.querySelector('input[name="user_id"]').value;
-					const token = document.querySelector('input[name="token"]').value;
+					// const token = document.querySelector('input[name="token"]').value;
 					document.getElementById('paymentForm').submit();
 
 					await fetch('/api/v1/orders/send-noti', {
@@ -262,7 +262,6 @@
 								'Content-Type': 'application/json',
 							},
 							body: JSON.stringify({
-								token: token,
 								title: 'Electronic Shop',
 								content: `${userName} đã đặt hàng thành công!`,
 							}),

@@ -7,6 +7,14 @@ const OrderItemsHistory = require("../models/orderItemHistory");
 
 // FCM node
 
+var FCM = require('fcm-node');
+var serviceAccount = require("../config/creds.json");
+var admin = require("firebase-admin");
+fcm = new FCM("AAAAiYXlfnM:APA91bFtgDywRbvPAzqrCcea35GpDE1kiQ6Zmz7CVPkl_BFN_QJpZi5dFLqkTKEMM_BXVfFEdD9ZpfvEogh1EUqZJUWe2OouwwFFwgJ889bJ-HMwlRmPJme0tq4Ca_pHheGG1dxrAXB_");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+const certPath = admin.credential.cert(serviceAccount);
 
 // FCM node
 
@@ -59,7 +67,30 @@ const create_order = async (req, res, next) => {
   }
 };
 
-
+const sendNotify = (req, res) => {
+  try {
+    let message = {
+        to: 'eI_NuFtvEbeud_e_6VHl-8:APA91bHc9r3qaVMBBLxFGWx9okZuuQ83z4qxhIq3dmkLpwFzEpwVu6c5tkFKHCvw3RbHNCftZ0dDxDJQCumuhLdwdxnVQKyRlM_4_bo7KW9n2JbPCpk43FYgiggLY2zr-FkiRqMFVtVc',
+        notification: {
+            title: req.body.title,
+            body: req.body.content
+        },
+    }
+    fcm.send(message, function(err, resp) {
+        if (err) {
+            return res.status(500).send({
+                message: err
+            })
+        } else {
+            return res.status(200).send({
+                message: resp
+            })
+        }
+    })
+} catch (err) {
+    console.log(err)
+}
+};
 
 const applyCoupon = async (req, res, next) => {
   const totalPrice = req.body.totalPrice;
@@ -231,6 +262,6 @@ module.exports = {
   get_user_order,
   get_pages_payment,
   applyCoupon,
-  // sendNotify,
+  sendNotify,
 };
 

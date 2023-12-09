@@ -12,6 +12,6 @@ router.get("/get/totalsales", orderController.get_totalSale);
 router.get("/get/count", orderController.get_count);
 router.get(`/get/userorders/:userid`, orderController.get_user_order);
 router.post("/applyCoupon", orderController.applyCoupon);
-// router.post("/send-noti", orderController.sendNotify);
+router.post("/send-noti", orderController.sendNotify);
 
 module.exports = router;
