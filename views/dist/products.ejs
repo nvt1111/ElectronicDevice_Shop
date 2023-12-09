@@ -137,8 +137,8 @@
                               <tbody>
                                 <% let i=1 ;%>
                                   <%if(products.length> 0){%>
-                                    <%products.sort((a,b)=> new Date(b.dateCreated)-new
-                                      Date(a.dateCreated)).slice(0,5).forEach(pro =>{ %>
+                                    <%products.sort((a,b)=> new Date(b.createdAt)-new
+                                      Date(a.createdAt)).slice(0,5).forEach(pro =>{ %>
                                       <tr>
                                         <td>
                                           <%=i%>
@@ -245,5 +245,4 @@
             <%- include('./layouts/footer')%>
           </div>
       </div>
-
       <%- include('./layouts/embed')%>

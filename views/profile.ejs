@@ -40,20 +40,13 @@
 		</style>
 		<!-- thư viện boot cho 2 icon -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-		<!-- HEADER -->
+		
 		<header>
-			<!-- TOP HEADER -->
 			<%- include('layouts/topHeader.ejs')%>
-				<!-- /TOP HEADER -->
-
-				<!-- MAIN HEADER -->
 				<%- include('layouts/mainHeader.ejs')%>
-					<!-- /MAIN HEADER -->
 		</header>
-		<!-- /HEADER -->
 
 		<%- include('layouts/navigation.ejs')%>
-
 			<!-- BREADCRUMB -->
 			<div id="breadcrumb" class="section">
 				<!-- container -->
@@ -188,14 +181,14 @@
 													<%=o.totalPrice%>
 												</td>
 												<td>
-													<%=o.shippingAddress1%>
+													<%=o.district%>
 												</td>
 												<td>
 													<%=o.status%>
 												</td>
 												<td>
-													<%=o.dateOrdered.getDate() + '-' + (o.dateOrdered.getMonth()+1)
-														+'-'+ o.dateOrdered.getFullYear()%>
+													<%=o.createdAt.getDate() + '-' + (o.createdAt.getMonth()+1)
+														+'-'+ o.createdAt.getFullYear()%>
 												</td>
 												<td>
 													<a href="/api/v1/orders/<%=o._id%>" class="option-icon view-icon"><i
@@ -205,7 +198,6 @@
 															class="fas fa-trash-alt"></i></a>
 												</td>
 											</tr>
-											<!-- You can add more rows with similar structure for additional orders -->
 											<%})%>
 												<%}%>
 								</tbody>
@@ -228,7 +220,7 @@
 				const deleteButtons = document.querySelectorAll('a#delete');
 
 
-				////////////////// Khoogn được chèn cú phép viewengine vào script (vì viewengine chỉ tác dụng trên HTMl)
+				// Khong được chèn cú phép viewengine vào script (vì viewengine chỉ tác dụng trên HTMl)
 				deleteButtons.forEach((button) => {
 					button.addEventListener('click', (e) => {
 						const endpoint = `/api/v1/users/deleteOrder/${button.dataset.doc}`;

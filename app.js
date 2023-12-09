@@ -15,28 +15,19 @@ const i18n = require("./config/i18n");
 
 // npm install cookie-parser
 app.use(cors());
-app.use("*", cors()); // cho phep tat ca http
-// app.use(cors({
-//   origin: 'https://web-electronic-device-shop.onrender.com', // Cho phép yêu cầu từ miền này
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//   credentials: true, // Cho phép sử dụng cookie hoặc token xác thực
-//   optionsSuccessStatus: 204, // Cho phép tiêu đề OPTIONS mà không gặp lỗi CORS
-// }));
-
+app.use("*", cors()); 
 // middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(i18n.init);
-
 app.use(express.json()); //bodyparser
-// app.use(morgan('dev'));
 // Middleware để xử lý dữ liệu từ form
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 app.set("view engine", "ejs");
-app.use(express.static("public/styles")); // ơ dau cung truy cạp dc
-app.use(express.static("public")); // ơ dau cung truy cạp dc
+app.use(express.static("public/styles")); // gọi các thư mục trong public
+app.use(express.static("public")); 
 app.use(methodOverride("_method")); // để sử dụng pthuc PUT
 
 app.use(
@@ -61,8 +52,7 @@ const Order = require("./models/order");
 const User = require("./models/user");
 
 // Truy vấn và truyền categories vào res.locals để sử dụng trên toàn bộ ứng dụng
-// middlewares sử dụng cho mọi ware
-const category = require("./models/category");
+// middlewares sử dụng cho mọi nơi
 app.use(async (req, res, next) => {
   try {
     const categories = await Category.find();

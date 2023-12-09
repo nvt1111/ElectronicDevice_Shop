@@ -17,7 +17,7 @@ passport.use(new GoogleStrategy({
             try {
                 userId = mongoose.Types.ObjectId(`${profile.id}abc`);//đủ 24 bit
             } catch (error) {
-                console.error('Invalid ObjectId:', error);
+                console.error('Đối tượng không khả dụng:', error);
                 return cb(error, null);
             }
             const response = await User.findOne({ _id: userId });
@@ -35,7 +35,7 @@ passport.use(new GoogleStrategy({
             await user.save()
             return cb(null, user);
         }
-        return cb(new Error('No profile ID available'), null);
+        return cb(new Error('Không có sẵn User id'), null);
     }
 ));
 

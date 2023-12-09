@@ -35,8 +35,7 @@ Content-Type: application/json
     "category": "64b251b662fd98962c2d1313",
     "countInStock": 25,
     "rating": 4,
-    "numReviews": 10,
-    "isFeatured": false
+    "numReviews": 10
 }
 
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGIyYzg4ODhjODdiZGQxMGUzNWZkNjIiLCJpYXQiOjE2ODk0NDM1NDYsImV4cCI6MTY4OTUyOTk0Nn0.9zBKbx2d4eLISXBvPNi05642e2GLz9HLLW9jbLLZ7zk
@@ -60,8 +59,7 @@ Content-Type: application/json
     "category": "64b24bb0476b0787dcec00c6",
     "countInStock": 1,
     "rating": 1,
-    "numReviews": 1,
-    "isFeatured": false
+    "numReviews": 1
 }
 ###
 DELETE http://localhost:3000/api/v1/products/64b252db68e7d757d470d7b1
@@ -125,8 +123,7 @@ Content-Type:  application/json
             "price": 25
         }
     ],
-    "shippingAddress1" : "NV Troi , 45",
-    "shippingAddress2" : "bbbbbbbbbbb",
+    "district" : "NV Troi , 45",
     "city": "Prague",
     "zip": "00000",
     "country": "Czech Republic",

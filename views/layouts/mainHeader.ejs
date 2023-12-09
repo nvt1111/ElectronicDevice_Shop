@@ -46,10 +46,10 @@
                 const searchInputHidden = document.getElementById('searchInputHidden');
 
                 searchButton.addEventListener('click', () => {
-                    event.preventDefault();// ngăn chặn hành vi mặc định không ảnh hưởng bỏi form trên
+                    event.preventDefault();
                     const keyword = searchInput.value;
                     searchInputHidden.value = keyword;
-                    searchForm.submit(); // Gửi yêu cầu tìm kiếm bằng form ẩn
+                    searchForm.submit(); 
                 });
             </script>
 

@@ -9,10 +9,12 @@ const session = require("express-session");
 const sendmail = require("../helpers/sendmail");
 
 const get_login_user = (req, res, next) => {
+
   res.render("login");
 };
 
 const get_register_user = (req, res, next) => {
+
   res.render("register");
 };
 
@@ -24,6 +26,7 @@ const get_all_user = async (req, res, next) => {
         success: false,
       });
     }
+
     res.status(200).send(userList);
   } catch (error) {
     next(error);
@@ -38,6 +41,7 @@ const get_user_id = async (req, res, next) => {
         success: false,
       });
     }
+
     res.status(200).send(user);
   } catch (error) {
     next(error);
@@ -54,7 +58,8 @@ const create_user = async (req, res, next) => {
     });
 
     const savedUser = await user.save();
-    if (!savedUser) res.status(404).send("the user cannot be created");
+    if (!savedUser) res.status(404).send("User chưa tạo thất bại !");
+
     res.redirect("/api/v1/users/login");
   } catch (error) {
     next(error);
@@ -86,7 +91,7 @@ const login = async (req, res, next) => {
       res.redirect("/");
     }
   } else {
-    res.status(400).send("password is wrong");
+    res.status(400).send("password không hợp lệ");
   }
 };
 
@@ -96,11 +101,11 @@ const delete_user = (req, res) => {
       if (user) {
         return res
           .status(200)
-          .json({ success: true, message: "the user is deleted!" });
+          .json({ success: true, message: "User đã được xoá !" });
       } else {
         return res
           .status(404)
-          .json({ success: false, message: "user not found!" });
+          .json({ success: false, message: "Không tìm thấy user !" });
       }
     })
     .catch((err) => {
@@ -116,6 +121,7 @@ const get_count_user = async (req, res, next) => {
         success: false,
       });
     }
+
     res.send({
       count: userCount,
     });
@@ -124,9 +130,10 @@ const get_count_user = async (req, res, next) => {
   }
 };
 
-const logout_user = async (req, res, next) => {
+const logout_user = async (req, res) => {
   const id = req.params.id;
   await Token.deleteMany({ user: id });
+
   req.session.destroy();
   res.redirect("/");
 };
@@ -140,10 +147,10 @@ const profile = async (req, res, next) => {
       const order = await Order.find({ user: userId });
       res.render("profile", { user, order, isLoggedIn });
     } else {
-      res.status(400).send("User khôn tồn tại ");
+      res.status(400).send("User không tồn tại !");
     }
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Lỗi:", error);
     next(error);
   }
 };
@@ -161,10 +168,10 @@ const changepassword = async (req, res, next) => {
           passwordHash: bcrypt.hashSync(req.body.newpassword, 10),
         });
       } else {
-        res.status(400).send("không xác nhận mật khẩu thành công");
+        res.status(400).send("Không xác nhận mật khẩu thành công !");
       }
     }
-    const message = "Cập nhật thông tin cá nhân thành công";
+    const message = "Cập nhật thông tin cá nhân thành công !";
 
     res.render("success", { message });
   } catch (error) {
@@ -173,8 +180,15 @@ const changepassword = async (req, res, next) => {
 };
 
 const deleteOrder = async (req, res, next) => {
-  await Order.findByIdAndDelete(req.params.id);
-  res.redirect(`/api/v1/users/profile/${req.session.user.id}`);
+  const deletedItem = await Order.findByIdAndDelete(req.params.id);
+
+  if (!deletedItem) {
+    return res.status(404).json({ message: "Đơn hàng không tồn tại." });
+  }
+  res.json({
+    success: true,
+    redirect: `/api/v1/users/profile/${req.session.user.id}`,
+  });
 };
 
 const forgotPassword = async (req, res, next) => {
@@ -198,11 +212,13 @@ const forgotPassword = async (req, res, next) => {
   const rs = await sendmail({ email, html });
   const message =
     "Hệ thống đã gửi phản hồi reset password qua mail của bạn vui lòng kiểm tra!";
+
   res.render("success", { message });
 };
 
 const get_reset = (req, res, next) => {
   const token = req.params.resetToken;
+
   res.render("reset_password", { token: token });
 };
 
@@ -230,6 +246,7 @@ const resetPassword = async (req, res, next) => {
   user.passwordResetExpires = undefined;
   await user.save();
   console.log(user);
+  
   res.redirect("/api/v1/users/login");
 };
 

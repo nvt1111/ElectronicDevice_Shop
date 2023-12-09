@@ -2,12 +2,9 @@ const mongoose = require('mongoose');
 const OrderItem = require('./order-item');
 
 var orderSchema = new mongoose.Schema({
-    shippingAddress1: {
+    district: {
         type: String,
         required: true,
-    },
-    shippingAddress2: {
-        type: String,
     },
     city: {
         type: String,
@@ -37,7 +34,7 @@ var orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    dateOrdered: {
+    createdAt: {
         type: Date,
         default: Date.now,
     }

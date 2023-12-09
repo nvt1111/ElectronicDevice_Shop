@@ -1,21 +1,11 @@
 <%- include('layouts/header.ejs') %>
 
 	<body>
-		<!-- HEADER -->
 		<header>
-			<!-- TOP HEADER -->
 			<%- include('layouts/topHeader.ejs')%>
-				<!-- /TOP HEADER -->
-
-				<!-- MAIN HEADER -->
 				<%- include('layouts/mainHeader.ejs')%>
-					<!-- /MAIN HEADER -->
 		</header>
-		<!-- /HEADER -->
-
 		<%- include('layouts/navigation.ejs')%>
-
-			<!-- SECTION -->
 			<div class="section">
 				<!-- container -->
 				<div class="container">
@@ -93,21 +83,6 @@
 								<p>
 									<%= product.description%>
 								</p>
-
-								<div class="product-options">
-									<label>
-										<%=__(`Size`) %>
-											<select class="input-select">
-												<option value="0">X</option>
-											</select>
-									</label>
-									<label>
-										<%=__(`Color`) %>
-											<select class="input-select">
-												<option value="0">Red</option>
-											</select>
-									</label>
-								</div>
 
 								<div class="add-to-cart">
 									<div class="qty-label">

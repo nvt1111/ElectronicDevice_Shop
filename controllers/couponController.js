@@ -21,9 +21,6 @@ const createCoupon = async (req, res) => {
     }
 }
 
-
-
 module.exports = {
     createCoupon,
-
 }

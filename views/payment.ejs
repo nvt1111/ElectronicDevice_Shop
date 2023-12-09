@@ -6,8 +6,7 @@
 				width: 420px;
 				padding: 10px;
 				font-size: 16px;
-				margin-left: 40px;
-				margin-right: 40px;
+				margin-left: 100px;
 			}
 		</style>
 
@@ -91,9 +90,9 @@
 											<%= __("DateOrder") %>
 										</div>
 										<div>
-											<%=newOrder.dateOrdered.getDate() + '-' +
-												(newOrder.dateOrdered.getMonth()+1)
-												+'-'+newOrder.dateOrdered.getFullYear()%>
+											<%=newOrder.createdAt.getDate() + '-' +
+												(newOrder.createdAt.getMonth()+1)
+												+'-'+newOrder.createdAt.getFullYear()%>
 										</div>
 									</div>
 									<%})%>
@@ -131,14 +130,6 @@
 			<%- include('layouts/newLetter.ejs') %>
 
 				<%- include('layouts/footer.ejs') %>
-
-					<!-- jQuery Plugins
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/slick.min.js"></script>
-	<script src="js/nouislider.min.js"></script>
-	<script src="js/jquery.zoom.min.js"></script>
-	<script src="js/main.js"></script> -->
 
 	</body>
 

@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
 const mongoose = require("mongoose");
-const { verifyAccessToken } = require("../helpers/jwt");
-const multer = require("multer");
 const Product = require("../models/product");
 const { uploadOptions } = require("../helpers/uploadImage");
 
@@ -31,7 +29,7 @@ router.put(
       { new: true }
     );
     if (!product) {
-      res.status(500).send("the product cannot updated");
+      res.status(500).send("Sản phẩm cập nhật không thành công !");
     }
     res.send(product);
   }
@@ -43,16 +41,9 @@ router.post(
   productController.create_product
 );
 router.get("/:id", productController.get_product_id);
-router.get("/", productController.get_product_category); // filter theo category
+router.get("/", productController.get_product_category);
 router.post("/search-key", productController.search_product_key);
 router.get("/search-page", productController.search_page);
-router.post("/review/:id", productController.review); // id này productId
-
-router.get("/", productController.get_all);
-router.put("/:id", productController.update_product);
-router.delete("/:id", productController.delete_product);
-router.get("/get/count", productController.get_count);
-router.get("/get/featured", productController.get_product_feature);
-router.get("/get/featured/:count", productController.get_product_feature_count);
+router.post("/review/:id", productController.review); // id: product_id
 
 module.exports = router;

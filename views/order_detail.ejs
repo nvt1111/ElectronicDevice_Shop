@@ -176,9 +176,9 @@
 																<%= __("DATEORDER") %>:
 															</strong></div>
 														<div>
-															<%=order?.dateOrdered.getDate() + '-' +
-																(order?.dateOrdered.getMonth()+1) +'-'+
-																order?.dateOrdered.getFullYear()%>
+															<%=order?.createdAt.getDate() + '-' +
+																(order?.createdAt.getMonth()+1) +'-'+
+																order?.createdAt.getFullYear()%>
 														</div>
 
 													</div>

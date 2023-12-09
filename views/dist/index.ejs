@@ -98,6 +98,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <div class="col-xl-6">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <i class="fas fa-chart-bar me-1"></i>
+                                                Bản đồ
+                                                <%- include('./layouts/map')%>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="container-fluid px-4">
@@ -110,7 +121,7 @@
                                 <section id="posts">
                                     <div class="container">
                                         <div class="row">
-                                            <div class="col-md-9">
+                                            <div class="col">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h4>Latest order</h4>
@@ -128,9 +139,9 @@
                                                             <tbody>
                                                                 <% let i=1 %>
                                                                     <% if(orders.length> 0){ %>
-                                                                        <% orders.sort((a, b)=> new Date(b.dateOrdered)
+                                                                        <% orders.sort((a, b)=> new Date(b.createdAt)
                                                                             -
-                                                                            new Date(a.dateOrdered)).forEach(
+                                                                            new Date(a.createdAt)).forEach(
                                                                             (o,index)=>{%>
                                                                             <tr>
                                                                                 <td>
@@ -140,16 +151,16 @@
                                                                                     <%=o.totalPrice%>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <%=o.shippingAddress1%>
+                                                                                    <%=o.district%>
                                                                                 </td>
                                                                                 <td>
                                                                                     <%=o.status%>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <%= o.dateOrdered.getDate() + '-' +
-                                                                                        (o.dateOrdered.getMonth() +1)
+                                                                                    <%= o.createdAt.getDate() + '-' +
+                                                                                        (o.createdAt.getMonth() +1)
                                                                                         + '-' +
-                                                                                        o.dateOrdered.getFullYear() %>
+                                                                                        o.createdAt.getFullYear() %>
                                                                                 </td>
                                                                                 <td>
                                                                                     <a href="/admins/orders/<%=o._id%>"
@@ -209,7 +220,7 @@
                                         </div>
                         </main>
 
-
+                        
                         <script>
                             const deleteButtons = document.querySelectorAll('a#delete');
 
@@ -230,4 +241,6 @@
                         <%- include('./layouts/footer')%>
                     </div>
             </div>
+            
             <%- include('./layouts/embed')%>
+            

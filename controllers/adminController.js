@@ -4,63 +4,61 @@ const Category = require("../models/category");
 const Order = require("../models/order");
 const OrderItemHistory = require("../models/orderItemHistory");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const { signAccessToken } = require("../helpers/jwt");
-const session = require("express-session");
 const { uploadOptions } = require("../helpers/uploadImage");
+const pagination = require("../helpers/panigation");
 
-const get_dashboard = async (req, res, next) => {
-  //Panigation
+const get_dashboard = async (req, res) => {
   const order = res.locals.orders;
   const currentPage = parseInt(req.query.page) || 1;
-  const slOrder1Page = 5;
-  // (n-1)*x
-  const start = (currentPage - 1) * slOrder1Page;
-  const end = start + slOrder1Page;
-  const totalPage = Math.ceil(order.length / slOrder1Page); //lam tron len
+  const { start, end, totalPage } = pagination(order, currentPage);
+  const isLoggedIn = req.session.isLoggedIn;
+  const user = req.session.user;
 
   res.render("dist/index", {
     orders: order.slice(start, end),
     totalPage,
     currentPage,
+    user,
+    isLoggedIn,
   });
 };
 
-const get_page_user = (req, res, next) => {
-  //Panigation
-  const user = res.locals.users;
+const get_page_user = (req, res) => {
+  const users = res.locals.users;
   const currentPage = parseInt(req.query.page) || 1;
-  const slOrder1Page = 5;
-  // (n-1)*x
-  const start = (currentPage - 1) * slOrder1Page;
-  const end = start + slOrder1Page;
-  const totalPage = Math.ceil(user.length / slOrder1Page); //lam tron len
+  const { start, end, totalPage } = pagination(users, currentPage);
+  const isLoggedIn = req.session.isLoggedIn;
+  const user = req.session.user;
 
   res.render("dist/users", {
-    users: user.slice(start, end),
+    users: users.slice(start, end),
     totalPage,
     currentPage,
+    isLoggedIn,
+    user,
   });
 };
 
-const get_page_category = (req, res, next) => {
-  res.render("dist/categories");
+const get_page_category = (req, res) => {
+  const isLoggedIn = req.session.isLoggedIn;
+  const user = req.session.user;
+
+  res.render("dist/categories", { isLoggedIn, user });
 };
 
-const get_page_product = (req, res, next) => {
-  //Panigation
-  const product = res.locals.products;
+const get_page_product = async (req, res) => {
+  const product = await Product.find().populate("category");
   const currentPage = parseInt(req.query.page) || 1;
-  const slOrder1Page = 5;
-  // (n-1)*x
-  const start = (currentPage - 1) * slOrder1Page;
-  const end = start + slOrder1Page;
-  const totalPage = Math.ceil(product.length / slOrder1Page); //lam tron leen
+  const { start, end, totalPage } = pagination(product, currentPage);
+  const isLoggedIn = req.session.isLoggedIn;
+  const user = req.session.user;
 
   res.render("dist/products", {
     products: product.slice(start, end),
     totalPage,
     currentPage,
+    isLoggedIn,
+    user,
   });
 };
 
@@ -80,6 +78,7 @@ const addUser = async (req, res, next) => {
         isAmin: req.body.isAmin,
       });
       await user.save();
+
       res.redirect("/admins/users");
     }
   } catch (error) {
@@ -90,13 +89,12 @@ const addUser = async (req, res, next) => {
 const addProduct = async (req, res, next) => {
   try {
     const file = req.file;
-    
     if (!file) {
       return res.status(400).send("Không có ảnh trong yêu cầu");
     }
     const fileName = file.filename;
     const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
-    console.log('thai thai thiathtia', `${basePath}${fileName}`);
+
     const product = new Product({
       name: req.body.name,
       description: req.body.description,
@@ -109,8 +107,8 @@ const addProduct = async (req, res, next) => {
       numReviews: req.body.numReviews,
       countInStock: req.body.countInStock,
     });
-    const savedPro = await product.save();
-    if (!savedPro) res.send("không thêm được sản phẩm");
+    await product.save();
+
     res.redirect("/admins/products");
   } catch (error) {
     next(error);
@@ -128,30 +126,58 @@ const addCategory = async (req, res, next) => {
   }
 };
 
-const delProduct = async (req, res, next) => {
-  await Product.findByIdAndDelete(req.params.id);
-  res.redirect("/admins/products");
+const delProduct = async (req, res) => {
+  const deletedItem = await Product.findByIdAndDelete(req.params.id);
+
+  if (!deletedItem) {
+    return res.status(404).json({ message: "Sản phẩm không tồn tại." });
+  }
+  res.json({
+    success: true,
+    redirect: "/admins/products",
+  });
 };
 
-const delOrder = async (req, res, next) => {
-  await Order.findByIdAndDelete(req.params.id);
-  res.redirect("/admins/dashboard");
+const delOrder = async (req, res) => {
+  const deletedItem = await Order.findByIdAndDelete(req.params.id);
+
+  if (!deletedItem) {
+    return res.status(404).json({ message: "Đơn hàng không tồn tại." });
+  }
+  res.json({
+    success: true,
+    redirect: "/admins/dashboard",
+  });
 };
 
-const delUser = async (req, res, next) => {
-  await User.findByIdAndDelete(req.params.id);
-  res.redirect("/admins/users");
+const delUser = async (req, res) => {
+  const deletedItem = await User.findByIdAndDelete(req.params.id);
+
+  if (!deletedItem) {
+    return res.status(404).json({ message: "User không tồn tại." });
+  }
+  res.json({
+    success: true,
+    redirect: "/admins/users",
+  });
 };
 
-const delCate = async (req, res, next) => {
-  await Category.findByIdAndDelete(req.params.id);
-  res.redirect("/admins/categories");
+const delCate = async (req, res) => {
+  const deletedItem = await Category.findByIdAndDelete(req.params.id);
+
+  if (!deletedItem) {
+    return res.status(404).json({ message: "Mặt hàng không tồn tại." });
+  }
+  res.json({
+    success: true,
+    redirect: "/admins/categories",
+  });
 };
 
 const update_product = async (req, res, next) => {
   try {
     const category = await Category.findById(req.body.category);
-    if (!category) return res.status(400).send("Invalid Category");
+    if (!category) return res.status(400).send("Danh mục không tồn tại !");
     const product = await Product.findByIdAndUpdate(
       req.params.id,
       {
@@ -201,7 +227,7 @@ const update_order = async (req, res, next) => {
       req.params.id,
       {
         totalPrice: req.body.totalPrice,
-        shippingAddress1: req.body.shippingAddress1,
+        district: req.body.district,
         status: req.body.status,
       },
       { new: true }
@@ -213,26 +239,29 @@ const update_order = async (req, res, next) => {
     next(error);
   }
 };
-const detailProduct = async (req, res, next) => {
+const detailProduct = async (req, res) => {
   const pro = await Product.findById(req.params.id);
+
   res.render("dist/edit_products", { pro });
 };
 
-const detailUser = async (req, res, next) => {
+const detailUser = async (req, res) => {
   const user = await User.findById(req.params.id);
+
   res.render("dist/edit_users", { user });
 };
 
-const detailOrder = async (req, res, next) => {
+const detailOrder = async (req, res) => {
   const order = await Order.findById(req.params.id);
+
   res.render("dist/edit_orders", { order });
 };
 
-const getRevenue = async (req, res, next) => {
+const getRevenue = async (req, res) => {
   let monthlyRevenue = Array(12).fill(0);
   const orders = await Order.find();
   orders.forEach((order) => {
-    const month = new Date(order.dateOrdered).getMonth();
+    const month = new Date(order.createdAt).getMonth();
     monthlyRevenue[month] += order.totalPrice;
   });
 
@@ -241,23 +270,31 @@ const getRevenue = async (req, res, next) => {
 
 const getQuantityEachCategory = async (req, res) => {
   const orderItemHistory = await OrderItemHistory.find().populate({
-    path: "product", // sử dụng path
+    path: "product",
     populate: {
       path: "category",
     },
   });
 
   let arrayQuantity = {};
-  orderItemHistory.forEach((order) => {
-    if (!arrayQuantity[order.product?.category?.name]) {
-      arrayQuantity[order.product.category.name] = 0;
+  orderItemHistory.forEach(async (order) => {
+    if (
+      order.product &&
+      order.product.category &&
+      order.product.category.name
+    ) {
+      let categoryName = order.product.category.name;
+      if (!arrayQuantity[categoryName]) {
+        arrayQuantity[categoryName] = 0;
+      }
+
+      arrayQuantity[categoryName] += parseInt(order.quantity);
     }
-    arrayQuantity[order.product.category.name] += parseInt(order.quantity);
   });
 
   const name = Object.keys(arrayQuantity);
   const quantity = Object.values(arrayQuantity);
-  
+
   res.json({ name, quantity });
 };
 
@@ -274,11 +311,11 @@ module.exports = {
   delUser,
   delCate,
   update_product,
+  update_user,
+  update_order,
   detailProduct,
   detailUser,
-  update_user,
   detailOrder,
-  update_order,
   getRevenue,
-  // getQuantityEachCategory,
+  getQuantityEachCategory,
 };

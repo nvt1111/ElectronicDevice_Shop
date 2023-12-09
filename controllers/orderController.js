@@ -5,47 +5,23 @@ const OrderItem = require("../models/order-item");
 const Coupon = require("../models/coupon");
 const OrderItemsHistory = require("../models/orderItemHistory");
 
-///////////////////////////
+// FCM node
 
-var FCM = require("fcm-node");
-var serviceAccount = require("../config/creds.json");
 
-var admin = require("firebase-admin");
-
-FCM = new FCM(
-  "AAAAr3H6pZo:APA91bEqu9Di3AeCJM9G3ch_F_PpD0YqyYl1IZA5STHLN4zAHj4VOAHz-htusFsPxeUbO5auqVtl5OZcGowDGlQtEPjx9qVI-1qtwnmTItVcrKjMfkEKLomO5DMNvpzJA2X5muF0fekY"
-);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-const certPath = admin.credential.cert(serviceAccount);
-
-/////////////////////////////////////////
+// FCM node
 
 const create_order = async (req, res, next) => {
   try {
-    const {
-      shippingAddress1,
-      shippingAddress2,
-      city,
-      zip,
-      country,
-      phone,
-      totalPrice,
-      user_id,
-    } = req.body;
-
+    const { district, city, zip, country, phone, totalPrice, user_id } =
+      req.body;
     // Tìm các OrderITems để ghi vào lịch sử đã nhé tìm theo User_ID
     const OrderItems = await OrderItem.find({ user: user_id }).populate(
       "product"
     );
     const orderItemIDs = OrderItems.map((item) => item._id); // để xoá nhiều id trong OrderItem của cart
-
     // Tạo Order mới
     const newOrder = new Order({
-      shippingAddress1,
-      shippingAddress2,
+      district,
       city,
       zip,
       country,
@@ -68,7 +44,6 @@ const create_order = async (req, res, next) => {
       await orderItemsHistory.save();
     }
     await OrderItem.deleteMany({ _id: { $in: orderItemIDs } });
-    // populate() không được áp dụng trực tiếp cho phương thức save() trong Mongoose.
     const isLoggedIn = req.session.isLoggedIn;
     const user = req.session.user;
 
@@ -84,32 +59,7 @@ const create_order = async (req, res, next) => {
   }
 };
 
-// app.post('/send-noti',
-const sendNotify = (req, res) => {
-  try {
-    let message = {
-      // to: 'co2GtcUstURECe6X1xeUMu:APA91bHUwZt33fIp3p5JsGnYVbAg-uclq6Q1lsVsw8COfYtMaZo_AZZldkt9jq38jGBXerI7E0WRBUe8RN7NN_OvZC5j_2aS2GoY_1hF9RoGSK0MMwmYIVsUEgENhPyFZ_t-E16NicRK',
-      to: 'cau_dHfdfYsPAyvcI_Cort:APA91bHvGaAx7jpp-TJJPd0fP54CeAj2vgmSlfb7ra4LrqdusJz4huegIno74UbPtOGxmEQRdvdbWsuHD85_3KDtK2JuFWyZk4_7Ruq3XUWCQGu45BITGTij6xV9NjDV3MJ2RWIC-FVG',
-      notification: {
-        title: req.body.title,
-        body: req.body.content,
-      },
-    };
-    FCM.send(message, function (err, resp) {
-      if (err) {
-        return res.status(500).send({
-          message: err,
-        });
-      } else {
-        return res.status(200).send({
-          message: resp,
-        });
-      }
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+
 
 const applyCoupon = async (req, res, next) => {
   const totalPrice = req.body.totalPrice;
@@ -127,7 +77,6 @@ const applyCoupon = async (req, res, next) => {
   const user = req.session.user;
   let currentTotalPrice = totalPrice;
   let check = req.body.check;
-
   const coupon = await Coupon.findOne({ name: req.body.nameCoupon }).populate(
     "user"
   );
@@ -150,7 +99,7 @@ const applyCoupon = async (req, res, next) => {
   res.render("checkout", {
     totalPriceCheck,
     check,
-    totalPrice: currentTotalPrice,
+    totalPrice: Math.ceil(currentTotalPrice),
     userName,
     productNames,
     quantities,
@@ -161,11 +110,10 @@ const applyCoupon = async (req, res, next) => {
   });
 };
 
-//get order detail and populate products in OrderItem and USerData
 const get_order_detail = async (req, res, next) => {
   const orderList = await Order.find()
     .populate("user", "name")
-    .sort({ dateOrdered: -1 }); // hien thi chi tiet user
+    .sort({ createdAt: -1 }); // hien thi chi tiet user
   if (!orderList) {
     res.status(500).json({
       success: false,
@@ -210,7 +158,6 @@ const delete_order = async (req, res, next) => {
     const orderItemsHistory = await OrderItemsHistory.find({
       order: order._id,
     });
-
     orderItemsHistory.forEach(async (order) => {
       await OrderItemsHistory.findByIdAndDelete(order._id);
     });
@@ -258,7 +205,7 @@ const get_user_order = async (req, res) => {
         populate: "category",
       },
     })
-    .sort({ dateOrdered: -1 });
+    .sort({ createdAt: -1 });
 
   if (!userOrderList) {
     res.status(500).json({ success: false });
@@ -266,7 +213,7 @@ const get_user_order = async (req, res) => {
   res.send(userOrderList);
 };
 
-const get_pages_payment = (req, res, next) => {
+const get_pages_payment = (req, res) => {
   const isLoggedIn = req.session.isLoggedIn;
   const user = req.session.user;
 
@@ -284,52 +231,6 @@ module.exports = {
   get_user_order,
   get_pages_payment,
   applyCoupon,
-  sendNotify,
+  // sendNotify,
 };
 
-// const  create_order = async (req,res,next)=>{
-//     try{
-//        // truoc tien tao orderITem luu truoc
-//        // dung Promise all de xu li 2 bdb
-//         const orderItemsIds = Promise.all(req.body.orderItems.map(async orderItem =>{
-//             let newOrderItem = new OrderItem({
-//                 quantity: orderItem.quantity,
-//                 product: orderItem.product
-//             })
-//             newOrderItem = await newOrderItem.save();
-//             return newOrderItem._id;// chi can mag ID neu muon biet orderitem chi tiet thi truy cap theo ID
-//         }))
-//         // giai quyet 2 promise nhu sau
-//         const orderItemsIdsResolved = await orderItemsIds;
-//         console.log(orderItemsIdsResolved)
-// // cal price Order
-//         // muon colsole.log Promise thi phai await promise
-//         const totalPrices =await Promise.all(orderItemsIdsResolved.map(async orderItemId =>{
-//             const orderItem = await OrderItem.findById(orderItemId).populate('product','price');
-//             const totalPrice = orderItem.product.price * orderItem.quantity;
-//             return totalPrice;
-
-//         }
-//             ))
-//         const totalPrice = totalPrices.reduce((a,b)=> a+b, 0)
-//         console.log(totalPrices)
-//         const order = new Order({
-//             orderItems: orderItemsIdsResolved,
-//             shippingAddress1: req.body.shippingAddress1,
-//             shippingAddress2: req.body.shippingAddress2,
-//             city: req.body.city,
-//             zip: req.body.zip,
-//             country: req.body.country,
-//             phone: req.body.phone,
-//             status: req.body.status,
-//             totalPrice: totalPrice,
-//             user: req.body.user,
-//         })
-//         const savedOrder = await order.save();
-//         if(!savedOrder) return res.status(500).send('The order cannot be created')
-//         res.send(savedOrder);
-//     }catch(error){
-//         next(error)
-//     }
-
-// }

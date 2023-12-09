@@ -10,7 +10,6 @@ const oauth2 = require("./oauth2");
 
 const initRoutes = (app) => {
   // truyền vào server
-
   app.use("/api/v1/users", user);
   app.use("/api/v1/products", product);
   app.use("/api/v1/categories", category);

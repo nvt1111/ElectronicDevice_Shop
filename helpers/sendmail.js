@@ -13,14 +13,24 @@ const sendmail = async ({ email, html }) => {
   });
 
   async function main() {
-    const info = await transporter.sendMail({
-      from: '"Cuahangdientu" <no-relply@cuahangdientu.com>', // sender address
-      to: email, // list of receivers
-      subject: "Forgot password", // Subject line
-      html: html, // html body
-    });
-    console.log(info);
-    return info;
+    if(html.split(' ')[0] === 'Đơn') {
+      const info1 = await transporter.sendMail({
+        from: '"ElectronicShop" <no-relply@electronicshop.com>', 
+        to: email, 
+        subject: "Đơn hàng của bạn tại Electronic Shop", 
+        html: html, 
+      });
+      return info1;
+    }
+    else{
+      const info2 = await transporter.sendMail({
+        from: '"ElectronicShop" <no-relply@electronicshop.com>', 
+        to: email, 
+        subject: "Quên mật khẩu", 
+        html: html, 
+      });
+      return info2;
+    }
   }
   main();
 }

@@ -7,6 +7,7 @@ Chart.defaults.global.defaultFontColor = "#292b2c";
 (async function fetchData() {
   const data = await fetch("http://localhost:5001/admins/quantityCategories");
   const result = await data.json();
+  console.log("🚀 ~ file: chart-pie-demo.js:10 ~ fetchData ~ result:", result)
 
   function generateRandomColor() {
     const letters = "0123456789ABCDEF";
@@ -40,6 +41,4 @@ Chart.defaults.global.defaultFontColor = "#292b2c";
       ],
     },
   });
-
-  
 })();

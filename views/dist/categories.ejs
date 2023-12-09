@@ -7,7 +7,7 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Orders</h1>
+                                <h1 class="mt-4">Categories</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admins/dashboard">Dashboard</a></li>
                                     <li class="breadcrumb-item active">Categories</li>
@@ -86,12 +86,12 @@
                                                                                     <%=cate.name%>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <a href="" id="delete"
+                                                                                    <a href="" id="deleteItem"
                                                                                         data-doc="<%=cate._id%>"
                                                                                         class="btn btn-secondary btn-sm">
-                                                                                        <!-- <i class="fas fa-angle-double-right"></i> -->
                                                                                         Delete
                                                                                     </a>
+                                                                                    
                                                                                 </td>
                                                                             </tr>
                                                                             <% i++%>
@@ -106,21 +106,22 @@
                                     </div>
                                 </section>
                                 <script>
-                                    const deleteButtons = document.querySelectorAll('a#delete');
-
+                                    const deleteButtons = document.querySelectorAll('#deleteItem'); // để tránh việc chỉ xoá đc dòng đầu thì ta chọn tất cả các dòng có thể xoá
                                     deleteButtons.forEach((button) => {
                                         button.addEventListener('click', (e) => {
                                             const endpoint = `/admins/delCate/${button.dataset.doc}`;
+                    
                                             fetch(endpoint, {
-                                                method: 'DELETE'
+                                                method: 'DELETE',
                                             })
                                                 .then(response => response.json())
                                                 .then((data) => {
                                                     window.location.href = data.redirect;
                                                 })
                                                 .catch(err => console.log(err));
-                                        })
-                                    })
+                                        });
+                                    });
+                    
                                 </script>
 
                             </div>

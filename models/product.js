@@ -9,17 +9,10 @@ var productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    richDescription: {
-        type: String,
-        default: ''
-    },
     image: {
         type: String,
         default: ''
     },
-    images: [{
-        type: String
-    }],
     brand: {
         type: String,
         default: ''
@@ -47,11 +40,7 @@ var productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    isFeatured: {
-        type: Boolean,
-        default: false
-    },
-    dateCreated: {
+    createdAt: {
         type: Date,
         default: Date.now
     },

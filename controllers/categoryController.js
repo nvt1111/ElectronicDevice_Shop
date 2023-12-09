@@ -8,6 +8,7 @@ const all_category = async (req, res, next) => {
         success: false,
       });
     }
+
     res.status(200).send(categoryList);
   } catch (error) {
     next(error);
@@ -25,6 +26,7 @@ const update_category = async (req, res, next) => {
       },
       { new: true }
     );
+    
     res.status(200).send(category);
   } catch (error) {
     next(error);

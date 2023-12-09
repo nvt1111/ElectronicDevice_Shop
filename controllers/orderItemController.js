@@ -7,7 +7,7 @@ const addToCart = async (req, res, next) => {
   try {
     const { user_id, product_id, quantity, price } = req.body;
     if (!mongoose.isValidObjectId(user_id)) {
-      return res.status(400).json({ error: "Invalid user ID" });
+      return res.status(400).json({ error: "User ID không khả dụng !" });
     }
     const productOrderItem = await OrderItem.findOne({
       user: user_id,
@@ -97,11 +97,8 @@ const getCheckout = async (req, res, next) => {
     const prices = req.body.prices;
     const isLoggedIn = req.session.isLoggedIn;
     const user = req.session.user;
-
     const registrationToken = await Token.findOne({ user: user_id });
-
     const token = registrationToken.tokenDevice;
-
 
     res.render("checkout", {
       totalPriceCheck,

@@ -27,7 +27,6 @@ var userSchema = new mongoose.Schema({
     passwordResetExprires: {
         type: String,
     }
-    // thời gian còn hạn của token 
 });
 
 module.exports = mongoose.model('User', userSchema);

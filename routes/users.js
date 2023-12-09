@@ -12,17 +12,10 @@ router.get("/profile/:id", userController.profile);
 router.put("/changepassword/:id", userController.changepassword);
 router.delete("/deleteOrder/:id", userController.deleteOrder);
 
-// forgotpassword
+// Forgotpassword
 router.get("/forgotpassword", userController.forgotPassword);
 router.get("/resetpassword/:resetToken", userController.get_reset);
 router.put("/resetpassword", userController.resetPassword);
 
 module.exports = router;
 
-//////
-// router.get('/' ,userController.get_all_user);
-// router.get('/:id', userController.get_user_id);
-// router.post('/', userController.create_user);
-// router.post('/login',userController.login_user);
-// router.delete('/:id',userController.delete_user);
-// router.get('/get/count', userController.get_count_user);

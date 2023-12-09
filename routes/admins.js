@@ -15,7 +15,7 @@ route.get("/products", adminController.get_page_product);
 route.get("/categories", adminController.get_page_category);
 route.get("/users", adminController.get_page_user);
 route.get("/revenue", adminController.getRevenue);
-// route.get("/quantityCategories", adminController.getQuantityEachCategory);
+route.get("/quantityCategories", adminController.getQuantityEachCategory);
 
 // USER
 route.post("/addUser", adminController.addUser);
