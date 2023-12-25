@@ -26,6 +26,7 @@ var productSchema = new mongoose.Schema({
         ref: 'Category',
         required: true
     },
+    //bo count instock
     countInStock: {
         type: Number,
         required: true,

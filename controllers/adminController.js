@@ -92,13 +92,11 @@ const addProduct = async (req, res, next) => {
     if (!file) {
       return res.status(400).send("Không có ảnh trong yêu cầu");
     }
-    const fileName = file.filename;
-    const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
-
+    const fileName = file.path;
     const product = new Product({
       name: req.body.name,
       description: req.body.description,
-      image: `${basePath}${fileName}`, // "http://localhost:3000/public/upload/image-2323232",
+      image: `${fileName}`, 
       brand: req.body.brand,
       price: req.body.price,
       category: req.body.category,
@@ -289,9 +287,10 @@ const getQuantityEachCategory = async (req, res) => {
       }
 
       arrayQuantity[categoryName] += parseInt(order.quantity);
+     
     }
   });
-
+  console.log("🚀 ~ file: adminController.js:290 ~ orderItemHistory.forEach ~ arrayQuantity:", arrayQuantity)
   const name = Object.keys(arrayQuantity);
   const quantity = Object.values(arrayQuantity);
 

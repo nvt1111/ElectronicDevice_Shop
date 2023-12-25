@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
+const { verifyAccessToken } = require("../helpers/jwt");
 
 // API new
 router.get("/login", userController.get_login_user);

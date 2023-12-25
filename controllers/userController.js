@@ -4,17 +4,19 @@ const Token = require("../models/tokenDevice");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const { signAccessToken, verifyAccessToken } = require("../helpers/jwt");
+const {
+  signAccessToken,
+  verifyAccessToken,
+  signRefreshToken,
+} = require("../helpers/jwt");
 const session = require("express-session");
 const sendmail = require("../helpers/sendmail");
 
 const get_login_user = (req, res, next) => {
-
   res.render("login");
 };
 
 const get_register_user = (req, res, next) => {
-
   res.render("register");
 };
 
@@ -66,18 +68,23 @@ const create_user = async (req, res, next) => {
   }
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(400).send("User không tồn tại!");
+    return res.status(400).send("User không tồn tại !");
   }
   if (bcrypt.compareSync(req.body.password, user.passwordHash)) {
     const accessToken = await signAccessToken(user._id);
+    const refreshToken = await signRefreshToken(user._id);
     req.session.isLoggedIn = true;
-    req.session.user = { name: user.name, id: user._id, email: user.email }; // Thay thế bằng thông tin người dùng thực tế
+    req.session.user = { name: user.name, id: user._id, email: user.email };
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 ngày
+    });
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 365 * 24 * 60 * 60 * 1000,
     });
     const token = new Token({
       user: user._id,
@@ -86,12 +93,18 @@ const login = async (req, res, next) => {
     await token.save();
 
     if (user.isAdmin) {
-      res.redirect("/admins/dashboard");
+      res.json({
+        success: true,
+        redirect: "/admins/dashboard",
+      });
     } else {
-      res.redirect("/");
+      res.json({
+        success: true,
+        redirect: "/",
+      });
     }
   } else {
-    res.status(400).send("password không hợp lệ");
+    res.status(400).send("Password không hợp lệ !");
   }
 };
 
@@ -246,7 +259,7 @@ const resetPassword = async (req, res, next) => {
   user.passwordResetExpires = undefined;
   await user.save();
   console.log(user);
-  
+
   res.redirect("/api/v1/users/login");
 };
 

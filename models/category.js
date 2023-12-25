@@ -5,6 +5,7 @@ var categorySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // bo 2 cai duoi
     icon: {
         type: String
     },

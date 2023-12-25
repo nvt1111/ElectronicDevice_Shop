@@ -104,7 +104,7 @@ const search_product_key = async (req, res, next) => {
   try {
     const key = req.body.keyword;
     const filteredProducts = await Product.find({
-      name: { $regex: key, $options: "i" },
+      name: { $regex: key, $options: "i" }, 
     });
     const isLoggedIn = req.session.isLoggedIn;
     const user = req.session.user;
