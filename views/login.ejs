@@ -201,6 +201,8 @@ const firebaseConfig = {
       // response.json() bdb
       const responseData = await response.json();
       window.location.href = responseData.redirect;
+    }else{
+      alert('Password không hợp lệ !')
     }
   }
 

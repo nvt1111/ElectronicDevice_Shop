@@ -11,7 +11,7 @@ const search_page = (req, res, next) => {
 
 const get_product_id = async (req, res, next) => {
   const product = await Product.findById(req.params.id).populate("category");
-  const user_id = req.session.user.id;
+  const user_id = req.session.user?.id;
   const user = await User.findById(user_id);
   const review = await Review.find({ product: product._id }).populate("user");
   const Array = review.map((r) => r.rating);
@@ -105,7 +105,7 @@ const search_product_key = async (req, res, next) => {
     const key = req.body.keyword;
     const filteredProducts = await Product.find({
       name: { $regex: key, $options: "i" }, 
-    });
+    }).populate("category");
     const isLoggedIn = req.session.isLoggedIn;
     const user = req.session.user;
 
@@ -119,7 +119,7 @@ const review = async (req, res, next) => {
   const rating = req.body.rating;
   const review = req.body.review;
   const reviewNew = await Review.create({
-    user: req.session.user.id,
+    user: req.session.user?.id,
     product: req.params.id,
     rating,
     review,

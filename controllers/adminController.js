@@ -23,15 +23,15 @@ const get_dashboard = async (req, res) => {
   });
 };
 
-const get_page_user = (req, res) => {
-  const users = res.locals.users;
+const get_page_user =async (req, res) => {
+  const userList = await User.find();
   const currentPage = parseInt(req.query.page) || 1;
-  const { start, end, totalPage } = pagination(users, currentPage);
+  const { start, end, totalPage } = pagination(userList, currentPage);
   const isLoggedIn = req.session.isLoggedIn;
   const user = req.session.user;
 
   res.render("dist/users", {
-    users: users.slice(start, end),
+    users: userList.slice(start, end),
     totalPage,
     currentPage,
     isLoggedIn,
@@ -39,15 +39,17 @@ const get_page_user = (req, res) => {
   });
 };
 
-const get_page_category = (req, res) => {
+const get_page_category = async(req, res) => {
+  const categories = await Category.find();
   const isLoggedIn = req.session.isLoggedIn;
   const user = req.session.user;
 
-  res.render("dist/categories", { isLoggedIn, user });
+  res.render("dist/categories", { isLoggedIn, user ,categories});
 };
 
 const get_page_product = async (req, res) => {
-  const product = await Product.find().populate("category");
+  const product = await Product.find().populate("category").sort({createdAt: 'desc'});
+
   const currentPage = parseInt(req.query.page) || 1;
   const { start, end, totalPage } = pagination(product, currentPage);
   const isLoggedIn = req.session.isLoggedIn;
@@ -125,7 +127,7 @@ const addCategory = async (req, res, next) => {
 };
 
 const delProduct = async (req, res) => {
-  const deletedItem = await Product.findByIdAndDelete(req.params.id);
+  const deletedItem = await Product.findByIdAndRemove(req.params.id);
 
   if (!deletedItem) {
     return res.status(404).json({ message: "Sản phẩm không tồn tại." });
@@ -137,7 +139,7 @@ const delProduct = async (req, res) => {
 };
 
 const delOrder = async (req, res) => {
-  const deletedItem = await Order.findByIdAndDelete(req.params.id);
+  const deletedItem = await Order.findByIdAndRemove(req.params.id);
 
   if (!deletedItem) {
     return res.status(404).json({ message: "Đơn hàng không tồn tại." });
@@ -149,7 +151,7 @@ const delOrder = async (req, res) => {
 };
 
 const delUser = async (req, res) => {
-  const deletedItem = await User.findByIdAndDelete(req.params.id);
+  const deletedItem = await User.findByIdAndRemove(req.params.id);
 
   if (!deletedItem) {
     return res.status(404).json({ message: "User không tồn tại." });
@@ -161,7 +163,7 @@ const delUser = async (req, res) => {
 };
 
 const delCate = async (req, res) => {
-  const deletedItem = await Category.findByIdAndDelete(req.params.id);
+  const deletedItem = await Category.findByIdAndRemove(req.params.id);
 
   if (!deletedItem) {
     return res.status(404).json({ message: "Mặt hàng không tồn tại." });
@@ -290,7 +292,6 @@ const getQuantityEachCategory = async (req, res) => {
      
     }
   });
-  console.log("🚀 ~ file: adminController.js:290 ~ orderItemHistory.forEach ~ arrayQuantity:", arrayQuantity)
   const name = Object.keys(arrayQuantity);
   const quantity = Object.values(arrayQuantity);
 

@@ -3,6 +3,7 @@ const Order = require("../models/order");
 const Token = require("../models/tokenDevice");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const Cart = require('../models/cart')
 const jwt = require("jsonwebtoken");
 const {
   signAccessToken,
@@ -58,8 +59,9 @@ const create_user = async (req, res, next) => {
       passwordHash: bcrypt.hashSync(req.body.password, 10),
       phone: req.body.phone,
     });
-
+    
     const savedUser = await user.save();
+   
     if (!savedUser) res.status(404).send("User chưa tạo thất bại !");
 
     res.redirect("/api/v1/users/login");
@@ -174,19 +176,27 @@ const changepassword = async (req, res, next) => {
     const user = await User.findById(id);
     if (user && bcrypt.compareSync(req.body.oldpassword, user.passwordHash)) {
       if (req.body.newpassword === req.body.confirmpassword) {
-        await User.findByIdAndUpdate(id, {
+        const newUser = await User.findByIdAndUpdate(id, {
           name: req.body.name,
           email: req.body.email,
           phone: req.body.phone,
           passwordHash: bcrypt.hashSync(req.body.newpassword, 10),
-        });
-      } else {
-        res.status(400).send("Không xác nhận mật khẩu thành công !");
-      }
-    }
-    const message = "Cập nhật thông tin cá nhân thành công !";
+        },{ new: true });
+        console.log("🚀 ~ file: userController.js:178 ~ changepassword ~ user:", newUser);
+        const message = "Cập nhật thông tin cá nhân thành công !";
 
-    res.render("success", { message });
+        res.render("success", { message });
+      } else {
+        const message = "Không xác nhận được mật khẩu mới  !";
+
+        res.render("success", { message });
+      }
+    }else{
+      const message = "Không xác nhận được mật khẩu cũ  !";
+
+        res.render("success", { message });
+    }
+    
   } catch (error) {
     next(error);
   }

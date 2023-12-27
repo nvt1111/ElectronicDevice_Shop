@@ -54,7 +54,7 @@
 						<div class="col-md-7 order-details">
 							<div class="section-title text-center">
 								<h3 class="title">
-									<%=user.name%>'s <%= __("Order") %>
+									<%=user?.name%>'s <%= __("Order") %>
 								</h3>
 							</div>
 
@@ -78,7 +78,8 @@
 											</div>
 										</div>
 									</div>
-
+									
+									<%})%>
 									<div class="order-col">
 										<div>
 											<%= __("Shiping") %>
@@ -86,6 +87,7 @@
 										<div><strong>FREE</strong></div>
 									</div>
 									<div class="order-col">
+										
 										<div>
 											<%= __("DateOrder") %>
 										</div>
@@ -95,7 +97,6 @@
 												+'-'+newOrder.createdAt.getFullYear()%>
 										</div>
 									</div>
-									<%})%>
 										<div class="order-col">
 											<div><strong>
 													<%= __("TOTAL") %>

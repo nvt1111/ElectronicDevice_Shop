@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const OrderItem = require('./order-item');
 
 var orderSchema = new mongoose.Schema({
     district: {

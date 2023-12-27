@@ -135,8 +135,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									<% if(orderItem.length>0) { %>
-										<% orderItem.forEach( item=>{%>
+									<% if(cartItem.length>0) { %>
+										<% cartItem.forEach( item=>{%>
 											<tr>
 												<td id="product-image-td"><img src="<%=item.product.image%>"
 														alt="Product 1">
@@ -192,7 +192,7 @@
 								<input type="hidden" name="totalPricecheck" value="<%=totalPrice%>">
 								<!-- GỬI THÊM USER_ID ĐỂ THỰC HIỆN CHO TRANG PAYMENT GỌI LẠI ORDERHISTORY -->
 								<input type="hidden" name="user_id" value="<%=user._id%>">
-								<% orderItem.forEach(item=> { %>
+								<% cartItem.forEach(item=> { %>
 									<input type="hidden" name="productNames[]" value="<%= item.product.name %>">
 									<input type="hidden" name="quantities[]" value="<%= item.quantity %>">
 									<input type="hidden" name="prices[]" value="<%=item.price%>">

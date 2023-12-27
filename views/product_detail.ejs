@@ -68,7 +68,6 @@
 													<%}%>
 									</div>
 									<a class="review-link" href="#">
-										<%= product.numReviews%>
 											<%=__(`Review(s)`)%>
 									</a>
 								</div>
@@ -81,7 +80,7 @@
 									</span>
 								</div>
 								<p>
-									<%= product.description%>
+								 <%= product.description%>
 								</p>
 
 								<div class="add-to-cart">
@@ -171,7 +170,7 @@
 									<!-- <li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
 								<li><a data-toggle="tab" href="#tab2">Details</a></li> -->
 									<li><a data-toggle="tab" href="#tab3">
-											<%=__(`Review(s)`) %>(3)
+											<%=__(`Review(s)`) %>
 										</a></li>
 								</ul>
 								<!-- tab3  -->
@@ -312,8 +311,8 @@
 																	</div>
 																</div>
 																<div class="review-body">
-																	<p>
-																		<%=r.review%>
+																	<p >
+																		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%=r.review%>
 																	</p>
 																</div>
 															</li>

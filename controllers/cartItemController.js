@@ -1,7 +1,8 @@
-const OrderItem = require("../models/order-item");
+const CartItem = require("../models/cartItem");
 const User = require("../models/user");
 const mongoose = require("mongoose");
 const Token = require("../models/tokenDevice");
+const Cart = require('../models/cart')
 
 const addToCart = async (req, res, next) => {
   try {
@@ -10,31 +11,49 @@ const addToCart = async (req, res, next) => {
     if (!mongoose.isValidObjectId(user_id)) {
       return res.status(400).json({ error: "User ID không khả dụng !" });
     }
-    const productOrderItem = await OrderItem.findOne({
-      user: user_id,
-      product: product_id,
-    });
-    if (productOrderItem) {
-      const quantities = Number(quantity) + productOrderItem.quantity;
-      await OrderItem.findByIdAndUpdate(
-        productOrderItem._id,
-        {
-          quantity: quantities,
-          price: price,
-        },
-        { new: true }
-      );
-    } else {
-      let orderItem = new OrderItem({
-        user: user_id,
+
+    const cartExist = await Cart.findOne({user: user_id});
+    
+    if(!cartExist){
+      const cart = new Cart({
+        user: user_id
+      })
+      cart.save();
+      let cartItem = new CartItem({
+        cart: cart._id,
         product: product_id,
         quantity: quantity,
         price: price,
       });
-      await orderItem.save();
+      await cartItem.save();
+      res.redirect(`/api/v1/orderItems/view-cart/${user_id}`);
+    }else{
+      const productCartItem = await CartItem.findOne({
+        cart: cartExist._id,
+        product: product_id,
+      });
+      if (productCartItem) {
+        const quantities = Number(quantity) + productCartItem.quantity;
+        await CartItem.findByIdAndUpdate(
+          productCartItem._id,
+          {
+            quantity: quantities,
+            price: price,
+          },
+          { new: true }
+        );
+      } else {
+        let cartItem = new CartItem({
+          cart: cartExist._id,
+          product: product_id,
+          quantity: quantity,
+          price: price,
+        });
+        await cartItem.save();
+      }
+  
+      res.redirect(`/api/v1/orderItems/view-cart/${user_id}`);
     }
-
-    res.redirect(`/api/v1/orderItems/view-cart/${user_id}`);
   } catch (error) {
     next(error);
   }
@@ -43,20 +62,21 @@ const addToCart = async (req, res, next) => {
 const viewCartUserid = async (req, res, next) => {
   try {
     const user_id = req.params.user_id;
+    const cart = await Cart.findOne({user: user_id});
     const user = await User.findById({ _id: user_id });
-    const orderItem = await OrderItem.find({ user: user_id }).populate(
+    const cartItem = await CartItem.find({ cart: cart._id }).populate(
       "product"
     );
     let totalPrice = 0;
-    if (orderItem) {
-      orderItem.forEach((item) => {
+    if (cartItem) {
+      cartItem.forEach((item) => {
         totalPrice += item.product.price * item.quantity;
       });
     }
     const isLoggedIn = req.session.isLoggedIn;
 
     res.render("cart", {
-      orderItem: orderItem,
+      cartItem: cartItem,
       user: user,
       totalPrice: totalPrice,
       isLoggedIn,
@@ -70,8 +90,8 @@ const viewCartUserid = async (req, res, next) => {
 const deleteCartUserid = async (req, res, next) => {
   try {
     const item_id = req.params.item_id;
-    const deletedItem = await OrderItem.findByIdAndRemove(item_id);
-    const user = await User.findById({ _id: deletedItem.user.toString() });
+    const deletedItem = await CartItem.findByIdAndRemove(item_id);
+    const user = await User.findById(req.session.user.id);
 
     if (!deletedItem)
       return res.status(404).json({ message: "Mặt hàng không tồn tại." });
@@ -99,7 +119,7 @@ const getCheckout = async (req, res, next) => {
     const isLoggedIn = req.session.isLoggedIn;
     const user = req.session.user;
     const registrationToken = await Token.findOne({ user: user_id });
-    const token = registrationToken.tokenDevice;
+    const token = registrationToken?.tokenDevice ;
 
     res.render("checkout", {
       totalPriceCheck,

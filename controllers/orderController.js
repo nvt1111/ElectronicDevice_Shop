@@ -1,10 +1,10 @@
 const Order = require("../models/order");
 const Token = require("../models/tokenDevice");
 const mongoose = require("mongoose");
-const OrderItem = require("../models/order-item");
+const CartItem = require("../models/cartItem");
 const Coupon = require("../models/coupon");
 const OrderItemsHistory = require("../models/orderItemHistory");
-
+const Cart = require('../models/cart')
 // FCM node
 
 var FCM = require('fcm-node');
@@ -22,11 +22,13 @@ const create_order = async (req, res, next) => {
   try {
     const { district, city, zip, country, phone, totalPrice, user_id } =
       req.body;
-    // Tìm các OrderITems để ghi vào lịch sử đã nhé tìm theo User_ID
-    const OrderItems = await OrderItem.find({ user: user_id }).populate(
+
+      const cart = await Cart.findOne({user: user_id});
+    // Tìm các CartITems để ghi vào lịch sử đã nhé tìm theo User_ID
+    const CartItems = await CartItem.find({ cart: cart._id }).populate(
       "product"
     );
-    const orderItemIDs = OrderItems.map((item) => item._id); // để xoá nhiều id trong OrderItem của cart
+    const cartItemIDs = CartItems.map((item) => item._id); // để xoá nhiều id trong CartItem của cart
     // Tạo Order mới
     const newOrder = new Order({
       district,
@@ -41,17 +43,17 @@ const create_order = async (req, res, next) => {
     const SavedOrder = await newOrder.save();
     let arrayOrderItemHistory = [];
 
-    for (const orderItem of OrderItems) {
+    for (const cartItem of CartItems) {
       const orderItemsHistory = new OrderItemsHistory({
-        product: orderItem.product,
-        quantity: orderItem.quantity,
-        price: orderItem.price,
+        product: cartItem.product,
+        quantity: cartItem.quantity,
+        price: cartItem.price,
         order: SavedOrder._id,
       });
       arrayOrderItemHistory.push(orderItemsHistory);
       await orderItemsHistory.save();
     }
-    await OrderItem.deleteMany({ _id: { $in: orderItemIDs } });
+    await CartItem.deleteMany({ _id: { $in: cartItemIDs } });
     const isLoggedIn = req.session.isLoggedIn;
     const user = req.session.user;
 
@@ -230,7 +232,7 @@ const get_count = async (req, res, next) => {
 const get_user_order = async (req, res) => {
   const userOrderList = await Order.find({ user: req.params.userid })
     .populate({
-      path: "orderItems",
+      path: "cartItems",
       populate: {
         path: "product",
         populate: "category",
