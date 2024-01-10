@@ -176,6 +176,9 @@ const delCate = async (req, res) => {
 
 const update_product = async (req, res, next) => {
   try {
+    const file = req.file;
+    if (file) {
+      const fileName = file.path;
     const category = await Category.findById(req.body.category);
     if (!category) return res.status(400).send("Danh mục không tồn tại !");
     const product = await Product.findByIdAndUpdate(
@@ -183,7 +186,7 @@ const update_product = async (req, res, next) => {
       {
         name: req.body.name,
         description: req.body.description,
-        // image: req.body.image,
+        image: `${fileName}`, 
         brand: req.body.brand,
         price: req.body.price,
         category: req.body.category,
@@ -196,6 +199,29 @@ const update_product = async (req, res, next) => {
     if (!product) res.send("Không tồn tại product!");
 
     res.redirect("/admins/products");
+    }
+    else{
+    const category = await Category.findById(req.body.category);
+    if (!category) return res.status(400).send("Danh mục không tồn tại !");
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+        description: req.body.description,
+        brand: req.body.brand,
+        price: req.body.price,
+        category: req.body.category,
+        countInStock: req.body.countInStock,
+        rating: req.body.rating,
+        numReviews: req.body.numReviews,
+      },
+      { new: true }
+    );
+    if (!product) res.send("Không tồn tại product!");
+
+    res.redirect("/admins/products");
+    }
+    
   } catch (error) {
     next(error);
   }

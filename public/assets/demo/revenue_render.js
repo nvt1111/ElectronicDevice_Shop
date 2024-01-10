@@ -1,6 +1,6 @@
 (async function fetchData() {
     try {
-        const data = await fetch(`http://localhost:5001/admins/revenue`);
+        const data = await fetch(`/admins/revenue`);
         const revenue = await data.json();
         const result = revenue.monthlyRevenue;
         var ctx = document.getElementById("revenueMonthly");

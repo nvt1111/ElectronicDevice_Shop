@@ -30,7 +30,7 @@ route.post(
   adminController.addProduct
 );
 route.delete("/delProduct/:id", adminController.delProduct);
-route.put("/updatePro/:id", adminController.update_product);
+route.put("/updatePro/:id",uploadOptions.single("image"), adminController.update_product);
 route.get("/products/:id", adminController.detailProduct);
 
 // CATEGORY

@@ -5,7 +5,7 @@ Chart.defaults.global.defaultFontColor = "#292b2c";
 
 // Pie Chart Example
 (async function fetchData() {
-  const data = await fetch("http://localhost:5001/admins/quantityCategories");
+  const data = await fetch("/admins/quantityCategories");
   const result = await data.json();
   console.log("🚀 ~ file: chart-pie-demo.js:10 ~ fetchData ~ result:", result)
 

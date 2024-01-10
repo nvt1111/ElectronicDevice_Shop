@@ -17,31 +17,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <a href="/admins/dashboard" class="btn btn-dark btn-block">
-                        <i class="fas fa-arrow-left"></i> Back To Dashboard
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="" onclick="Savechange()" class="btn btn-success btn-block">
-                        <i class="fas fa-save"></i> Save Changes
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="index.html" class="btn btn-danger btn-block">
-                        <i class="fas fa-trash"></i> Delete Post
+                    <a href="/admins/products" class="btn btn-dark btn-block">
+                        <i class="fas fa-arrow-left"></i> Back To Products
                     </a>
                 </div>
             </div>
         </div>
     </section>
-    <script>
-        function Savechange() {
-            event.preventDefault(); // Chặn hoạt động mặc định của thẻ <a>
-
-            const updateForm = document.getElementById('update');
-            updateForm.submit(); // Submit form
-        }
-    </script>
+    
     <!-- Details -->
     <section id="posts">
         <div class="container">
@@ -52,7 +35,7 @@
                             <h4>Edit Product</h4>
                         </div>
                         <div class="card-body">
-                            <form action="/admins/updatePro/<%=pro._id%>?_method=PUT" id="update" method="POST">
+                            <form action="/admins/updatePro/<%=pro._id%>?_method=PUT" id="update" method="POST" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="title">Name</label>
                                     <input type="text" class="form-control" name="name" value="<%=pro.name%>">

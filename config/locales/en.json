@@ -84,7 +84,7 @@
 	"continueShopping": "Continue Shopping",
 	"Checkout": "Checkout",
 	"Billingaddress": "Billing address",
-	" Address1": "Address1",
+	" Address1": "District",
 	" Address2": "Address2",
 	" City": " City",
 	" Country": "Country",
@@ -140,5 +140,6 @@
 	"Head Phone A02": "Head Phone A02",
 	"Cameras Sony": "Cameras Sony",
 	"Head Phone A05": "Head Phone A05",
-	"Laptop Dell Inprision": "Laptop Dell Inprision"
+	"Laptop Dell Inprision": "Laptop Dell Inprision",
+	"ưewer": "ưewer"
 }

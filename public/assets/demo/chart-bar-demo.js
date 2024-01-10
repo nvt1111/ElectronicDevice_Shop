@@ -4,7 +4,7 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // Bar Chart Example
 (async function fetchData() {
-  const data = await fetch(`http://localhost:5001/admins/revenue`);
+  const data = await fetch(`/admins/revenue`);
   const revenue = await data.json();
 
   var ctx = document.getElementById("myBarChart");
@@ -38,7 +38,7 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
         yAxes: [{
           ticks: {
             min: 0,
-            max: 400000,
+            max: 400000000,
             maxTicksLimit: 5
           },
           gridLines: {
